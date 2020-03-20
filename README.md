@@ -14,7 +14,11 @@
 - Tool
     - `IntelliJ IDEA`
     - `Gradle`
-    
+    - `AQuery`
+   
+- Modeling
+    - [ERD readonly 링크-수정 중](https://aquerytool.com:443/aquerymain/index/?rurl=1960d678-834c-4fd7-8623-35a505f5b0d5)
+        - 비밀번호 `on8517`
 - 사용 API
     - [한국 관광공사 TourAPI 3.0](http://api.visitkorea.or.kr/guide/inforUnite.do)
 
