@@ -23,6 +23,7 @@
     - [한국 관광공사 TourAPI 3.0](http://api.visitkorea.or.kr/guide/inforUnite.do)
 
 - Reference
-
+    - [Git Flow 개발 전략](https://gmlwjd9405.github.io/2018/05/11/types-of-git-branch.html)
+    
 - Contributor
     - [kwonsye](https://github.com/kwonsye)
