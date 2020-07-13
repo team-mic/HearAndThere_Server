@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(name = "audio_guide_track_containers")
 @Entity
 public class AudioGuideTrackContainer {
 
@@ -17,11 +18,11 @@ public class AudioGuideTrackContainer {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "audio_guides_id")
+    @JoinColumn(name = "audio_guide_id")
     private AudioGuide audioGuide;
 
     @ManyToOne
-    @JoinColumn(name = "audio_tracks_id")
+    @JoinColumn(name = "audio_track_id")
     private AudioTrack audioTrack;
 
     private Integer orderNumber;
