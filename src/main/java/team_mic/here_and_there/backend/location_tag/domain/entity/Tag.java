@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team_mic.here_and_there.backend.common.domain.BaseTimeEntity;
+
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -13,7 +15,7 @@ import java.util.Set;
 @Getter
 @Table(name = "tags")
 @Entity
-public class Tag {
+public class Tag extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
