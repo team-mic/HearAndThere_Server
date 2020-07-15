@@ -18,8 +18,8 @@ public class TripTipsService {
 
     public ResTripTipsListDto getTripTipsList() {
 
-        List<TripTip> tipsList = tripTipRepository.findTop2ByOrderByCreatedTimeDesc();
-        List<ResTripTipItemDto> itemList =tipsList.stream().map(tripTip -> ResTripTipItemDto.builder()
+        List<TripTip> tipsList = tripTipRepository.findTop4ByOrderByCreatedTimeDesc();
+        List<ResTripTipItemDto> itemList =tipsList.parallelStream().map(tripTip -> ResTripTipItemDto.builder()
                                                     .tripTipId(tripTip.getId())
                                                     .imageUrl(tripTip.getImages().iterator().next())
                                                     .title(tripTip.getTitle())
