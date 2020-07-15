@@ -29,7 +29,7 @@ public class AudioGuideService {
 
     private ResAudioGuideListDto getAudioGuideListByCategory(String category) {
         List<AudioGuide> audioGuides = audioGuideRepository.findTop4ByCategory(category);
-        List<ResAudioGuideItemDto> list = audioGuides.stream()
+        List<ResAudioGuideItemDto> list = audioGuides.parallelStream()
                 .map(audioGuide -> toAudioGuideItem(audioGuide))
                 .collect(Collectors.toList());
 
