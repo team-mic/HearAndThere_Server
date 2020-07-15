@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AreaAttractionApiModelDto {
+public class TourApiBaseResModelDto<T> {
     @JsonProperty("response")
     private Response response;
 
@@ -18,7 +18,7 @@ public class AreaAttractionApiModelDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class Response{
+    public class Response{
 
         @JsonProperty("body")
         private Body body;
@@ -27,9 +27,9 @@ public class AreaAttractionApiModelDto {
         @NoArgsConstructor
         @AllArgsConstructor
         @JsonIgnoreProperties(ignoreUnknown = true)
-        public static class Body{
+        public class Body{
             @JsonProperty("items")
-            private ResAreaAttractionsListDto items;
+            private T items;
         }
     }
 }
