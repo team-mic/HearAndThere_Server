@@ -1,5 +1,6 @@
 package team_mic.here_and_there.backend.audio_guide.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
+@JsonPropertyOrder({"audioGuideId","title", "imageUrl", "audioFileUrl","tags"})
 public class ResAudioGuideItemDto {
 
     @ApiModelProperty(notes = "오디오 가이드 id")

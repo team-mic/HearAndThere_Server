@@ -19,7 +19,7 @@ import team_mic.here_and_there.backend.trips_tip.service.TripTipsService;
 import java.util.HashSet;
 import java.util.Set;
 
-@Api("여행 팁 API")
+@Api(tags = "여행 팁 API")
 @RequiredArgsConstructor
 @RestController
 public class TripTipController {

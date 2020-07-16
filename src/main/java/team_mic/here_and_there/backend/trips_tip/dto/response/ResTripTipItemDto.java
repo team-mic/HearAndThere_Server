@@ -1,11 +1,13 @@
 package team_mic.here_and_there.backend.trips_tip.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiResponse;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@JsonPropertyOrder({"tripTipId", "title", "imageUrl", "description"})
 public class ResTripTipItemDto {
 
     @ApiModelProperty(notes = "여행 팁 id")

@@ -26,7 +26,7 @@ import team_mic.here_and_there.backend.location_tag.domain.repository.TagReposit
 import java.util.HashSet;
 import java.util.Set;
 
-@Api("오디오 가이드 API")
+@Api(tags = "오디오 가이드 API")
 @RestController
 @RequiredArgsConstructor
 public class AudioGuideController {
