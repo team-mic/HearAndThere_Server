@@ -3,11 +3,9 @@ package team_mic.here_and_there.backend.attraction.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -100,7 +98,7 @@ public class AttractionService {
         String areaName = listDto.getAreaCodeAndNameItemList().stream()
                 .filter(areaCodeAndNameItemDto -> areaCodeAndNameItemDto.getCode()== areaCode)
                 .findFirst()
-                .orElse(null)
+                .orElseThrow(()-> new HttpClientErrorException(HttpStatus.BAD_REQUEST))
                 .getAreaName();
 
         return areaName;
