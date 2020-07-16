@@ -11,12 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+import team_mic.here_and_there.backend.attraction.dto.response.AreaCodeAndNameListDto;
 import team_mic.here_and_there.backend.attraction.dto.response.TourApiBaseResModelDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAreaAttractionsListDto;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
+import java.util.List;
 
 @Service
 public class AttractionService {
@@ -33,9 +35,8 @@ public class AttractionService {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    public ResAreaAttractionsListDto getAreaAttractions(String area) throws UnsupportedEncodingException {
+    public ResAreaAttractionsListDto getAreaAttractions(Integer areaCode) throws UnsupportedEncodingException {
 
-        Integer areaCode = getAreaCodeFromAreaName(area);
         UriComponentsBuilder builder = createBaseUriBuilder("/areaBasedList");
 
         UriComponents components = builder.queryParam("contentTypeId",76)
@@ -57,7 +58,10 @@ public class AttractionService {
                         new ParameterizedTypeReference<TourApiBaseResModelDto<ResAreaAttractionsListDto>>() {}).getBody();
 
         ResAreaAttractionsListDto listDto =  modelDto.getResponse().getBody().getItems();
-        listDto.getAttractionList().forEach(resAreaAttractionItemDto -> resAreaAttractionItemDto.setArea(area));
+
+        String areaName = getAreaNameFromAreaCode(areaCode);
+
+        listDto.getAttractionList().forEach(resAreaAttractionItemDto -> resAreaAttractionItemDto.setAreaName(areaName));
 
         return listDto;
     }
@@ -78,7 +82,8 @@ public class AttractionService {
                 .queryParam("_type","json");
     }
 
-    private Integer getAreaCodeFromAreaName(String area) throws UnsupportedEncodingException {
+    private String getAreaNameFromAreaCode(Integer areaCode) throws UnsupportedEncodingException {
+
         UriComponentsBuilder builder = createBaseUriBuilder("/areaCode");
         UriComponents components = builder.queryParam("numOfRows",17)
                 .queryParam("pageNo",1)
@@ -86,6 +91,18 @@ public class AttractionService {
 
         HttpEntity<?> httpEntity = createHttpEntityHeader();
 
-        return 1;
+        TourApiBaseResModelDto<AreaCodeAndNameListDto> modelDto =
+                restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
+                        new ParameterizedTypeReference<TourApiBaseResModelDto<AreaCodeAndNameListDto>>() {}).getBody();
+
+        AreaCodeAndNameListDto listDto = modelDto.getResponse().getBody().getItems();
+
+        String areaName = listDto.getAreaCodeAndNameItemList().stream()
+                .filter(areaCodeAndNameItemDto -> areaCodeAndNameItemDto.getCode()== areaCode)
+                .findFirst()
+                .orElse(null)
+                .getAreaName();
+
+        return areaName;
     }
 }

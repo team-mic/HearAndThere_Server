@@ -6,30 +6,25 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TourApiBaseResModelDto<T> {
-    @JsonProperty("response")
-    private Response<T> response;
+public class AreaCodeAndNameListDto {
+    @JsonProperty("item")
+    private List<AreaCodeAndNameItemDto> areaCodeAndNameItemList;
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public class Response<T>{
+    public static class AreaCodeAndNameItemDto{
+        @JsonProperty("code")
+        private Integer code;
 
-        @JsonProperty("body")
-        private Body<T> body;
-
-        @Getter
-        @NoArgsConstructor
-        @AllArgsConstructor
-        @JsonIgnoreProperties(ignoreUnknown = true)
-        public class Body<T>{
-            @JsonProperty("items")
-            private T items;
-        }
+        @JsonProperty("name")
+        private String areaName;
     }
 }

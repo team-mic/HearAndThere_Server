@@ -20,10 +20,10 @@ public class AttractionController {
     private final AttractionService attractionService;
 
     @GetMapping("/attractions")
-    public ResponseEntity<ResAreaAttractionsListDto> getAreaAttractions(@RequestParam(value = "area") String area) throws UnsupportedEncodingException {
-        if(area == null){
+    public ResponseEntity<ResAreaAttractionsListDto> getAreaAttractions(@RequestParam(value = "area-code") Integer areaCode) throws UnsupportedEncodingException {
+        if(areaCode == null){
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(attractionService.getAreaAttractions(area));
+        return ResponseEntity.status(HttpStatus.OK).body(attractionService.getAreaAttractions(areaCode));
     }
 }

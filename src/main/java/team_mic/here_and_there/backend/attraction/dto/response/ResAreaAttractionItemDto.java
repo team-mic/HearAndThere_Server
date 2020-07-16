@@ -11,12 +11,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResAreaAttractionItemDto {
-    private String area;
+
+    private Long attractionId;
+
+    private String areaName;
 
     private String imageUrl;
 
     @JsonProperty("title")
     private String title;
+
+    @JsonSetter("contentid")
+    private void setAttractionId(Long attractionId) { this.attractionId = attractionId; }
 
     @JsonSetter("firstimage")
     private void setImageUrl(String imageUrl) {
@@ -28,5 +34,8 @@ public class ResAreaAttractionItemDto {
         return this.imageUrl;
     }
 
-    public void setArea(String area){ this.area = area; }
+    @JsonGetter("attractionId")
+    public Long getAttractionId() { return this.attractionId; }
+
+    public void setAreaName(String areaName){ this.areaName = areaName; }
 }
