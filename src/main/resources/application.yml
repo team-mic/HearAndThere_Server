@@ -1,7 +1,6 @@
 spring:
   profiles:
     active: local
-    include: tourapi
 
 ---
 
@@ -26,6 +25,8 @@ spring:
     level:
       root: trace
 
+spring.profiles.include: tourapi
+
 ---
 
 spring:
@@ -38,3 +39,5 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+spring.profiles.include: tourapi,real-db

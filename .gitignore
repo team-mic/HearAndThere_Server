@@ -138,3 +138,6 @@ gradle-app.setting
 
 # tour api 설정 yml
 application-tourapi.yml
+
+# db 설정 yml
+application-real-db.yml
