@@ -34,6 +34,8 @@ dependencies {
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
     implementation 'com.google.firebase:firebase-admin:6.8.1'
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.228') //aws
+    implementation 'com.amazonaws:aws-java-sdk-s3' //aws s3
 
     compile('org.mariadb.jdbc:mariadb-java-client') //maria-db
 
