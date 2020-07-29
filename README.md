@@ -1,5 +1,7 @@
 # Here And There API Server
 
+![Java CI with Gradle](https://github.com/team-mic/HearAndThere_Server/workflows/Java%20CI%20with%20Gradle/badge.svg)
+
 ![image](/images/logo.png)
 
 > 사용자 위치 기반 여행 정보 오디오 큐레이션 어플리케이션
