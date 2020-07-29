@@ -30,6 +30,7 @@ public class AudioTrackService {
 
     return ResAudioTrackInfoListDto.builder()
         .audioGuideId(audioGuide.getId())
+        .audioGuideTitle(audioGuide.getTitle())
         .audioTrackInfoList(trackList)
         .build();
   }
@@ -41,6 +42,7 @@ public class AudioTrackService {
 
     return ResAudioTrackInfoItemDto.builder()
         .audioTrackId(track.getId())
+        .orderNumber(audioGuideTrackContainer.getOrderNumber())
         .audioFileUrl(track.getAudioFileUrl())
         .image(track.getImage())
         .title(track.getTitle())

@@ -9,12 +9,16 @@ public class ResAudioTrackInfoListDto {
 
   private Long audioGuideId;
 
+  private String audioGuideTitle;
+
   private List<ResAudioTrackInfoItemDto> audioTrackInfoList;
 
   @Builder
   private ResAudioTrackInfoListDto(Long audioGuideId,
+      String audioGuideTitle,
       List<ResAudioTrackInfoItemDto> audioTrackInfoList) {
     this.audioGuideId = audioGuideId;
+    this.audioGuideTitle = audioGuideTitle;
     this.audioTrackInfoList = audioTrackInfoList;
   }
 }

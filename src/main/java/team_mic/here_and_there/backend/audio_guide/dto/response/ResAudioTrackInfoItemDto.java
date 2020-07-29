@@ -20,9 +20,12 @@ public class ResAudioTrackInfoItemDto {
 
   private String placeAddress;
 
+  private Integer orderNumber;
+
   @Builder
   private ResAudioTrackInfoItemDto(Long audioTrackId, String title, String runningTime,
-      String image, String audioFileUrl, String placeName, String placeAddress) {
+      String image, String audioFileUrl, String placeName, String placeAddress,
+      Integer orderNumber) {
     this.audioTrackId = audioTrackId;
     this.title = title;
     this.runningTime = runningTime;
@@ -30,5 +33,6 @@ public class ResAudioTrackInfoItemDto {
     this.audioFileUrl = audioFileUrl;
     this.placeName = placeName;
     this.placeAddress = placeAddress;
+    this.orderNumber = orderNumber;
   }
 }

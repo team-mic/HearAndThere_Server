@@ -73,6 +73,55 @@ public class AudioGuideController {
         .body(audioTrackService.getAudioGuidesTrackList(audioGuideId));
   }
 
+  @PostMapping("/audio-guides/audio-tracks/dump")
+  public ResponseEntity<Void> addDumpTracks(){
+    AudioGuide audioGuide = audioGuideRepository.save(AudioGuide.builder().title("test").build());
+    AudioTrack audioTrack1 = audioTrackRepository.save(AudioTrack.builder()
+    .audioFileUrl("track1.file")
+    .title("트랙1")
+    .image("트랙1 이미지").build());
+    AudioTrack audioTrack2 = audioTrackRepository.save(AudioTrack.builder()
+        .audioFileUrl("track2.file")
+        .title("트랙2")
+        .image("트랙2 이미지").build());
+    AudioTrack audioTrack3 = audioTrackRepository.save(AudioTrack.builder()
+        .audioFileUrl("track3.file")
+        .title("트랙3")
+        .image("트랙3 이미지").build());
+
+    audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+    .audioGuide(audioGuide)
+    .audioTrack(audioTrack3)
+    .orderNumber(3).build());
+    audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+        .audioGuide(audioGuide)
+        .audioTrack(audioTrack2)
+        .orderNumber(2).build());
+    audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+        .audioGuide(audioGuide)
+        .audioTrack(audioTrack1)
+        .orderNumber(1).build());
+
+    AudioGuide audioGuide2 = audioGuideRepository.save(AudioGuide.builder().title("test2").build());
+    AudioTrack audioTrack2_1 = audioTrackRepository.save(AudioTrack.builder()
+        .audioFileUrl("track2_1.file")
+        .title("트랙2_1").build());
+    AudioTrack audioTrack2_2 = audioTrackRepository.save(AudioTrack.builder()
+        .audioFileUrl("track2_2.file")
+        .title("트랙2_2").build());
+
+    audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+        .audioGuide(audioGuide2)
+        .audioTrack(audioTrack2_2)
+        .orderNumber(2).build());
+    audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+        .audioGuide(audioGuide2)
+        .audioTrack(audioTrack2_1)
+        .orderNumber(1).build());
+
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
   @ApiIgnore
   @PostMapping("/audio-guides/dump")
   public ResponseEntity<Void> addDumpData() {
