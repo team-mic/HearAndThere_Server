@@ -8,10 +8,10 @@ import java.util.List;
 @Getter
 public class ResTripTipsListDto {
 
-    private List<ResTripTipItemDto> tripTipsList;
+  private List<ResTripTipItemDto> tripTipsList;
 
-    @Builder
-    private ResTripTipsListDto(List<ResTripTipItemDto> tripTipsList){
-        this.tripTipsList=tripTipsList;
-    }
+  @Builder
+  private ResTripTipsListDto(List<ResTripTipItemDto> tripTipsList) {
+    this.tripTipsList = tripTipsList;
+  }
 }

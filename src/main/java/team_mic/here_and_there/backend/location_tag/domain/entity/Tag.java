@@ -16,17 +16,18 @@ import java.util.Set;
 @Table(name = "tags")
 @Entity
 public class Tag extends BaseTimeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @OneToMany(mappedBy = "tag", fetch = FetchType.EAGER)
-    private Set<AudioGuideTag> guides = new HashSet<>();
+  private String name;
 
-    @Builder
-    private Tag(String name){
-        this.name=name;
-    }
+  @OneToMany(mappedBy = "tag", fetch = FetchType.EAGER)
+  private Set<AudioGuideTag> guides = new HashSet<>();
+
+  @Builder
+  private Tag(String name) {
+    this.name = name;
+  }
 }

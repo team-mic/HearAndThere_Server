@@ -10,13 +10,13 @@ import java.util.List;
 @JsonPropertyOrder({"category", "audioGuideList"})
 public class ResAudioGuideListDto {
 
-    private String category;
+  private String category;
 
-    private List<ResAudioGuideItemDto> audioGuideList;
+  private List<ResAudioGuideItemDto> audioGuideList;
 
-    @Builder
-    private ResAudioGuideListDto(String category, List<ResAudioGuideItemDto> audioGuideList){
-        this.category = category;
-        this.audioGuideList = audioGuideList;
-    }
+  @Builder
+  private ResAudioGuideListDto(String category, List<ResAudioGuideItemDto> audioGuideList) {
+    this.category = category;
+    this.audioGuideList = audioGuideList;
+  }
 }

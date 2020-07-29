@@ -11,25 +11,27 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TourApiBaseResModelDto<T> {
-    @JsonProperty("response")
-    private Response<T> response;
+
+  @JsonProperty("response")
+  private Response<T> response;
+
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public class Response<T> {
+
+    @JsonProperty("body")
+    private Body<T> body;
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public class Response<T>{
+    public class Body<T> {
 
-        @JsonProperty("body")
-        private Body<T> body;
-
-        @Getter
-        @NoArgsConstructor
-        @AllArgsConstructor
-        @JsonIgnoreProperties(ignoreUnknown = true)
-        public class Body<T>{
-            @JsonProperty("items")
-            private T items;
-        }
+      @JsonProperty("items")
+      private T items;
     }
+  }
 }

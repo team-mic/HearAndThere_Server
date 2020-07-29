@@ -18,6 +18,7 @@ import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
 @Table(name = "audio_guide_track_containers")
 @Entity
 public class AudioGuideCourse {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -33,9 +34,10 @@ public class AudioGuideCourse {
   private Integer orderNumber;
 
   @Builder
-  private AudioGuideCourse(AudioGuide audioGuide, AudioCourseElement audioCourseElement, Integer orderNumber){
-    this.audioGuide=audioGuide;
-    this.audioCourseElement=audioCourseElement;
-    this.orderNumber=orderNumber;
+  private AudioGuideCourse(AudioGuide audioGuide, AudioCourseElement audioCourseElement,
+      Integer orderNumber) {
+    this.audioGuide = audioGuide;
+    this.audioCourseElement = audioCourseElement;
+    this.orderNumber = orderNumber;
   }
 }

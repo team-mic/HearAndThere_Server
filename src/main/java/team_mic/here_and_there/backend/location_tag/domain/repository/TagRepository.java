@@ -6,4 +6,5 @@ import team_mic.here_and_there.backend.location_tag.domain.entity.Tag;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
+
 }

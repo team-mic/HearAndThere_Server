@@ -21,86 +21,91 @@ import java.util.List;
 @Service
 public class AttractionService {
 
-    private final RestTemplate restTemplate;
+  private final RestTemplate restTemplate;
 
-    @Value("${tour.api.url}")
-    private String tourApiUrl;
+  @Value("${tour.api.url}")
+  private String tourApiUrl;
 
-    @Value("${tour.api.serviceKey}")
-    private String serviceKey;
+  @Value("${tour.api.serviceKey}")
+  private String serviceKey;
 
-    public AttractionService(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
-    }
+  public AttractionService(RestTemplateBuilder restTemplateBuilder) {
+    this.restTemplate = restTemplateBuilder.build();
+  }
 
-    public ResAreaAttractionsListDto getAreaAttractions(Integer areaCode) throws UnsupportedEncodingException {
+  public ResAreaAttractionsListDto getAreaAttractions(Integer areaCode)
+      throws UnsupportedEncodingException {
 
-        UriComponentsBuilder builder = createBaseUriBuilder("/areaBasedList");
+    UriComponentsBuilder builder = createBaseUriBuilder("/areaBasedList");
 
-        UriComponents components = builder.queryParam("contentTypeId",76)
-                .queryParam("areaCode",areaCode)
-                .queryParam("sigunguCode")
-                .queryParam("cat1")
-                .queryParam("cat2")
-                .queryParam("cat3")
-                .queryParam("listYN","Y")
-                .queryParam("arrange","A")
-                .queryParam("numOfRows",10)
-                .queryParam("pageNo",1)
-                .build(false);
+    UriComponents components = builder.queryParam("contentTypeId", 76)
+        .queryParam("areaCode", areaCode)
+        .queryParam("sigunguCode")
+        .queryParam("cat1")
+        .queryParam("cat2")
+        .queryParam("cat3")
+        .queryParam("listYN", "Y")
+        .queryParam("arrange", "A")
+        .queryParam("numOfRows", 10)
+        .queryParam("pageNo", 1)
+        .build(false);
 
-        HttpEntity<?> httpEntity = createHttpEntityHeader();
+    HttpEntity<?> httpEntity = createHttpEntityHeader();
 
-        TourApiBaseResModelDto<ResAreaAttractionsListDto> modelDto =
-               restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
-                        new ParameterizedTypeReference<TourApiBaseResModelDto<ResAreaAttractionsListDto>>() {}).getBody();
+    TourApiBaseResModelDto<ResAreaAttractionsListDto> modelDto =
+        restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
+            new ParameterizedTypeReference<TourApiBaseResModelDto<ResAreaAttractionsListDto>>() {
+            }).getBody();
 
-        ResAreaAttractionsListDto listDto =  modelDto.getResponse().getBody().getItems();
+    ResAreaAttractionsListDto listDto = modelDto.getResponse().getBody().getItems();
 
-        String areaName = getAreaNameFromAreaCode(areaCode);
+    String areaName = getAreaNameFromAreaCode(areaCode);
 
-        listDto.getAttractionList().forEach(resAreaAttractionItemDto -> resAreaAttractionItemDto.setAreaName(areaName));
+    listDto.getAttractionList()
+        .forEach(resAreaAttractionItemDto -> resAreaAttractionItemDto.setAreaName(areaName));
 
-        return listDto;
-    }
+    return listDto;
+  }
 
-    private HttpEntity<?> createHttpEntityHeader() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-        headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        return new HttpEntity<>(headers);
-    }
+  private HttpEntity<?> createHttpEntityHeader() {
+    HttpHeaders headers = new HttpHeaders();
+    headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+    headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+    return new HttpEntity<>(headers);
+  }
 
-    private UriComponentsBuilder createBaseUriBuilder(String appendUrl) throws UnsupportedEncodingException {
+  private UriComponentsBuilder createBaseUriBuilder(String appendUrl)
+      throws UnsupportedEncodingException {
 
-        return UriComponentsBuilder.fromHttpUrl(tourApiUrl+appendUrl)
-                .queryParam("ServiceKey", URLDecoder.decode(serviceKey, "UTF-8"))
-                .queryParam("MobileOS","ETC")
-                .queryParam("MobileApp","HearAndThere")
-                .queryParam("_type","json");
-    }
+    return UriComponentsBuilder.fromHttpUrl(tourApiUrl + appendUrl)
+        .queryParam("ServiceKey", URLDecoder.decode(serviceKey, "UTF-8"))
+        .queryParam("MobileOS", "ETC")
+        .queryParam("MobileApp", "HearAndThere")
+        .queryParam("_type", "json");
+  }
 
-    private String getAreaNameFromAreaCode(Integer areaCode) throws UnsupportedEncodingException {
+  private String getAreaNameFromAreaCode(Integer areaCode) throws UnsupportedEncodingException {
 
-        UriComponentsBuilder builder = createBaseUriBuilder("/areaCode");
-        UriComponents components = builder.queryParam("numOfRows",17)
-                .queryParam("pageNo",1)
-                .build(false);
+    UriComponentsBuilder builder = createBaseUriBuilder("/areaCode");
+    UriComponents components = builder.queryParam("numOfRows", 17)
+        .queryParam("pageNo", 1)
+        .build(false);
 
-        HttpEntity<?> httpEntity = createHttpEntityHeader();
+    HttpEntity<?> httpEntity = createHttpEntityHeader();
 
-        TourApiBaseResModelDto<AreaCodeAndNameListDto> modelDto =
-                restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
-                        new ParameterizedTypeReference<TourApiBaseResModelDto<AreaCodeAndNameListDto>>() {}).getBody();
+    TourApiBaseResModelDto<AreaCodeAndNameListDto> modelDto =
+        restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
+            new ParameterizedTypeReference<TourApiBaseResModelDto<AreaCodeAndNameListDto>>() {
+            }).getBody();
 
-        AreaCodeAndNameListDto listDto = modelDto.getResponse().getBody().getItems();
+    AreaCodeAndNameListDto listDto = modelDto.getResponse().getBody().getItems();
 
-        String areaName = listDto.getAreaCodeAndNameItemList().stream()
-                .filter(areaCodeAndNameItemDto -> areaCodeAndNameItemDto.getCode()== areaCode)
-                .findFirst()
-                .orElseThrow(()-> new HttpClientErrorException(HttpStatus.BAD_REQUEST))
-                .getAreaName();
+    String areaName = listDto.getAreaCodeAndNameItemList().stream()
+        .filter(areaCodeAndNameItemDto -> areaCodeAndNameItemDto.getCode() == areaCode)
+        .findFirst()
+        .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST))
+        .getAreaName();
 
-        return areaName;
-    }
+    return areaName;
+  }
 }

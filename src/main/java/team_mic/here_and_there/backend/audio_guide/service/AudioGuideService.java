@@ -16,76 +16,79 @@ import java.util.stream.Collectors;
 @Service
 public class AudioGuideService {
 
-    private final AudioGuideRepository audioGuideRepository;
+  private final AudioGuideRepository audioGuideRepository;
 
-    private final static Integer RANDOM_AUDIO_GUIDES_COUNT = 5;
+  private final static Integer RANDOM_AUDIO_GUIDES_COUNT = 5;
 
-    public ResAudioGuideListDto getAudioGuideList(String category) {
-        if("random".equals(category)){
-            return getRandomAudioGuideList();
-        }
-        return getAudioGuideListByCategory(category);
+  public ResAudioGuideListDto getAudioGuideList(String category) {
+    if ("random".equals(category)) {
+      return getRandomAudioGuideList();
+    }
+    return getAudioGuideListByCategory(category);
+  }
+
+  private ResAudioGuideListDto getAudioGuideListByCategory(String category) {
+    List<AudioGuide> audioGuides = audioGuideRepository.findTop4ByCategory(category);
+    List<ResAudioGuideItemDto> list = audioGuides.parallelStream()
+        .map(audioGuide -> toAudioGuideItem(audioGuide))
+        .collect(Collectors.toList());
+
+    return ResAudioGuideListDto.builder()
+        .category(category)
+        .audioGuideList(list)
+        .build();
+  }
+
+  private ResAudioGuideListDto getRandomAudioGuideList() {
+    int guidesSize = audioGuideRepository.findAll().size();
+
+    List<ResAudioGuideItemDto> list = new ArrayList<>();
+    Set<Integer> set = new HashSet<>();
+    int setSize, randomId;
+    Random random = new Random();
+
+    for (int count = 0; count < RANDOM_AUDIO_GUIDES_COUNT; count++) {
+      randomId = random.nextInt(guidesSize) + 1;
+      setSize = set.size();
+      set.add(randomId);
+      if (set.size() == setSize) {
+        count--;
+        continue;
+      }
+      Optional<AudioGuide> audioGuide = audioGuideRepository.findById((long) randomId);
+      if (!audioGuide.isPresent()) {
+        count--;
+        continue;
+      }
+      list.add(toAudioGuideItem(audioGuide.get()));
     }
 
-    private ResAudioGuideListDto getAudioGuideListByCategory(String category) {
-        List<AudioGuide> audioGuides = audioGuideRepository.findTop4ByCategory(category);
-        List<ResAudioGuideItemDto> list = audioGuides.parallelStream()
-                .map(audioGuide -> toAudioGuideItem(audioGuide))
-                .collect(Collectors.toList());
+    return ResAudioGuideListDto.builder()
+        .category("random")
+        .audioGuideList(list)
+        .build();
+  }
 
-        return ResAudioGuideListDto.builder()
-                .category(category)
-                .audioGuideList(list)
-                .build();
-    }
+  private ResAudioGuideItemDto toAudioGuideItem(AudioGuide audioGuide) {
+    return ResAudioGuideItemDto.builder()
+        .audioGuideId(audioGuide.getId())
+        .title(audioGuide.getTitle())
+        .imageUrl(audioGuide.getImages().iterator().next())
+        .tags(toTagsStringList(audioGuide.getTags()))
+        .audioFileUrl(getAudioFileUrlsFromTracks(audioGuide.getTracks()))
+        .build();
+  }
 
-    private ResAudioGuideListDto getRandomAudioGuideList() {
-        int guidesSize = audioGuideRepository.findAll().size();
+  private List<String> getAudioFileUrlsFromTracks(Set<AudioGuideTrackContainer> tracks) {
+    List<String> list = new ArrayList<>();
+    tracks.forEach(audioGuideTrackContainer -> list
+        .add(audioGuideTrackContainer.getAudioTrack().getAudioFileUrl()));
+    return list;
+  }
 
-        List<ResAudioGuideItemDto> list = new ArrayList<>();
-        Set<Integer> set = new HashSet<>();
-        int setSize,randomId;
-        Random random = new Random();
-
-        for(int count=0; count < RANDOM_AUDIO_GUIDES_COUNT; count++){
-            randomId = random.nextInt(guidesSize)+1;
-            setSize = set.size();
-            set.add(randomId);
-            if(set.size() == setSize){
-                count--; continue;
-            }
-            Optional<AudioGuide> audioGuide = audioGuideRepository.findById((long)randomId);
-            if(!audioGuide.isPresent()){
-                count--; continue;
-            }
-            list.add(toAudioGuideItem(audioGuide.get()));
-        }
-
-        return ResAudioGuideListDto.builder()
-                .category("random")
-                .audioGuideList(list)
-                .build();
-    }
-
-    private ResAudioGuideItemDto toAudioGuideItem(AudioGuide audioGuide) {
-        return ResAudioGuideItemDto.builder()
-                .audioGuideId(audioGuide.getId())
-                .title(audioGuide.getTitle())
-                .imageUrl(audioGuide.getImages().iterator().next())
-                .tags(toTagsStringList(audioGuide.getTags()))
-                .audioFileUrl(getAudioFileUrlsFromTracks(audioGuide.getTracks()))
-                .build();
-    }
-
-    private List<String> getAudioFileUrlsFromTracks(Set<AudioGuideTrackContainer> tracks) {
-        List<String> list = new ArrayList<>();
-        tracks.forEach(audioGuideTrackContainer -> list.add(audioGuideTrackContainer.getAudioTrack().getAudioFileUrl()));
-        return list;
-    }
-
-    private List<String> toTagsStringList(Set<AudioGuideTag> tags) {
-        List<String> list = new ArrayList<>();
-        tags.forEach(audioGuideTag -> list.add(audioGuideTag.getTag().getName()));
-        return list;
-    }
+  private List<String> toTagsStringList(Set<AudioGuideTag> tags) {
+    List<String> list = new ArrayList<>();
+    tags.forEach(audioGuideTag -> list.add(audioGuideTag.getTag().getName()));
+    return list;
+  }
 }

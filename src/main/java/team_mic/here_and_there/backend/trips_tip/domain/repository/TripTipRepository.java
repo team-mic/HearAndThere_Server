@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface TripTipRepository extends JpaRepository<TripTip, Long> {
-    List<TripTip> findTop4ByOrderByCreatedTimeDesc();
+
+  List<TripTip> findTop4ByOrderByCreatedTimeDesc();
 }

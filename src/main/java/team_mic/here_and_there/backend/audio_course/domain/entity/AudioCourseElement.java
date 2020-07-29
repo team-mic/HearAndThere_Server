@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "audio_course_elements")
 @Entity
 public class AudioCourseElement {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -36,8 +37,9 @@ public class AudioCourseElement {
   @Lob
   private String overviewDescription;
 
-  @ElementCollection(fetch= FetchType.EAGER)
-  @CollectionTable(name = "audio_course_element_images", joinColumns = {@JoinColumn(name = "audio_course_element_id")})
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "audio_course_element_images", joinColumns = {
+      @JoinColumn(name = "audio_course_element_id")})
   @Column(name = "image_url")
   private Set<String> images = new HashSet<>();
 
@@ -54,12 +56,13 @@ public class AudioCourseElement {
 
   @Builder
   private AudioCourseElement(String title, String estimatedTravelTime, String overviewDescription,
-      Set<String> images, AudioCourseElementBasicInformation basicInformation, AudioCourseElementDetailInformation detailInformation){
-    this.title=title;
-    this.estimatedTravelTime=estimatedTravelTime;
-    this.overviewDescription=overviewDescription;
-    this.images=images;
-    this.basicInformation=basicInformation;
-    this.detailInformation=detailInformation;
+      Set<String> images, AudioCourseElementBasicInformation basicInformation,
+      AudioCourseElementDetailInformation detailInformation) {
+    this.title = title;
+    this.estimatedTravelTime = estimatedTravelTime;
+    this.overviewDescription = overviewDescription;
+    this.images = images;
+    this.basicInformation = basicInformation;
+    this.detailInformation = detailInformation;
   }
 }

@@ -16,39 +16,39 @@ import java.util.Set;
 @Entity
 public class AudioTrack extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String audioFileUrl;
+  private String audioFileUrl;
 
-    private String runningTime;
+  private String runningTime;
 
-    private String title;
+  private String title;
 
-    private String image;
+  private String image;
 
-    @OneToMany(mappedBy = "audioTrack", fetch = FetchType.EAGER)
-    private Set<AudioGuideTrackContainer> guides = new HashSet<>();
+  @OneToMany(mappedBy = "audioTrack", fetch = FetchType.EAGER)
+  private Set<AudioGuideTrackContainer> guides = new HashSet<>();
 
-    private String placeName;
+  private String placeName;
 
-    private String placeAddress;
+  private String placeAddress;
 
-    private Double locationLatitude;
+  private Double locationLatitude;
 
-    private Double locationLongitude;
+  private Double locationLongitude;
 
-    @Builder
-    private AudioTrack(String audioFileUrl, String runningTime, String title, String image,
-        String placeName, String placeAddress, Double locationLatitude, Double locationLongitude){
-        this.audioFileUrl=audioFileUrl;
-        this.runningTime=runningTime;
-        this.title=title;
-        this.image=image;
-        this.placeName=placeName;
-        this.placeAddress=placeAddress;
-        this.locationLatitude=locationLatitude;
-        this.locationLongitude=locationLongitude;
-    }
+  @Builder
+  private AudioTrack(String audioFileUrl, String runningTime, String title, String image,
+      String placeName, String placeAddress, Double locationLatitude, Double locationLongitude) {
+    this.audioFileUrl = audioFileUrl;
+    this.runningTime = runningTime;
+    this.title = title;
+    this.image = image;
+    this.placeName = placeName;
+    this.placeAddress = placeAddress;
+    this.locationLatitude = locationLatitude;
+    this.locationLongitude = locationLongitude;
+  }
 }

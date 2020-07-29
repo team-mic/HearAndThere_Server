@@ -13,18 +13,20 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AreaCodeAndNameListDto {
-    @JsonProperty("item")
-    private List<AreaCodeAndNameItemDto> areaCodeAndNameItemList;
 
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class AreaCodeAndNameItemDto{
-        @JsonProperty("code")
-        private Integer code;
+  @JsonProperty("item")
+  private List<AreaCodeAndNameItemDto> areaCodeAndNameItemList;
 
-        @JsonProperty("name")
-        private String areaName;
-    }
+  @Getter
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public static class AreaCodeAndNameItemDto {
+
+    @JsonProperty("code")
+    private Integer code;
+
+    @JsonProperty("name")
+    private String areaName;
+  }
 }

@@ -14,19 +14,20 @@ import java.util.stream.Collectors;
 @Service
 public class TripTipsService {
 
-    private final TripTipRepository tripTipRepository;
+  private final TripTipRepository tripTipRepository;
 
-    public ResTripTipsListDto getTripTipsList() {
+  public ResTripTipsListDto getTripTipsList() {
 
-        List<TripTip> tipsList = tripTipRepository.findTop4ByOrderByCreatedTimeDesc();
-        List<ResTripTipItemDto> itemList =tipsList.parallelStream().map(tripTip -> ResTripTipItemDto.builder()
-                                                    .tripTipId(tripTip.getId())
-                                                    .imageUrl(tripTip.getImages().iterator().next())
-                                                    .title(tripTip.getTitle())
-                                                    .description(tripTip.getDescription())
-                                                    .build())
-                    .collect(Collectors.toList());
+    List<TripTip> tipsList = tripTipRepository.findTop4ByOrderByCreatedTimeDesc();
+    List<ResTripTipItemDto> itemList = tipsList.parallelStream()
+        .map(tripTip -> ResTripTipItemDto.builder()
+            .tripTipId(tripTip.getId())
+            .imageUrl(tripTip.getImages().iterator().next())
+            .title(tripTip.getTitle())
+            .description(tripTip.getDescription())
+            .build())
+        .collect(Collectors.toList());
 
-        return ResTripTipsListDto.builder().tripTipsList(itemList).build();
-    }
+    return ResTripTipsListDto.builder().tripTipsList(itemList).build();
+  }
 }

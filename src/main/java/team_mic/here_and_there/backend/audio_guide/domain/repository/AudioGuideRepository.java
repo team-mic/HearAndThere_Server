@@ -9,6 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface AudioGuideRepository extends JpaRepository<AudioGuide, Long> {
-    Optional<AudioGuide> findById(Long id);
-    List<AudioGuide> findTop4ByCategory(String category);
+
+  Optional<AudioGuide> findById(Long id);
+
+  List<AudioGuide> findTop4ByCategory(String category);
 }

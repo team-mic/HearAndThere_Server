@@ -15,24 +15,25 @@ import java.util.Set;
 @Table(name = "trip_tips")
 @Entity
 public class TripTip extends BaseTimeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String title;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Lob
-    private String description;
+  private String title;
 
-    @ElementCollection(fetch=FetchType.EAGER)
-    @CollectionTable(name = "trip_tip_images", joinColumns = {@JoinColumn(name = "trip_tip_id")})
-    @Column(name = "image_url")
-    private Set<String> images = new HashSet<>();
+  @Lob
+  private String description;
 
-    @Builder
-    private TripTip(String title, String description, Set<String> images){
-        this.title=title;
-        this.description=description;
-        this.images=images;
-    }
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "trip_tip_images", joinColumns = {@JoinColumn(name = "trip_tip_id")})
+  @Column(name = "image_url")
+  private Set<String> images = new HashSet<>();
+
+  @Builder
+  private TripTip(String title, String description, Set<String> images) {
+    this.title = title;
+    this.description = description;
+    this.images = images;
+  }
 }

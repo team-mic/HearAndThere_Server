@@ -6,4 +6,5 @@ import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioTrack;
 
 @Repository
 public interface AudioTrackRepository extends JpaRepository<AudioTrack, Long> {
+
 }

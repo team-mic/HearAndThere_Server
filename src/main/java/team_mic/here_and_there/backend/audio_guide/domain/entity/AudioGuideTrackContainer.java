@@ -13,24 +13,25 @@ import javax.persistence.*;
 @Entity
 public class AudioGuideTrackContainer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "audio_guide_id")
-    private AudioGuide audioGuide;
+  @ManyToOne
+  @JoinColumn(name = "audio_guide_id")
+  private AudioGuide audioGuide;
 
-    @ManyToOne
-    @JoinColumn(name = "audio_track_id")
-    private AudioTrack audioTrack;
+  @ManyToOne
+  @JoinColumn(name = "audio_track_id")
+  private AudioTrack audioTrack;
 
-    private Integer orderNumber;
+  private Integer orderNumber;
 
-    @Builder
-    private AudioGuideTrackContainer(AudioGuide audioGuide, AudioTrack audioTrack, Integer orderNumber){
-        this.audioGuide=audioGuide;
-        this.audioTrack=audioTrack;
-        this.orderNumber=orderNumber;
-    }
+  @Builder
+  private AudioGuideTrackContainer(AudioGuide audioGuide, AudioTrack audioTrack,
+      Integer orderNumber) {
+    this.audioGuide = audioGuide;
+    this.audioTrack = audioTrack;
+    this.orderNumber = orderNumber;
+  }
 }

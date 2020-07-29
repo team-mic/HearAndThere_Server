@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "audio_course_element_detail_informations")
 @Entity
 public class AudioCourseElementDetailInformation {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -48,16 +49,16 @@ public class AudioCourseElementDetailInformation {
   private AudioCourseElementDetailInformation(String phoneNumber, String travelHotLinePhoneNumber,
       String dayOffDays, String parkingInfo, String availableTime, String salesItems,
       String strollerRentalAvailable, String petsAllowedAvailable, String creditCardAvailable,
-      String admissionFees){
-    this.phoneNumber=phoneNumber;
-    this.travelHotLinePhoneNumber=travelHotLinePhoneNumber;
-    this.dayOffDays=dayOffDays;
-    this.parkingInfo=parkingInfo;
-    this.availableTime=availableTime;
-    this.salesItems=salesItems;
-    this.strollerRentalAvailable=strollerRentalAvailable;
-    this.petsAllowedAvailable=petsAllowedAvailable;
-    this.creditCardAvailable=creditCardAvailable;
-    this.admissionFees=admissionFees;
+      String admissionFees) {
+    this.phoneNumber = phoneNumber;
+    this.travelHotLinePhoneNumber = travelHotLinePhoneNumber;
+    this.dayOffDays = dayOffDays;
+    this.parkingInfo = parkingInfo;
+    this.availableTime = availableTime;
+    this.salesItems = salesItems;
+    this.strollerRentalAvailable = strollerRentalAvailable;
+    this.petsAllowedAvailable = petsAllowedAvailable;
+    this.creditCardAvailable = creditCardAvailable;
+    this.admissionFees = admissionFees;
   }
 }

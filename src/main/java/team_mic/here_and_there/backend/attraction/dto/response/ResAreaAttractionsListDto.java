@@ -18,16 +18,16 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResAreaAttractionsListDto {
 
-    private List<ResAreaAttractionItemDto> attractionList;
+  private List<ResAreaAttractionItemDto> attractionList;
 
-    @JsonSetter("item")
-    private void setAttractionList(List<ResAreaAttractionItemDto> attractionList) {
-        this.attractionList = attractionList;
-    }
+  @JsonSetter("item")
+  private void setAttractionList(List<ResAreaAttractionItemDto> attractionList) {
+    this.attractionList = attractionList;
+  }
 
-    @ApiModelProperty(notes = "지역별 관광명소 리스트")
-    @JsonGetter("attractionsList")
-    public List<ResAreaAttractionItemDto> getAttractionList(){
-        return this.attractionList;
-    }
+  @ApiModelProperty(notes = "지역별 관광명소 리스트")
+  @JsonGetter("attractionsList")
+  public List<ResAreaAttractionItemDto> getAttractionList() {
+    return this.attractionList;
+  }
 }

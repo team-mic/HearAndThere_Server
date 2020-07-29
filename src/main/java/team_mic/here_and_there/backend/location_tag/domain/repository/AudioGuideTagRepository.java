@@ -5,5 +5,6 @@ import org.springframework.stereotype.Repository;
 import team_mic.here_and_there.backend.location_tag.domain.entity.AudioGuideTag;
 
 @Repository
-public interface AudioGuideTagRepository extends JpaRepository<AudioGuideTag,Long> {
+public interface AudioGuideTagRepository extends JpaRepository<AudioGuideTag, Long> {
+
 }

@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "audio_course_element_basic_informations")
 @Entity
 public class AudioCourseElementBasicInformation {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -31,9 +32,9 @@ public class AudioCourseElementBasicInformation {
   private AudioCourseElement audioCourseElement;
 
   @Builder
-  private AudioCourseElementBasicInformation(String address, String phoneNumber, String webSite){
-    this.address=address;
-    this.phoneNumber=phoneNumber;
-    this.webSite=webSite;
+  private AudioCourseElementBasicInformation(String address, String phoneNumber, String webSite) {
+    this.address = address;
+    this.phoneNumber = phoneNumber;
+    this.webSite = webSite;
   }
 }
