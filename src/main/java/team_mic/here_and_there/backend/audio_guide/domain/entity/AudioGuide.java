@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team_mic.here_and_there.backend.audio_course.domain.entity.AudioGuideCourse;
 import team_mic.here_and_there.backend.common.domain.BaseTimeEntity;
 import team_mic.here_and_there.backend.location_tag.domain.entity.AudioGuideTag;
 
@@ -24,7 +25,7 @@ public class AudioGuide extends BaseTimeEntity {
 
     private String location;
 
-    private String runningTime;
+    private String estimatedTravelTime;
 
     private String distance;
 
@@ -44,15 +45,23 @@ public class AudioGuide extends BaseTimeEntity {
     @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
     private Set<AudioGuideTag> tags = new HashSet<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "audio_guide_tourapi_attraction_ids", joinColumns = {@JoinColumn(name = "audio_guide_id")})
+    private Set<Long> tourApiAttractionIds = new HashSet<>();
+
+    @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
+    private Set<AudioGuideCourse> course = new HashSet<>();
+
     @Builder
-    private AudioGuide(String title, String location, String runningTime, String distance,
-                       String overviewDescription, String category, Set<String> images){
+    private AudioGuide(String title, String location, String estimatedTravelTime, String distance,
+                       String overviewDescription, String category, Set<String> images, Set<Long> tourApiAttractionIds){
         this.title=title;
         this.location=location;
-        this.runningTime=runningTime;
+        this.estimatedTravelTime=estimatedTravelTime;
         this.distance=distance;
         this.overviewDescription=overviewDescription;
         this.category=category;
         this.images=images;
+        this.tourApiAttractionIds=tourApiAttractionIds;
     }
 }

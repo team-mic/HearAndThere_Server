@@ -22,7 +22,7 @@ public class Tag extends BaseTimeEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "tag")
+    @OneToMany(mappedBy = "tag", fetch = FetchType.EAGER)
     private Set<AudioGuideTag> guides = new HashSet<>();
 
     @Builder
