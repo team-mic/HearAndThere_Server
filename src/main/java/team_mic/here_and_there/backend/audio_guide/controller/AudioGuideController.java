@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,9 @@ import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideR
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideTrackContainerRepository;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioTrackRepository;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideListDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoListDto;
 import team_mic.here_and_there.backend.audio_guide.service.AudioGuideService;
+import team_mic.here_and_there.backend.audio_guide.service.AudioTrackService;
 import team_mic.here_and_there.backend.location_tag.domain.entity.AudioGuideTag;
 import team_mic.here_and_there.backend.location_tag.domain.entity.Tag;
 import team_mic.here_and_there.backend.location_tag.domain.repository.AudioGuideTagRepository;
@@ -32,6 +35,7 @@ import java.util.Set;
 public class AudioGuideController {
 
   private final AudioGuideService audioGuideService;
+  private final AudioTrackService audioTrackService;
 
   private final AudioGuideRepository audioGuideRepository;
   private final AudioTrackRepository audioTrackRepository;
@@ -60,6 +64,13 @@ public class AudioGuideController {
     }
 
     return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideList(category));
+  }
+
+  @GetMapping("/audio-guides/{audio-guide-id:^[0-9]+$}/audio-tracks")
+  public ResponseEntity<ResAudioTrackInfoListDto> getAudioGuidesTrackList(
+      @PathVariable("audio-guide-id") Long audioGuideId) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(audioTrackService.getAudioGuidesTrackList(audioGuideId));
   }
 
   @ApiIgnore

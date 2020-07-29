@@ -91,4 +91,9 @@ public class AudioGuideService {
     tags.forEach(audioGuideTag -> list.add(audioGuideTag.getTag().getName()));
     return list;
   }
+
+  public AudioGuide findAudioGuideById(Long audioGuideId) {
+    return audioGuideRepository.findById(audioGuideId)
+        .orElseThrow(() -> new NoSuchElementException()); //TODO: custom exception
+  }
 }
