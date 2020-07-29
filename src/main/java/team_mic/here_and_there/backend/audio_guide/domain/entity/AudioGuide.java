@@ -42,6 +42,7 @@ public class AudioGuide extends BaseTimeEntity {
   private Set<String> images = new HashSet<>();
 
   @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
+  @OrderBy(value = "orderNumber ASC")
   private Set<AudioGuideTrackContainer> tracks = new HashSet<>();
 
   @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
