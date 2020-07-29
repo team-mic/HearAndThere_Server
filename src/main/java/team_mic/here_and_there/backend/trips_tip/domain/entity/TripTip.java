@@ -25,7 +25,7 @@ public class TripTip extends BaseTimeEntity {
     private String description;
 
     @ElementCollection(fetch=FetchType.EAGER)
-    @CollectionTable(name = "trip_tips_images", joinColumns = {@JoinColumn(name = "trip_tip_id")})
+    @CollectionTable(name = "trip_tip_images", joinColumns = {@JoinColumn(name = "trip_tip_id")})
     @Column(name = "image_url")
     private Set<String> images = new HashSet<>();
 

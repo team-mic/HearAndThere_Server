@@ -26,26 +26,29 @@ public class AudioTrack extends BaseTimeEntity {
 
     private String title;
 
-    private String location;
-
-    @ElementCollection(fetch=FetchType.EAGER)
-    @CollectionTable(name = "audio_tracks_images", joinColumns = @JoinColumn(name = "audio_track_id"))
-    @Column(name = "image_url")
-    private Set<String> images = new HashSet<>();
+    private String image;
 
     @OneToMany(mappedBy = "audioTrack", fetch = FetchType.EAGER)
     private Set<AudioGuideTrackContainer> guides = new HashSet<>();
 
-    private Long attractionId; //tour api의 content_id
+    private String placeName;
+
+    private String placeAddress;
+
+    private Double locationLatitude;
+
+    private Double locationLongitude;
 
     @Builder
-    private AudioTrack(String audioFileUrl, String runningTime, String title, String location, Set<String> images, Long attractionId){
+    private AudioTrack(String audioFileUrl, String runningTime, String title, String image,
+        String placeName, String placeAddress, Double locationLatitude, Double locationLongitude){
         this.audioFileUrl=audioFileUrl;
         this.runningTime=runningTime;
         this.title=title;
-        this.location=location;
-        this.images=images;
-        this.attractionId=attractionId;
+        this.image=image;
+        this.placeName=placeName;
+        this.placeAddress=placeAddress;
+        this.locationLatitude=locationLatitude;
+        this.locationLongitude=locationLongitude;
     }
-
 }
