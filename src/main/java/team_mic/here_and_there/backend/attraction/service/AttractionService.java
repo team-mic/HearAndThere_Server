@@ -1,5 +1,8 @@
 package team_mic.here_and_there.backend.attraction.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
@@ -17,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.util.List;
+import team_mic.here_and_there.backend.attraction.exception.InvalidAreaCodeException;
 
 @Service
 public class AttractionService {
@@ -35,6 +39,10 @@ public class AttractionService {
 
   public ResAreaAttractionsListDto getAreaAttractions(Integer areaCode)
       throws UnsupportedEncodingException {
+
+    if (isInvalidAreaCode(areaCode)) {
+      throw new InvalidAreaCodeException();
+    }
 
     UriComponentsBuilder builder = createBaseUriBuilder("/areaBasedList");
 
@@ -65,6 +73,12 @@ public class AttractionService {
         .forEach(resAreaAttractionItemDto -> resAreaAttractionItemDto.setAreaName(areaName));
 
     return listDto;
+  }
+
+  private boolean isInvalidAreaCode(Integer areaCode) {
+    return !new ArrayList<>(
+        Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 31, 32, 33, 34, 35, 36, 37, 38, 39))
+        .contains(areaCode);
   }
 
   private HttpEntity<?> createHttpEntityHeader() {

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAreaAttractionsListDto;
+import team_mic.here_and_there.backend.attraction.exception.NoAreaCodeParameterException;
 import team_mic.here_and_there.backend.attraction.service.AttractionService;
 
 import java.io.UnsupportedEncodingException;
@@ -36,7 +37,7 @@ public class AttractionController {
       @ApiParam(value = "관광지 지역코드(17개 중 하나)", required = true, example = "1")
       @RequestParam(value = "area-code") Integer areaCode) throws UnsupportedEncodingException {
     if (areaCode == null) {
-      throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+      throw new NoAreaCodeParameterException();
     }
     return ResponseEntity.status(HttpStatus.OK)
         .body(attractionService.getAreaAttractions(areaCode));
