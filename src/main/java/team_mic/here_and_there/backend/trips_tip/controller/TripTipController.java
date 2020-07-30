@@ -23,6 +23,7 @@ public class TripTipController {
       notes = "현재 4개의 여행 팁 덤프 데이터가 내려옵니다.")
   @ApiResponses({
       @ApiResponse(code = 200, message = "OK"),
+      @ApiResponse(code = 404, message = "No Trip tips data in DB"),
       @ApiResponse(code = 500, message = "Internal Server Error")
   })
   @GetMapping("/trip-tips")
