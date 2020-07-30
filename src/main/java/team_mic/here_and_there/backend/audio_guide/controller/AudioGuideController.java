@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoListDto;
+import team_mic.here_and_there.backend.audio_guide.exception.NoCategoryParameterException;
 import team_mic.here_and_there.backend.audio_guide.service.AudioGuideService;
 import team_mic.here_and_there.backend.audio_guide.service.AudioTrackService;
 
@@ -39,7 +40,7 @@ public class AudioGuideController {
       @RequestParam(value = "category") String category) {
 
     if (category == null) {
-      throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+      throw new NoCategoryParameterException();
     }
 
     return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideList(category));
@@ -47,7 +48,8 @@ public class AudioGuideController {
 
   @GetMapping("/audio-guides/{audio-guide-id:^[0-9]+$}/audio-tracks")
   public ResponseEntity<ResAudioTrackInfoListDto> getAudioGuidesTrackList(
-      @PathVariable("audio-guide-id") Long audioGuideId) {
+      @PathVariable(value = "audio-guide-id") Long audioGuideId) {
+
     return ResponseEntity.status(HttpStatus.OK)
         .body(audioTrackService.getAudioGuidesTrackList(audioGuideId));
   }

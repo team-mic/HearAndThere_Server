@@ -9,6 +9,7 @@ import team_mic.here_and_there.backend.trips_tip.dto.response.ResTripTipsListDto
 
 import java.util.List;
 import java.util.stream.Collectors;
+import team_mic.here_and_there.backend.trips_tip.exception.NoTripTipsException;
 
 @RequiredArgsConstructor
 @Service
@@ -19,6 +20,9 @@ public class TripTipsService {
   public ResTripTipsListDto getTripTipsList() {
 
     List<TripTip> tipsList = tripTipRepository.findTop4ByOrderByCreatedTimeDesc();
+    if(tipsList.isEmpty()){
+      throw new NoTripTipsException();
+    }
     List<ResTripTipItemDto> itemList = tipsList.parallelStream()
         .map(tripTip -> ResTripTipItemDto.builder()
             .tripTipId(tripTip.getId())

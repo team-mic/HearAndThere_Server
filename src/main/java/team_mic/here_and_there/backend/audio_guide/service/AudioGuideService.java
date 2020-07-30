@@ -6,6 +6,7 @@ import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideRepository;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideListDto;
+import team_mic.here_and_there.backend.audio_guide.exception.NoCorrespondingAudioGuideException;
 import team_mic.here_and_there.backend.location_tag.domain.entity.AudioGuideTag;
 
 import java.util.*;
@@ -28,6 +29,9 @@ public class AudioGuideService {
 
   private ResAudioGuideListDto getAudioGuideListByCategory(String category) {
     List<AudioGuide> audioGuides = audioGuideRepository.findTop4ByCategory(category);
+    if(audioGuides.isEmpty()){
+      throw new NoCorrespondingAudioGuideException();
+    }
     List<ResAudioGuideItemDto> list = audioGuides.parallelStream()
         .map(audioGuide -> toAudioGuideItem(audioGuide))
         .collect(Collectors.toList());
@@ -40,7 +44,9 @@ public class AudioGuideService {
 
   private ResAudioGuideListDto getRandomAudioGuideList() {
     int guidesSize = audioGuideRepository.findAll().size();
-
+    if(guidesSize == 0){
+      throw new NoCorrespondingAudioGuideException();
+    }
     List<ResAudioGuideItemDto> list = new ArrayList<>();
     Set<Integer> set = new HashSet<>();
     int setSize, randomId;
@@ -85,6 +91,6 @@ public class AudioGuideService {
 
   public AudioGuide findAudioGuideById(Long audioGuideId) {
     return audioGuideRepository.findById(audioGuideId)
-        .orElseThrow(() -> new NoSuchElementException()); //TODO: custom exception
+        .orElseThrow(() -> new NoCorrespondingAudioGuideException());
   }
 }
