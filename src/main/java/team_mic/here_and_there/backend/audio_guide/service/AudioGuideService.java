@@ -3,7 +3,6 @@ package team_mic.here_and_there.backend.audio_guide.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
-import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideTrackContainer;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideRepository;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideListDto;
@@ -75,15 +74,7 @@ public class AudioGuideService {
         .title(audioGuide.getTitle())
         .imageUrl(audioGuide.getImages().iterator().next())
         .tags(toTagsStringList(audioGuide.getTags()))
-        .audioFileUrl(getAudioFileUrlsFromTracks(audioGuide.getTracks()))
         .build();
-  }
-
-  private List<String> getAudioFileUrlsFromTracks(Set<AudioGuideTrackContainer> tracks) {
-    List<String> list = new ArrayList<>();
-    tracks.forEach(audioGuideTrackContainer -> list
-        .add(audioGuideTrackContainer.getAudioTrack().getAudioFileUrl()));
-    return list;
   }
 
   private List<String> toTagsStringList(Set<AudioGuideTag> tags) {
