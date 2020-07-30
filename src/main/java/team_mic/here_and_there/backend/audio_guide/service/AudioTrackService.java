@@ -43,7 +43,7 @@ public class AudioTrackService {
         .audioTrackId(track.getId())
         .orderNumber(audioGuideTrackContainer.getOrderNumber())
         .audioFileUrl(track.getAudioFileUrl())
-        .image(track.getImage())
+        .images(track.getImages())
         .title(track.getTitle())
         .runningTime(track.getRunningTime())
         .placeName(track.getPlaceName())

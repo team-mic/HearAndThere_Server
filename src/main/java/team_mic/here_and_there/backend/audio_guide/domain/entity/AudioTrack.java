@@ -1,5 +1,7 @@
 package team_mic.here_and_there.backend.audio_guide.domain.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +28,11 @@ public class AudioTrack extends BaseTimeEntity {
 
   private String title;
 
-  private String image;
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "audio_track_images", joinColumns = {
+      @JoinColumn(name = "audio_track_id")})
+  @Column(name = "image_url")
+  private List<String> images = new ArrayList<>();
 
   @OneToMany(mappedBy = "audioTrack", fetch = FetchType.EAGER)
   private Set<AudioGuideTrackContainer> guides = new HashSet<>();
@@ -40,12 +46,12 @@ public class AudioTrack extends BaseTimeEntity {
   private Double locationLongitude;
 
   @Builder
-  private AudioTrack(String audioFileUrl, String runningTime, String title, String image,
+  private AudioTrack(String audioFileUrl, String runningTime, String title, List<String> images,
       String placeName, String placeAddress, Double locationLatitude, Double locationLongitude) {
     this.audioFileUrl = audioFileUrl;
     this.runningTime = runningTime;
     this.title = title;
-    this.image = image;
+    this.images = images;
     this.placeName = placeName;
     this.placeAddress = placeAddress;
     this.locationLatitude = locationLatitude;

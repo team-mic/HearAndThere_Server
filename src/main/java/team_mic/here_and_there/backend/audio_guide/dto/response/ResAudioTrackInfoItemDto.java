@@ -2,6 +2,7 @@ package team_mic.here_and_there.backend.audio_guide.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -21,7 +22,7 @@ public class ResAudioTrackInfoItemDto {
   private String runningTime;
 
   @ApiModelProperty(notes = "오디오 트랙 이미지")
-  private String image;
+  private List<String> images;
 
   @ApiModelProperty(notes = "오디오 트랙의 오디오 파일 url")
   private String audioFileUrl;
@@ -37,12 +38,12 @@ public class ResAudioTrackInfoItemDto {
 
   @Builder
   private ResAudioTrackInfoItemDto(Long audioTrackId, String title, String runningTime,
-      String image, String audioFileUrl, String placeName, String placeAddress,
+      List<String> images, String audioFileUrl, String placeName, String placeAddress,
       Integer orderNumber) {
     this.audioTrackId = audioTrackId;
     this.title = title;
     this.runningTime = runningTime;
-    this.image = image;
+    this.images = images;
     this.audioFileUrl = audioFileUrl;
     this.placeName = placeName;
     this.placeAddress = placeAddress;
