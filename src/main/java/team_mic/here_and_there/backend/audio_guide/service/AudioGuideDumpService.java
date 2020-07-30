@@ -1,6 +1,8 @@
 package team_mic.here_and_there.backend.audio_guide.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,50 +28,171 @@ public class AudioGuideDumpService {
   private final AudioGuideTagRepository audioGuideTagRepository;
 
   public void insertDumpTracksIntoGuides() {
-    AudioGuide audioGuide = audioGuideRepository.save(AudioGuide.builder().title("test").build());
-    AudioTrack audioTrack1 = audioTrackRepository.save(AudioTrack.builder()
-        .audioFileUrl("track1.file")
-        .title("트랙1")
-        .image("트랙1 이미지").build());
-    AudioTrack audioTrack2 = audioTrackRepository.save(AudioTrack.builder()
-        .audioFileUrl("track2.file")
-        .title("트랙2")
-        .image("트랙2 이미지").build());
-    AudioTrack audioTrack3 = audioTrackRepository.save(AudioTrack.builder()
-        .audioFileUrl("track3.file")
-        .title("트랙3")
-        .image("트랙3 이미지").build());
+    List<AudioGuide> audioGuideList = audioGuideRepository.findAll();
 
-    audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
-        .audioGuide(audioGuide)
-        .audioTrack(audioTrack3)
-        .orderNumber(3).build());
-    audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
-        .audioGuide(audioGuide)
-        .audioTrack(audioTrack2)
-        .orderNumber(2).build());
-    audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
-        .audioGuide(audioGuide)
-        .audioTrack(audioTrack1)
-        .orderNumber(1).build());
+    AudioTrack track1 = audioTrackRepository.save(AudioTrack.builder()
+        .image(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png")
+        .title("Mangwon-dong introduction 1")
+        .audioFileUrl(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/A+Thousand+Years+.mp3")
+        .placeName("Mangwon-Station")
+        .placeAddress("467, Maponaru-gil, Mapo-gu, Seoul 04005 South Korea")
+        .runningTime("5:06")
+        .build());
 
-    AudioGuide audioGuide2 = audioGuideRepository.save(AudioGuide.builder().title("test2").build());
-    AudioTrack audioTrack2_1 = audioTrackRepository.save(AudioTrack.builder()
-        .audioFileUrl("track2_1.file")
-        .title("트랙2_1").build());
-    AudioTrack audioTrack2_2 = audioTrackRepository.save(AudioTrack.builder()
-        .audioFileUrl("track2_2.file")
-        .title("트랙2_2").build());
+    AudioTrack track2 = audioTrackRepository.save(AudioTrack.builder()
+        .image(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png")
+        .title("Mangwon-dong introduction 2")
+        .audioFileUrl(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/Butterfly+and+cat.mp3")
+        .placeName("Mangwon-Station")
+        .placeAddress("467, Maponaru-gil, Mapo-gu, Seoul 04005 South Korea")
+        .runningTime("3:08")
+        .build());
 
-    audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
-        .audioGuide(audioGuide2)
-        .audioTrack(audioTrack2_2)
-        .orderNumber(2).build());
-    audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
-        .audioGuide(audioGuide2)
-        .audioTrack(audioTrack2_1)
-        .orderNumber(1).build());
+    AudioTrack track3 = audioTrackRepository.save(AudioTrack.builder()
+        .image(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png")
+        .title("Mangwonjeong Pavilion Site")
+        .placeName("Mangwon-Station")
+        .audioFileUrl(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/Comethru.mp3")
+        .placeAddress("467, Maponaru-gil, Mapo-gu, Seoul 04005 South Korea")
+        .runningTime("2:59")
+        .build());
 
+    AudioTrack track4 = audioTrackRepository.save(AudioTrack.builder()
+        .image(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png")
+        .title("Hangang introduction")
+        .placeName("Mangwon-Station")
+        .audioFileUrl(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/Dandelion.mp3")
+        .placeAddress("467, Maponaru-gil, Mapo-gu, Seoul 04005 South Korea")
+        .runningTime("4:03")
+        .build());
+
+    AudioTrack track5 = audioTrackRepository.save(AudioTrack.builder()
+        .image(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png")
+        .title("Background of Ridangil")
+        .placeName("Mangwon-Station")
+        .audioFileUrl(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/Do+you+want+to+go+see+the+stars.mp3")
+        .placeAddress("467, Maponaru-gil, Mapo-gu, Seoul 04005 South Korea")
+        .runningTime("3:21")
+        .build());
+
+    AudioTrack track6 = audioTrackRepository.save(AudioTrack.builder()
+        .image(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png")
+        .title("About Mangnidan-gil")
+        .placeName("Mangwon-Station")
+        .audioFileUrl(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/FREEDOM.mp3")
+        .placeAddress("467, Maponaru-gil, Mapo-gu, Seoul 04005 South Korea")
+        .runningTime("3:33")
+        .build());
+
+    AudioTrack track7 = audioTrackRepository.save(AudioTrack.builder()
+        .image(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png")
+        .title("About Traditional market")
+        .placeName("Mangwon-Station")
+        .audioFileUrl(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/Let's+take+time.mp3")
+        .placeAddress("467, Maponaru-gil, Mapo-gu, Seoul 04005 South Korea")
+        .runningTime("3:44")
+        .build());
+
+    AudioTrack track8 = audioTrackRepository.save(AudioTrack.builder()
+        .image(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png")
+        .title("Mangwon market introduction")
+        .placeName("Mangwon-Station")
+        .audioFileUrl(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/November+Rain.mp3")
+        .placeAddress("467, Maponaru-gil, Mapo-gu, Seoul 04005 South Korea")
+        .runningTime("4:18")
+        .build());
+
+    AudioTrack track9 = audioTrackRepository.save(AudioTrack.builder()
+        .image(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png")
+        .title("Mangwon market introduction2")
+        .placeName("Mangwon-Station")
+        .audioFileUrl(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/Whale.mp3")
+        .placeAddress("467, Maponaru-gil, Mapo-gu, Seoul 04005 South Korea")
+        .runningTime("3:20")
+        .build());
+
+    AudioTrack track10 = audioTrackRepository.save(AudioTrack.builder()
+        .image(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png")
+        .title("Mangwon market introduction3")
+        .placeName("Mangwon-Station")
+        .audioFileUrl(
+            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/Whenever+Wherever.mp3")
+        .placeAddress("467, Maponaru-gil, Mapo-gu, Seoul 04005 South Korea")
+        .runningTime("4:05")
+        .build());
+
+    audioGuideList.stream().forEach(
+        audioGuide -> {
+          audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+              .audioGuide(audioGuide)
+              .audioTrack(track1)
+              .orderNumber(1)
+              .build());
+          audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+              .audioGuide(audioGuide)
+              .audioTrack(track2)
+              .orderNumber(2)
+              .build());
+          audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+              .audioGuide(audioGuide)
+              .audioTrack(track3)
+              .orderNumber(3)
+              .build());
+          audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+              .audioGuide(audioGuide)
+              .audioTrack(track4)
+              .orderNumber(4)
+              .build());
+          audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+              .audioGuide(audioGuide)
+              .audioTrack(track5)
+              .orderNumber(5)
+              .build());
+          audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+              .audioGuide(audioGuide)
+              .audioTrack(track6)
+              .orderNumber(6)
+              .build());
+          audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+              .audioGuide(audioGuide)
+              .audioTrack(track7)
+              .orderNumber(7)
+              .build());
+          audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+              .audioGuide(audioGuide)
+              .audioTrack(track8)
+              .orderNumber(8)
+              .build());
+          audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+              .audioGuide(audioGuide)
+              .audioTrack(track9)
+              .orderNumber(9)
+              .build());
+          audioGuideTrackContainerRepository.save(AudioGuideTrackContainer.builder()
+              .audioGuide(audioGuide)
+              .audioTrack(track10)
+              .orderNumber(10)
+              .build());
+        });
   }
 
   public void insertDumpGuides() {
