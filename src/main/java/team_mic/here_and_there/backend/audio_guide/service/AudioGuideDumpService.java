@@ -1,5 +1,6 @@
 package team_mic.here_and_there.backend.audio_guide.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +30,13 @@ public class AudioGuideDumpService {
     List<AudioGuide> audioGuideList = audioGuideRepository.findAll();
 
     AudioTrack track1 = audioTrackRepository.save(AudioTrack.builder()
-        .image(
-            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png")
-        .title("Mangwon-dong introduction 1")
+        .images(new ArrayList<String>() {{
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                }}
+        ).title("Mangwon-dong introduction 1")
         .audioFileUrl(
             "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/A+Thousand+Years+.mp3")
         .placeName("Mangwon-Station")
@@ -40,9 +45,13 @@ public class AudioGuideDumpService {
         .build());
 
     AudioTrack track2 = audioTrackRepository.save(AudioTrack.builder()
-        .image(
-            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png")
-        .title("Mangwon-dong introduction 2")
+        .images(new ArrayList<String>() {{
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                }}
+        ).title("Mangwon-dong introduction 2")
         .audioFileUrl(
             "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/Butterfly+and+cat.mp3")
         .placeName("Mangwon-Station")
@@ -51,9 +60,13 @@ public class AudioGuideDumpService {
         .build());
 
     AudioTrack track3 = audioTrackRepository.save(AudioTrack.builder()
-        .image(
-            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png")
-        .title("Mangwonjeong Pavilion Site")
+        .images(new ArrayList<String>() {{
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                }}
+        ).title("Mangwonjeong Pavilion Site")
         .placeName("Mangwon-Station")
         .audioFileUrl(
             "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/Comethru.mp3")
@@ -62,9 +75,13 @@ public class AudioGuideDumpService {
         .build());
 
     AudioTrack track4 = audioTrackRepository.save(AudioTrack.builder()
-        .image(
-            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png")
-        .title("Hangang introduction")
+        .images(new ArrayList<String>() {{
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                }}
+        ).title("Hangang introduction")
         .placeName("Mangwon-Station")
         .audioFileUrl(
             "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/Dandelion.mp3")
@@ -73,9 +90,13 @@ public class AudioGuideDumpService {
         .build());
 
     AudioTrack track5 = audioTrackRepository.save(AudioTrack.builder()
-        .image(
-            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png")
-        .title("Background of Ridangil")
+        .images(new ArrayList<String>() {{
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                }}
+        ).title("Background of Ridangil")
         .placeName("Mangwon-Station")
         .audioFileUrl(
             "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/Do+you+want+to+go+see+the+stars.mp3")
@@ -84,9 +105,13 @@ public class AudioGuideDumpService {
         .build());
 
     AudioTrack track6 = audioTrackRepository.save(AudioTrack.builder()
-        .image(
-            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png")
-        .title("About Mangnidan-gil")
+        .images(new ArrayList<String>() {{
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                }}
+        ).title("About Mangnidan-gil")
         .placeName("Mangwon-Station")
         .audioFileUrl(
             "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/FREEDOM.mp3")
@@ -95,9 +120,13 @@ public class AudioGuideDumpService {
         .build());
 
     AudioTrack track7 = audioTrackRepository.save(AudioTrack.builder()
-        .image(
-            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png")
-        .title("About Traditional market")
+        .images(new ArrayList<String>() {{
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                }}
+        ).title("About Traditional market")
         .placeName("Mangwon-Station")
         .audioFileUrl(
             "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/Let's+take+time.mp3")
@@ -106,9 +135,13 @@ public class AudioGuideDumpService {
         .build());
 
     AudioTrack track8 = audioTrackRepository.save(AudioTrack.builder()
-        .image(
-            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png")
-        .title("Mangwon market introduction")
+        .images(new ArrayList<String>() {{
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                }}
+        ).title("Mangwon market introduction")
         .placeName("Mangwon-Station")
         .audioFileUrl(
             "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/November+Rain.mp3")
@@ -117,9 +150,13 @@ public class AudioGuideDumpService {
         .build());
 
     AudioTrack track9 = audioTrackRepository.save(AudioTrack.builder()
-        .image(
-            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png")
-        .title("Mangwon market introduction2")
+        .images(new ArrayList<String>() {{
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                }}
+        ).title("Mangwon market introduction2")
         .placeName("Mangwon-Station")
         .audioFileUrl(
             "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/Whale.mp3")
@@ -128,9 +165,13 @@ public class AudioGuideDumpService {
         .build());
 
     AudioTrack track10 = audioTrackRepository.save(AudioTrack.builder()
-        .image(
-            "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png")
-        .title("Mangwon market introduction3")
+        .images(new ArrayList<String>() {{
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image1.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image3.png");
+                  add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/images/test_image2.png");
+                }}
+        ).title("Mangwon market introduction3")
         .placeName("Mangwon-Station")
         .audioFileUrl(
             "https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/audio_tracks/audio-files/Whenever+Wherever.mp3")
@@ -415,5 +456,9 @@ public class AudioGuideDumpService {
             .audioGuide(audioGuide8)
             .build()
     );
+  }
+
+  public void deleteAllGuideTrackContainers() {
+    audioGuideTrackContainerRepository.deleteAll();
   }
 }
