@@ -32,7 +32,8 @@ public class AudioGuideController {
   @ApiResponses({
       @ApiResponse(code = 200, message = "OK"),
       @ApiResponse(code = 500, message = "Internal Server Error"),
-      @ApiResponse(code = 400, message = "No 'category' Parameter Error")
+      @ApiResponse(code = 400, message = "No 'category' Parameter Error"),
+      @ApiResponse(code = 404, message = "No corresponding Audio guide Data in DB")
   })
   @GetMapping("/audio-guides")
   public ResponseEntity<ResAudioGuideListDto> getAudioGuideList(
@@ -46,6 +47,20 @@ public class AudioGuideController {
     return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideList(category));
   }
 
+  @ApiOperation(value = "오디오 가이드에 속한 오디오 트랙들의 리스트",
+      notes = "해당 id의 오디오 가이드에 포함된 오디오 트랙들의 정보를 리스트로 제공합니다.\n "
+          + "현재 덤프 데이터로 모든 오디오 가이드가 동일한 10개의 오디오 트랙을 가지고 있습니다.\n"
+          + "path-variable 에 오디오 가이드의 id를 넣어주세요.\n"
+          + "현재 DB에 저장된 덤프 오디오 가이드의 id는 1~8까지 존재합니다.")
+  @ApiImplicitParam(name = "audio-guide-id", value = "오디오 가이드의 id", required = true,
+      dataType = "Long", paramType = "path", defaultValue = "1"
+  )
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK"),
+      @ApiResponse(code = 500, message = "Internal Server Error"),
+      @ApiResponse(code = 400, message = "No 'audio-guide-id' path variable Error"),
+      @ApiResponse(code = 404, message = "No corresponding Audio guide Data in DB")
+  })
   @GetMapping("/audio-guides/{audio-guide-id:^[0-9]+$}/audio-tracks")
   public ResponseEntity<ResAudioTrackInfoListDto> getAudioGuidesTrackList(
       @PathVariable(value = "audio-guide-id") Long audioGuideId) {
