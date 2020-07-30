@@ -20,7 +20,7 @@ public class TripTipsService {
   public ResTripTipsListDto getTripTipsList() {
 
     List<TripTip> tipsList = tripTipRepository.findTop4ByOrderByCreatedTimeDesc();
-    if(tipsList.isEmpty()){
+    if (tipsList.isEmpty()) {
       throw new NoTripTipsException();
     }
     List<ResTripTipItemDto> itemList = tipsList.parallelStream()
