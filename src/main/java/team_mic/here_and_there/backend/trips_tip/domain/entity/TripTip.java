@@ -1,5 +1,7 @@
 package team_mic.here_and_there.backend.trips_tip.domain.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,10 +30,10 @@ public class TripTip extends BaseTimeEntity {
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "trip_tip_images", joinColumns = {@JoinColumn(name = "trip_tip_id")})
   @Column(name = "image_url")
-  private Set<String> images = new HashSet<>();
+  private List<String> images = new ArrayList<>();
 
   @Builder
-  private TripTip(String title, String description, Set<String> images) {
+  private TripTip(String title, String description, List<String> images) {
     this.title = title;
     this.description = description;
     this.images = images;

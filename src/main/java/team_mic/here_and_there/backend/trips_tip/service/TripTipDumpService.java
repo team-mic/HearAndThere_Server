@@ -1,5 +1,6 @@
 package team_mic.here_and_there.backend.trips_tip.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class TripTipDumpService {
   public void insertDumpTips() {
     tripTipRepository.save(
         TripTip.builder()
-            .images(new HashSet<String>() {{
+            .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/bicycle_tip.png");
             }})
             .title("Rent a bicycle in seoul for 1$")
@@ -30,7 +31,7 @@ public class TripTipDumpService {
 
     tripTipRepository.save(
         TripTip.builder()
-            .images(new HashSet<String>() {{
+            .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/before_a_trip.png");
             }})
             .title("Things to know before a trip #1")
@@ -45,7 +46,7 @@ public class TripTipDumpService {
 
     tripTipRepository.save(
         TripTip.builder()
-            .images(new HashSet<String>() {{
+            .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/bicycle_tip.png");
             }})
             .title("Rent a bicycle in seoul for 1$")
@@ -60,7 +61,7 @@ public class TripTipDumpService {
 
     tripTipRepository.save(
         TripTip.builder()
-            .images(new HashSet<String>() {{
+            .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/before_a_trip.png");
             }})
             .title("Things to know before a trip #2")

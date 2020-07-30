@@ -26,7 +26,7 @@ public class TripTipsService {
     List<ResTripTipItemDto> itemList = tipsList.parallelStream()
         .map(tripTip -> ResTripTipItemDto.builder()
             .tripTipId(tripTip.getId())
-            .imageUrl(tripTip.getImages().iterator().next())
+            .imageUrl(tripTip.getImages().get(0))
             .title(tripTip.getTitle())
             .description(tripTip.getDescription())
             .build())

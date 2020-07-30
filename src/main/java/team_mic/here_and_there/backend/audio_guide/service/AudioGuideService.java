@@ -78,7 +78,7 @@ public class AudioGuideService {
     return ResAudioGuideItemDto.builder()
         .audioGuideId(audioGuide.getId())
         .title(audioGuide.getTitle())
-        .imageUrl(audioGuide.getImages().iterator().next())
+        .imageUrl(audioGuide.getImages().get(0))
         .tags(toTagsStringList(audioGuide.getTags()))
         .build();
   }
