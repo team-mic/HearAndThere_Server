@@ -37,7 +37,7 @@ public class AudioGuide extends BaseTimeEntity {
 
   private String category;
 
-  @ElementCollection(fetch = FetchType.EAGER)
+  @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "audio_guide_images", joinColumns = {
       @JoinColumn(name = "audio_guide_id")})
   @Column(name = "image_url")

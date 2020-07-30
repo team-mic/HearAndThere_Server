@@ -28,7 +28,7 @@ public class AudioTrack extends BaseTimeEntity {
 
   private String title;
 
-  @ElementCollection(fetch = FetchType.EAGER)
+  @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "audio_track_images", joinColumns = {
       @JoinColumn(name = "audio_track_id")})
   @Column(name = "image_url")

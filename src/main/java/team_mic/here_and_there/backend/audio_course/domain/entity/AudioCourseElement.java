@@ -39,7 +39,7 @@ public class AudioCourseElement {
   @Lob
   private String overviewDescription;
 
-  @ElementCollection(fetch = FetchType.EAGER)
+  @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "audio_course_element_images", joinColumns = {
       @JoinColumn(name = "audio_course_element_id")})
   @Column(name = "image_url")
