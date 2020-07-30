@@ -238,7 +238,7 @@ public class AudioGuideDumpService {
     //강남
     AudioGuide audioGuide = audioGuideRepository.save(
         AudioGuide.builder()
-            .images(new HashSet<String>() {{
+            .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/gangnam.png");
             }})
             .category("shopping")
@@ -262,7 +262,7 @@ public class AudioGuideDumpService {
     //광화문
     AudioGuide audioGuide2 = audioGuideRepository.save(
         AudioGuide.builder()
-            .images(new HashSet<String>() {{
+            .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/gwanghwa.png");
             }})
             .category("traditional")
@@ -296,7 +296,7 @@ public class AudioGuideDumpService {
     //인사동
     AudioGuide audioGuide3 = audioGuideRepository.save(
         AudioGuide.builder()
-            .images(new HashSet<String>() {{
+            .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/insadong.png");
             }})
             .category("traditional")
@@ -320,7 +320,7 @@ public class AudioGuideDumpService {
     //종로
     AudioGuide audioGuide4 = audioGuideRepository.save(
         AudioGuide.builder()
-            .images(new HashSet<String>() {{
+            .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/jongno.png");
             }})
             .category("traditional")
@@ -344,7 +344,7 @@ public class AudioGuideDumpService {
     //북촌
     AudioGuide audioGuide5 = audioGuideRepository.save(
         AudioGuide.builder()
-            .images(new HashSet<String>() {{
+            .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/bukchon.png");
             }})
             .category("traditional")
@@ -378,7 +378,7 @@ public class AudioGuideDumpService {
     //동대문
     AudioGuide audioGuide6 = audioGuideRepository.save(
         AudioGuide.builder()
-            .images(new HashSet<String>() {{
+            .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/dongdaemun.png");
             }})
             .category("shopping")
@@ -402,7 +402,7 @@ public class AudioGuideDumpService {
     //잠실
     AudioGuide audioGuide7 = audioGuideRepository.save(
         AudioGuide.builder()
-            .images(new HashSet<String>() {{
+            .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/jamsil.png");
             }})
             .category("shopping")
@@ -426,7 +426,7 @@ public class AudioGuideDumpService {
     //남대문
     AudioGuide audioGuide8 = audioGuideRepository.save(
         AudioGuide.builder()
-            .images(new HashSet<String>() {{
+            .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/namdaemun.png");
             }})
             .category("shopping")

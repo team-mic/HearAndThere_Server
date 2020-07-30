@@ -1,6 +1,8 @@
 package team_mic.here_and_there.backend.audio_course.domain.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -41,7 +43,7 @@ public class AudioCourseElement {
   @CollectionTable(name = "audio_course_element_images", joinColumns = {
       @JoinColumn(name = "audio_course_element_id")})
   @Column(name = "image_url")
-  private Set<String> images = new HashSet<>();
+  private List<String> images = new ArrayList<>();
 
   @OneToMany(mappedBy = "audioCourseElement", fetch = FetchType.EAGER)
   private Set<AudioGuideCourse> guides = new HashSet<>();
@@ -56,7 +58,7 @@ public class AudioCourseElement {
 
   @Builder
   private AudioCourseElement(String title, String estimatedTravelTime, String overviewDescription,
-      Set<String> images, AudioCourseElementBasicInformation basicInformation,
+      List<String> images, AudioCourseElementBasicInformation basicInformation,
       AudioCourseElementDetailInformation detailInformation) {
     this.title = title;
     this.estimatedTravelTime = estimatedTravelTime;

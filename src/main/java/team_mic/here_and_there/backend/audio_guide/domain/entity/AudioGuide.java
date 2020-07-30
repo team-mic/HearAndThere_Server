@@ -1,5 +1,7 @@
 package team_mic.here_and_there.backend.audio_guide.domain.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,7 +41,7 @@ public class AudioGuide extends BaseTimeEntity {
   @CollectionTable(name = "audio_guide_images", joinColumns = {
       @JoinColumn(name = "audio_guide_id")})
   @Column(name = "image_url")
-  private Set<String> images = new HashSet<>();
+  private List<String> images = new ArrayList<>();
 
   @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
   @OrderBy(value = "orderNumber ASC")
@@ -58,7 +60,7 @@ public class AudioGuide extends BaseTimeEntity {
 
   @Builder
   private AudioGuide(String title, String location, String estimatedTravelTime, String distance,
-      String overviewDescription, String category, Set<String> images,
+      String overviewDescription, String category, List<String> images,
       Set<Long> tourApiAttractionIds) {
     this.title = title;
     this.location = location;
