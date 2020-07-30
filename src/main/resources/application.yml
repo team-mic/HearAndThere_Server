@@ -17,6 +17,7 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        enable_lazy_load_no_trans: true
   h2:
     console:
       enabled: true
@@ -39,5 +40,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        enable_lazy_load_no_trans: true
 
 spring.profiles.include: tourapi,real-db
