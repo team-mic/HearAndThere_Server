@@ -6,28 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
-import springfox.documentation.annotations.ApiIgnore;
-import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
-import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideTrackContainer;
-import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioTrack;
-import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideRepository;
-import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideTrackContainerRepository;
-import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioTrackRepository;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoListDto;
 import team_mic.here_and_there.backend.audio_guide.service.AudioGuideService;
 import team_mic.here_and_there.backend.audio_guide.service.AudioTrackService;
-import team_mic.here_and_there.backend.location_tag.domain.entity.AudioGuideTag;
-import team_mic.here_and_there.backend.location_tag.domain.entity.Tag;
-import team_mic.here_and_there.backend.location_tag.domain.repository.AudioGuideTagRepository;
-import team_mic.here_and_there.backend.location_tag.domain.repository.TagRepository;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Api(tags = "오디오 가이드 API")
 @RestController

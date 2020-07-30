@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideTrackContainer;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioTrack;
-import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideRepository;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioTrackRepository;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoListDto;

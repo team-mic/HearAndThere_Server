@@ -1,9 +1,7 @@
 package team_mic.here_and_there.backend.audio_guide.service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
