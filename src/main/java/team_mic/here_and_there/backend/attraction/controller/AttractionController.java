@@ -30,7 +30,8 @@ public class AttractionController {
   @ApiResponses({
       @ApiResponse(code = 200, message = "OK", response = ResAreaAttractionsListDto.class),
       @ApiResponse(code = 500, message = "Internal Server Error"),
-      @ApiResponse(code = 400, message = "Invalid 'area-code' Parameter Error")
+      @ApiResponse(code = 400, message = "No 'area-code' parameter Error"),
+      @ApiResponse(code = 404, message = "Invalid 'area-code' Parameter Error")
   })
   @GetMapping("/attractions")
   public ResponseEntity<ResAreaAttractionsListDto> getAreaAttractions(
