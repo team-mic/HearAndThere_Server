@@ -14,6 +14,7 @@ public class AudioGuideDumpController {
 
   private final AudioGuideDumpService audioGuideDumpService;
 
+  @ApiIgnore
   @PostMapping("/audio-guides/audio-tracks/dump")
   public ResponseEntity<Void> insertDumpTracksIntoGuides() {
 
