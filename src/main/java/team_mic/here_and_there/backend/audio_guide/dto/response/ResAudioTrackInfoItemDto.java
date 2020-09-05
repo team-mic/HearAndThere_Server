@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 @JsonPropertyOrder({"audioTrackId", "trackOrderNumber", "title", "audioFileUrl", "image",
     "placeName", "placeAddress",
-    "runningTime"})
+    "runningTime", "trackLatitude", "trackLongitude"})
 public class ResAudioTrackInfoItemDto {
 
   @ApiModelProperty(notes = "오디오 트랙의 id")
@@ -36,10 +36,16 @@ public class ResAudioTrackInfoItemDto {
   @ApiModelProperty(notes = "오디오 가이드 내부에서 해당 오디오 트랙의 순서 번호")
   private Integer trackOrderNumber;
 
+  @ApiModelProperty(notes = "오디오 트랙의 위도")
+  private Double trackLatitude;
+
+  @ApiModelProperty(notes = "오디오 트랙의 경도")
+  private Double trackLongitude;
+
   @Builder
   private ResAudioTrackInfoItemDto(Long audioTrackId, String title, String runningTime,
       List<String> images, String audioFileUrl, String placeName, String placeAddress,
-      Integer orderNumber) {
+      Integer orderNumber, Double trackLatitude, Double trackLongitude) {
     this.audioTrackId = audioTrackId;
     this.title = title;
     this.runningTime = runningTime;
@@ -48,5 +54,7 @@ public class ResAudioTrackInfoItemDto {
     this.placeName = placeName;
     this.placeAddress = placeAddress;
     this.trackOrderNumber = orderNumber;
+    this.trackLatitude = trackLatitude;
+    this.trackLongitude = trackLongitude;
   }
 }

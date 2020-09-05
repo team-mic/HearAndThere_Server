@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideTrackContainer;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioTrack;
-import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioTrackRepository;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoListDto;
 
@@ -16,8 +15,6 @@ import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInf
 public class AudioTrackService {
 
   private final AudioGuideService audioGuideService;
-
-  private final AudioTrackRepository audioTrackRepository;
 
   public ResAudioTrackInfoListDto getAudioGuidesTrackList(Long audioGuideId) {
 
@@ -48,6 +45,8 @@ public class AudioTrackService {
         .runningTime(track.getRunningTime())
         .placeName(track.getPlaceName())
         .placeAddress(track.getPlaceAddress())
+        .trackLatitude(track.getLocationLatitude())
+        .trackLongitude(track.getLocationLongitude())
         .build();
   }
 }
