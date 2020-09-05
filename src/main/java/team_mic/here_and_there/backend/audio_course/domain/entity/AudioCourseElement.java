@@ -56,15 +56,18 @@ public class AudioCourseElement {
   @JoinColumn(name = "audio_course_element_detail_information_id")
   private AudioCourseElementDetailInformation detailInformation;
 
+  private Long tourApiAttractionId;
+
   @Builder
   private AudioCourseElement(String title, String estimatedTravelTime, String overviewDescription,
       List<String> images, AudioCourseElementBasicInformation basicInformation,
-      AudioCourseElementDetailInformation detailInformation) {
+      AudioCourseElementDetailInformation detailInformation, Long tourApiAttractionId) {
     this.title = title;
     this.estimatedTravelTime = estimatedTravelTime;
     this.overviewDescription = overviewDescription;
     this.images = images;
     this.basicInformation = basicInformation;
     this.detailInformation = detailInformation;
+    this.tourApiAttractionId = tourApiAttractionId;
   }
 }

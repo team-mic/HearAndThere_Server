@@ -35,7 +35,11 @@ public class AudioGuide extends BaseTimeEntity {
   @Lob
   private String overviewDescription;
 
-  private String category;
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "audio_guide_categories", joinColumns = {
+      @JoinColumn(name = "audio_guide_id")
+  })
+  private Set<String> category = new HashSet<>();
 
   @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "audio_guide_images", joinColumns = {
@@ -50,18 +54,12 @@ public class AudioGuide extends BaseTimeEntity {
   @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
   private Set<AudioGuideTag> tags = new HashSet<>();
 
-  @ElementCollection(fetch = FetchType.EAGER)
-  @CollectionTable(name = "audio_guide_tourapi_attraction_ids", joinColumns = {
-      @JoinColumn(name = "audio_guide_id")})
-  private Set<Long> tourApiAttractionIds = new HashSet<>();
-
   @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
   private Set<AudioGuideCourse> course = new HashSet<>();
 
   @Builder
   private AudioGuide(String title, String location, String estimatedTravelTime, String distance,
-      String overviewDescription, String category, List<String> images,
-      Set<Long> tourApiAttractionIds) {
+      String overviewDescription, Set<String> category, List<String> images) {
     this.title = title;
     this.location = location;
     this.estimatedTravelTime = estimatedTravelTime;
@@ -69,6 +67,5 @@ public class AudioGuide extends BaseTimeEntity {
     this.overviewDescription = overviewDescription;
     this.category = category;
     this.images = images;
-    this.tourApiAttractionIds = tourApiAttractionIds;
   }
 }
