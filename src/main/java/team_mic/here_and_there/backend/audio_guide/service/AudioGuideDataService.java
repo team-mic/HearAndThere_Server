@@ -3,6 +3,8 @@ package team_mic.here_and_there.backend.audio_guide.service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
@@ -18,13 +20,15 @@ import team_mic.here_and_there.backend.location_tag.domain.repository.TagReposit
 
 @Service
 @RequiredArgsConstructor
-public class AudioGuideDumpService {
+public class AudioGuideDataService {
 
   private final AudioGuideRepository audioGuideRepository;
   private final AudioTrackRepository audioTrackRepository;
   private final AudioGuideTrackContainerRepository audioGuideTrackContainerRepository;
   private final TagRepository tagRepository;
   private final AudioGuideTagRepository audioGuideTagRepository;
+
+  private static final String AWS_CLOUD_FRONT_URL_PREFIX = "http://d2gqdan1weqbf0.cloudfront.net/";
 
   public void insertDumpTracksIntoGuides() {
     List<AudioGuide> audioGuideList = audioGuideRepository.findAll();
@@ -241,7 +245,9 @@ public class AudioGuideDumpService {
             .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/gangnam.png");
             }})
-            .category("shopping")
+            .category(new HashSet<String>() {{
+              add("shopping");
+            }})
             .title("The center of shopping and K-culture")
             .build()
     );
@@ -265,7 +271,9 @@ public class AudioGuideDumpService {
             .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/gwanghwa.png");
             }})
-            .category("traditional")
+            .category(new HashSet<String>() {{
+              add("traditional");
+            }})
             .title("History and culture breathe")
             .build()
     );
@@ -299,7 +307,9 @@ public class AudioGuideDumpService {
             .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/insadong.png");
             }})
-            .category("traditional")
+            .category(new HashSet<String>() {{
+              add("traditional");
+            }})
             .title("Filled with Hangeul")
             .build()
     );
@@ -323,7 +333,9 @@ public class AudioGuideDumpService {
             .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/jongno.png");
             }})
-            .category("traditional")
+            .category(new HashSet<String>() {{
+              add("traditional");
+            }})
             .title("Ancient meets modern")
             .build()
     );
@@ -347,7 +359,9 @@ public class AudioGuideDumpService {
             .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/bukchon.png");
             }})
-            .category("traditional")
+            .category(new HashSet<String>() {{
+              add("traditional");
+            }})
             .title("Beautiful Hanok cafes and restaurants")
             .build()
     );
@@ -381,7 +395,9 @@ public class AudioGuideDumpService {
             .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/dongdaemun.png");
             }})
-            .category("shopping")
+            .category(new HashSet<String>() {{
+              add("shopping");
+            }})
             .title("The mecca of fashion and shopping")
             .build()
     );
@@ -405,7 +421,9 @@ public class AudioGuideDumpService {
             .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/jamsil.png");
             }})
-            .category("shopping")
+            .category(new HashSet<String>() {{
+              add("shopping");
+            }})
             .title("The center of shopping and entertainment")
             .build()
     );
@@ -429,7 +447,9 @@ public class AudioGuideDumpService {
             .images(new ArrayList<String>() {{
               add("https://here-and-there.s3.ap-northeast-2.amazonaws.com/audio-guides/images/namdaemun.png");
             }})
-            .category("shopping")
+            .category(new HashSet<String>() {{
+              add("shopping");
+            }})
             .title("Best-known shopping street and attraction")
             .build()
     );
@@ -460,5 +480,256 @@ public class AudioGuideDumpService {
 
   public void deleteAllGuideTrackContainers() {
     audioGuideTrackContainerRepository.deleteAll();
+  }
+
+  public void insertBukchonGuides() {
+    audioGuideRepository.save(AudioGuide.builder()
+        .title("Bukchon, a village where you can enjoy the peaceful ambience of hanok")
+        .category(new HashSet<String>() {{
+          add("history");
+          add("k-drama");
+          add("k-pop");
+        }})
+        .images(new ArrayList<String>() {{
+          add(AWS_CLOUD_FRONT_URL_PREFIX + "audio-guides/images/bukchon/guide_bukchon_1.jpeg");
+          add(AWS_CLOUD_FRONT_URL_PREFIX + "audio-guides/images/bukchon/guide_bukchon_2.jpeg");
+          add(AWS_CLOUD_FRONT_URL_PREFIX + "audio-guides/images/bukchon/guide_bukchon_3.jpeg");
+          add(AWS_CLOUD_FRONT_URL_PREFIX + "audio-guides/images/bukchon/guide_bukchon_4.jpeg");
+        }})
+        .location("Bukchon-ro, Jongno-gu, Seoul")
+        .overviewDescription(
+            "Welcome to Bukchon, a village where you can enjoy the peaceful ambience of hanok\n"
+                + "'Bukchon' ,which means 'North Village', was named this way because it lies north of  Cheonggyecheon Stream and Jongno area.\n"
+                + "Bukchon used to be a residential area for Yangban the ruling class of the Joseon Dynasty.\n"
+                + "Beautiful alleys and hanoks are still well preseved so you can feel the atmosphere of the Joseon Dynasty here.\n"
+                + "Because of these, It is still loved by many people. Let's go to see the beautiful Bukchon Hanok Village.")
+        .build());
+  }
+
+  public void insertBukchonTracksIntoGuide() {
+
+    List<AudioTrack> list = new ArrayList<>();
+
+    AudioTrack audioTrack1 = audioTrackRepository.save(AudioTrack.builder()
+        .title("Bukchon")
+        .audioFileUrl(
+            AWS_CLOUD_FRONT_URL_PREFIX
+                + "audio-guides/audio_tracks/audio-files/bukchon/1_bukchon.mp3")
+        .images(new ArrayList<String>() {{
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/anguk_station_1.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/anguk_station_2.png");
+        }})
+        .locationLatitude(37.577182D)
+        .locationLongitude(126.986045D)
+        .placeName("Anguk Station")
+        .runningTime("1:52")
+        .build());
+
+    AudioTrack audioTrack2 = audioTrackRepository.save(AudioTrack.builder()
+        .title("Bukchon Hanok Village")
+        .audioFileUrl(
+            AWS_CLOUD_FRONT_URL_PREFIX
+                + "audio-guides/audio_tracks/audio-files/bukchon/2_ bukchon_hanok_village.mp3")
+        .images(new ArrayList<String>() {{
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/bukchon_cultural_center_1.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/bukchon_cultural_center_2.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/bukchon_cultural_center_3.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/bukchon_cultural_center_4 .png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/bukchon_hanok_village_1.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/bukchon_hanok_village_2.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/bukchon_hanok_village_3.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/bukchon_hanok_village_4.jpeg");
+        }})
+        .locationLatitude(37.578952D)
+        .locationLongitude(126.986701D)
+        .placeName("Bukchon Cultural Center & Bukchon Hanok Village")
+        .runningTime("3:07")
+        .build());
+
+    AudioTrack audioTrack3 = audioTrackRepository.save(AudioTrack.builder()
+        .title("Hanok Introduction")
+        .audioFileUrl(
+            AWS_CLOUD_FRONT_URL_PREFIX
+                + "audio-guides/audio_tracks/audio-files/bukchon/3_hanok_introduction.mp3")
+        .images(new ArrayList<String>() {{
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/hanok_introduction_1.jpeg");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/hanok_introduction_2.jpeg");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/hanok_introduction_3.jpeg");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/hanok_introduction_4.png");
+        }})
+        .locationLatitude(37.582091D)
+        .locationLongitude(126.986786D)
+        .placeName("Hanok")
+        .runningTime("2:05")
+        .build());
+
+    AudioTrack audioTrack4 = audioTrackRepository.save(AudioTrack.builder()
+        .title("Various workshops in Bukchon")
+        .audioFileUrl(
+            AWS_CLOUD_FRONT_URL_PREFIX
+                + "audio-guides/audio_tracks/audio-files/bukchon/4_various_workshops_in_bukchon.mp3")
+        .images(new ArrayList<String>() {{
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/various_workshops_in_bukchon_1.jpeg");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/various_workshops_in_bukchon_2.jpeg");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/various_workshops_in_bukchon_3.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/various_workshops_in_bukchon_4.jpeg");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/various_workshops_in_bukchon_5.jpeg");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/various_workshops_in_bukchon_6.jpeg");
+        }})
+        .locationLatitude(37.582679D)
+        .locationLongitude(126.985828D)
+        .placeName("Various workshops")
+        .runningTime("2:57")
+        .build());
+
+    AudioTrack audioTrack5 = audioTrackRepository.save(AudioTrack.builder()
+        .title("Gahoedong Catholic Church")
+        .audioFileUrl(
+            AWS_CLOUD_FRONT_URL_PREFIX
+                + "audio-guides/audio_tracks/audio-files/bukchon/5_gahoedong_catholic_church.mp3")
+        .images(new ArrayList<String>() {{
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/gahoedong_catholic_church_1.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/gahoedong_catholic_church_2.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/gahoedong_catholic_church_3.png");
+        }})
+        .locationLatitude(37.581737D)
+        .locationLongitude(126.985120D)
+        .placeName("Gahoedong Catholic Church")
+        .runningTime("3:30")
+        .build());
+
+    AudioTrack audioTrack6 = audioTrackRepository.save(AudioTrack.builder()
+        .title("Gahoedong Alleyways and photo spots")
+        .audioFileUrl(
+            AWS_CLOUD_FRONT_URL_PREFIX
+                + "audio-guides/audio_tracks/audio-files/bukchon/6_gahoedong_alleyways_and_photo_spots.mp3")
+        .images(new ArrayList<String>() {{
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/gahoedong_alleyways_and_photo_spots_1.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/gahoedong_alleyways_and_photo_spots_2.jpeg");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/gahoedong_alleyways_and_photo_spots_3.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/gahoedong_alleyways_and_photo_spots_4.jpeg");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/gahoedong_alleyways_and_photo_spots_5.jpeg");
+        }})
+        .locationLatitude(37.582578D)
+        .locationLongitude(126.983617D)
+        .placeName("Gahoedong Alleyways")
+        .runningTime("0:49")
+        .build());
+
+    AudioTrack audioTrack7 = audioTrackRepository.save(AudioTrack.builder()
+        .title("History and Introduction of Sogyeok-dong")
+        .audioFileUrl(
+            AWS_CLOUD_FRONT_URL_PREFIX
+                + "audio-guides/audio_tracks/audio-files/bukchon/6_gahoedong_alleyways_and_photo_spots.mp3")
+        .images(new ArrayList<String>() {{
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/history_and_introduction_of_sogyeok-dong_1.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/history_and_introduction_of_sogyeok-dong_2.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/history_and_introduction_of_sogyeok-dong_3.png");
+        }})
+        .locationLatitude(37.582346D)
+        .locationLongitude(126.982171D)
+        .placeName("Sogyeok-dong")
+        .runningTime("0:44")
+        .build());
+
+    AudioTrack audioTrack8 = audioTrackRepository.save(AudioTrack.builder()
+        .title("The road of independence activists and Jeongdok Public Library")
+        .audioFileUrl(
+            AWS_CLOUD_FRONT_URL_PREFIX
+                + "audio-guides/audio_tracks/audio-files/bukchon/8_the_road_of_independence_activists_and_jeongdok_public_library.mp3")
+        .images(new ArrayList<String>() {{
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/the_road_of_independence_activists_and_jeongdok_public_library_1.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/the_road_of_independence_activists_and_jeongdok_public_library_2.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/the_road_of_independence_activists_and_jeongdok_public_library_3.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/the_road_of_independence_activists_and_jeongdok_public_library_4.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/the_road_of_independence_activists_and_jeongdok_public_library_5.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/the_road_of_independence_activists_and_jeongdok_public_library_6.png");
+        }})
+        .locationLatitude(37.580334D)
+        .locationLongitude(126.982503D)
+        .placeName("Jeongdok Public Library")
+        .runningTime("2:05")
+        .build());
+
+    AudioTrack audioTrack9 = audioTrackRepository.save(AudioTrack.builder()
+        .title("Gamgodang-gil and \"We are young\" graffiti")
+        .audioFileUrl(
+            AWS_CLOUD_FRONT_URL_PREFIX
+                + "audio-guides/audio_tracks/audio-files/bukchon/9_gamgodang-gil_and_we_are_young_graffiti.mp3")
+        .images(new ArrayList<String>() {{
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/gamgodang-gil_1.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/gamgodang-gil_2.png");
+          add(AWS_CLOUD_FRONT_URL_PREFIX
+              + "audio-guides/audio_tracks/images/bukchon/gamgodang-gil_3.png");
+        }})
+        .locationLatitude(37.578768D)
+        .locationLongitude(126.98211D)
+        .placeName("Gamgodang-gil")
+        .runningTime("1:32")
+        .build());
+
+    list.add(audioTrack1);
+    list.add(audioTrack2);
+    list.add(audioTrack3);
+    list.add(audioTrack4);
+    list.add(audioTrack5);
+    list.add(audioTrack6);
+    list.add(audioTrack7);
+    list.add(audioTrack8);
+    list.add(audioTrack9);
+
+    AudioGuide bukchonGuide = audioGuideRepository
+        .findByTitle("Bukchon, a village where you can enjoy the peaceful ambience of hanok")
+        .orElseThrow(() -> new NoSuchElementException());
+
+    int orderNumber = 1;
+    for (AudioTrack audioTrack : list) {
+      audioGuideTrackContainerRepository.save(
+          AudioGuideTrackContainer.builder()
+              .audioGuide(bukchonGuide)
+              .audioTrack(audioTrack)
+              .orderNumber(orderNumber)
+              .build());
+      orderNumber++;
+    }
   }
 }
