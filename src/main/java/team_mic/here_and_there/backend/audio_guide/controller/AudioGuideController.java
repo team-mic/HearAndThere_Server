@@ -51,7 +51,8 @@ public class AudioGuideController {
       notes = "해당 id의 오디오 가이드에 포함된 오디오 트랙들의 정보를 리스트로 제공합니다.\n "
           + "현재 덤프 데이터로 모든 오디오 가이드가 동일한 10개의 오디오 트랙을 가지고 있습니다.\n"
           + "path-variable 에 오디오 가이드의 id를 넣어주세요.\n"
-          + "현재 DB에 저장된 덤프 오디오 가이드의 id는 1~8까지 존재합니다.")
+          + "현재 DB에 저장된 덤프 오디오 가이드의 id는 1~9까지 존재합니다."
+          + "* Test Application : 북촌 가이드의 id는 9입니다.")
   @ApiImplicitParam(name = "audio-guide-id", value = "오디오 가이드의 id", required = true,
       dataType = "Long", paramType = "path", defaultValue = "1"
   )
