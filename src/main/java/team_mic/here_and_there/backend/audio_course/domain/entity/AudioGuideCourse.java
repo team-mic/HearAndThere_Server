@@ -15,7 +15,7 @@ import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table(name = "audio_guide_track_containers")
+@Table(name = "audio_guide_courses")
 @Entity
 public class AudioGuideCourse {
 
