@@ -3,43 +3,34 @@ spring:
     active: local
 
 ---
-
 spring:
-  profiles: local
+  h2.console.enabled: true
   jpa:
     database-platform: H2
-    show-sql: true
     generate-ddl: true
-    open-in-view: false
     hibernate:
       ddl-auto: create
+    open-in-view: false
     properties:
       hibernate:
-        format_sql: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         enable_lazy_load_no_trans: true
-  h2:
-    console:
-      enabled: true
-
-  logging:
-    level:
-      root: trace
-
+        format_sql: true
+    show-sql: true
+  logging.level.root: trace
+  profiles: local
 spring.profiles.include: tourapi
 
 ---
-
 spring:
-  profiles: product
   jpa:
-    open-in-view: false
     generate-ddl: false
     hibernate:
       ddl-auto: update
+    open-in-view: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         enable_lazy_load_no_trans: true
-
+  profiles: product
 spring.profiles.include: tourapi,real-db
