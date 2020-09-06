@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoListDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResNearestAudioTrackDto;
 import team_mic.here_and_there.backend.audio_guide.exception.NoCategoryParameterException;
 import team_mic.here_and_there.backend.audio_guide.service.AudioGuideService;
 import team_mic.here_and_there.backend.audio_guide.service.AudioTrackService;
@@ -45,6 +46,20 @@ public class AudioGuideController {
     }
 
     return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideList(category));
+  }
+
+  @GetMapping("/audio-guides/{audio-guide-id:^[0-9]+$}/location-based/audio-tracks")
+  public ResponseEntity<ResNearestAudioTrackDto> getNearestAudioTracks(
+      @PathVariable(value = "audio-guide-id") Long audioGuideId,
+      @RequestParam(value = "user-latitude") Double userLatitude,
+      @RequestParam(value = "user-longitude") Double userLongitude) {
+
+    if (userLatitude == null || userLongitude == null) {
+      throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+    }
+
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(audioTrackService.getNearestAudioTracks(audioGuideId, userLatitude, userLongitude));
   }
 
   @ApiOperation(value = "오디오 가이드에 속한 오디오 트랙들의 리스트",
