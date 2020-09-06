@@ -48,10 +48,26 @@ public class AudioGuideController {
     return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideList(category));
   }
 
+  @ApiOperation(value = "사용자 위치(위도,경도) 기반 반경 내 오디오 트랙의 정보",
+      notes = "사용자의 위도,경도를 기준으로 반경 50m 이내에 존재하는 트랙의 정보를 제공합니다.\n "
+          + "path-variable 에 오디오 가이드의 id를 넣어주세요.\n"
+          + "user-latitude param 과 user-longitude param 에 사용자의 현재 위치 정보를 넣어주세요.\n"
+          + "현재 DB에 저장된 오디오 가이드의 id는 1~9까지 존재합니다.\n"
+          + "For Test Application : **북촌 가이드의 id는 9입니다. 북촌 가이드의 경우에만 테스트가 가능합니다.**")
+  @ApiImplicitParam(name = "audio-guide-id", value = "오디오 가이드의 id", required = true,
+      dataType = "Long", paramType = "path", defaultValue = "9"
+  )
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK"),
+      @ApiResponse(code = 500, message = "Internal Server Error"),
+      @ApiResponse(code = 400, message = "No 'user-latitude' or 'user-longitude' param Error")
+  })
   @GetMapping("/audio-guides/{audio-guide-id:^[0-9]+$}/location-based/audio-tracks")
   public ResponseEntity<ResNearestAudioTrackDto> getNearestAudioTracks(
       @PathVariable(value = "audio-guide-id") Long audioGuideId,
+      @ApiParam(value = "사용자의 현재 위도", required = true, example = "37.578952")
       @RequestParam(value = "user-latitude") Double userLatitude,
+      @ApiParam(value = "사용자의 현재 경도", required = true, example = "126.986701")
       @RequestParam(value = "user-longitude") Double userLongitude) {
 
     if (userLatitude == null || userLongitude == null) {
@@ -66,8 +82,8 @@ public class AudioGuideController {
       notes = "해당 id의 오디오 가이드에 포함된 오디오 트랙들의 정보를 리스트로 제공합니다.\n "
           + "path-variable 에 오디오 가이드의 id를 넣어주세요.\n"
           + "현재 DB에 저장된 오디오 가이드의 id는 1~9까지 존재합니다.\n"
-          + "* 오디오 가이드 id=1~8까지는 덤프 데이터로 모든 오디오 가이드가 동일한 10개의 오디오 트랙을 가지고 있습니다.\n"
-          + "* Test Application : 북촌 가이드의 id는 9입니다.")
+          + "오디오 가이드 id=1~8까지는 덤프 데이터로 모든 오디오 가이드가 동일한 10개의 오디오 트랙을 가지고 있습니다.\n"
+          + "For Test Application : 북촌 가이드의 id는 9입니다.")
   @ApiImplicitParam(name = "audio-guide-id", value = "오디오 가이드의 id", required = true,
       dataType = "Long", paramType = "path", defaultValue = "1"
   )
