@@ -2,10 +2,14 @@ package team_mic.here_and_there.backend.audio_guide.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponents;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
+import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideTrackContainer;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideRepository;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideDirectionsDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideListDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResDirectionDto;
 import team_mic.here_and_there.backend.audio_guide.exception.NoCorrespondingAudioGuideException;
 import team_mic.here_and_there.backend.location_tag.domain.entity.AudioGuideTag;
 
@@ -17,6 +21,7 @@ import java.util.stream.Collectors;
 public class AudioGuideService {
 
   private final AudioGuideRepository audioGuideRepository;
+  private final DirectionApiService directionApiService;
 
   private final static Integer RANDOM_AUDIO_GUIDES_COUNT = 5;
 
@@ -92,5 +97,17 @@ public class AudioGuideService {
   public AudioGuide findAudioGuideById(Long audioGuideId) {
     return audioGuideRepository.findById(audioGuideId)
         .orElseThrow(() -> new NoCorrespondingAudioGuideException());
+  }
+
+  public ResAudioGuideDirectionsDto getAudioGuideDirections(Long audioGuideId) {
+    AudioGuide audioGuide = findAudioGuideById(audioGuideId);
+    Set<AudioGuideTrackContainer> tracks= audioGuide.getTracks();
+
+    List<ResDirectionDto> directionsList = directionApiService.getTracksPedestrianDirections(tracks);
+
+    return ResAudioGuideDirectionsDto.builder()
+        .audioGuideId(audioGuideId)
+        .directions(directionsList)
+        .build();
   }
 }
