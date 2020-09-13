@@ -49,6 +49,20 @@ public class AudioGuideController {
     return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideList(category));
   }
 
+  @ApiOperation(value = "오디오 가이드의 트랙들에 대한 Direction 폴리라인 위경도 정보",
+      notes = "오디오 가이드의 Direction 폴리라인 위경도 리스트 정보를 제공합니다.\n "
+          + "path-variable 에 오디오 가이드의 id를 넣어주세요.\n"
+          + "위경도 정보에 대한 폴리라인 list 는 클라이언트 개발의 편의를 위해 [ {A점 위도, A점 경도}, {B점 위도, B점 경도}, {B점 위도, B점 경도}, {C점 위도, C점 경도}, {C점 위도, C점 경도},{D점 위도, D점 경도}...] 와 같은 형식의 포맷입니다.\n"
+          + "현재 DB에 저장된 오디오 가이드의 id는 1~9까지 존재합니다.\n"
+          + "For Test Application : **북촌 가이드의 id는 9입니다. 북촌 가이드의 경우에만 테스트가 가능합니다.**")
+  @ApiImplicitParam(name = "audio-guide-id", value = "오디오 가이드의 id", required = true,
+      dataType = "Long", paramType = "path", defaultValue = "9"
+  )
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK"),
+      @ApiResponse(code = 500, message = "Internal Server Error"),
+      @ApiResponse(code = 404, message = "No corresponding Audio guide Data in DB")
+  })
   @GetMapping("/audio-guides/{audio-guide-id:^[0-9]+$}/directions")
   public ResponseEntity<ResAudioGuideDirectionsDto> getAudioGuideDirections(
       @PathVariable(value = "audio-guide-id") Long audioGuideId) {
