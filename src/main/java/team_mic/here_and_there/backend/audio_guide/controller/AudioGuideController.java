@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideDirectionsDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResNearestAudioTrackDto;
@@ -46,6 +47,13 @@ public class AudioGuideController {
     }
 
     return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideList(category));
+  }
+
+  @GetMapping("/audio-guides/{audio-guide-id:^[0-9]+$}/directions")
+  public ResponseEntity<ResAudioGuideDirectionsDto> getAudioGuideDirections(
+      @PathVariable(value = "audio-guide-id") Long audioGuideId) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(audioGuideService.getAudioGuideDirections(audioGuideId));
   }
 
   @ApiOperation(value = "사용자 위치(위도,경도) 기반 반경 내 오디오 트랙의 정보",

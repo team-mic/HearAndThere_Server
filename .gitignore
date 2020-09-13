@@ -141,3 +141,6 @@ application-tourapi.yml
 
 # db 설정 yml
 application-real-db.yml
+
+# tmap api 설정 yml
+application-tmapapi.yml

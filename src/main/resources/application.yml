@@ -19,7 +19,7 @@ spring:
     show-sql: true
   logging.level.root: trace
   profiles: local
-spring.profiles.include: tourapi
+spring.profiles.include: tourapi,tmapapi
 
 ---
 spring:
@@ -33,4 +33,4 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         enable_lazy_load_no_trans: true
   profiles: product
-spring.profiles.include: tourapi,real-db
+spring.profiles.include: tourapi,real-db,tmapapi
