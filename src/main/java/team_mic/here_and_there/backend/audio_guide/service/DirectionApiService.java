@@ -90,7 +90,7 @@ public class DirectionApiService {
       finalBuilder.queryParam("endX", endTrack.getLocationLongitude())
           .queryParam("endY", endTrack.getLocationLatitude());
 
-      TmapApiBaseResModelDto modelDto = callPedestrianDirectionsApi(builder.build());
+      TmapApiBaseResModelDto modelDto = callPedestrianDirectionsApi(finalBuilder.build());
       getCoordinatesDirectionList(modelDto, directionList);
     }
 
