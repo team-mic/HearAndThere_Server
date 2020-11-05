@@ -22,6 +22,7 @@ public class AudioCourseDataService {
 
   private static final String AWS_CLOUD_FRONT_URL_PREFIX = "http://d2gqdan1weqbf0.cloudfront.net/";
 
+  /*
   public void insertBukchonCourses() {
 
     List<AudioCourseElement> list = new ArrayList<>();
@@ -168,5 +169,5 @@ public class AudioCourseDataService {
           .build());
       orderNumber++;
     }
-  }
+  }*/
 }

@@ -22,12 +22,6 @@ public class AudioTrack extends BaseTimeEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String audioFileUrl;
-
-  private String runningTime;
-
-  private String title;
-
   @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "audio_track_images", joinColumns = {
       @JoinColumn(name = "audio_track_id")})
@@ -37,23 +31,16 @@ public class AudioTrack extends BaseTimeEntity {
   @OneToMany(mappedBy = "audioTrack", fetch = FetchType.EAGER)
   private Set<AudioGuideTrackContainer> guides = new HashSet<>();
 
-  private String placeName;
-
-  private String placeAddress;
-
   private Double locationLatitude;
 
   private Double locationLongitude;
 
+  @OneToMany(mappedBy = "audioTrack", fetch = FetchType.EAGER)
+  private Set<AudioTrackLanguageContent> languageContents = new HashSet<>();
+
   @Builder
-  private AudioTrack(String audioFileUrl, String runningTime, String title, List<String> images,
-      String placeName, String placeAddress, Double locationLatitude, Double locationLongitude) {
-    this.audioFileUrl = audioFileUrl;
-    this.runningTime = runningTime;
-    this.title = title;
+  private AudioTrack(List<String> images,Double locationLatitude, Double locationLongitude) {
     this.images = images;
-    this.placeName = placeName;
-    this.placeAddress = placeAddress;
     this.locationLatitude = locationLatitude;
     this.locationLongitude = locationLongitude;
   }

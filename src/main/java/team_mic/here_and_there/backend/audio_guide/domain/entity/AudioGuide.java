@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import team_mic.here_and_there.backend.audio_course.domain.entity.AudioGuideCourse;
 import team_mic.here_and_there.backend.common.domain.BaseTimeEntity;
 import team_mic.here_and_there.backend.location_tag.domain.entity.AudioGuideTag;
+import team_mic.here_and_there.backend.trips_tip.domain.entity.AudioGuideTripsTipContainer;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -24,22 +25,11 @@ public class AudioGuide extends BaseTimeEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String title;
-
   private String location;
 
   private String estimatedTravelTime;
 
   private String distance;
-
-  @Lob
-  private String overviewDescription;
-
-  @ElementCollection(fetch = FetchType.EAGER)
-  @CollectionTable(name = "audio_guide_categories", joinColumns = {
-      @JoinColumn(name = "audio_guide_id")
-  })
-  private Set<String> category = new HashSet<>();
 
   @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "audio_guide_images", joinColumns = {
@@ -55,17 +45,28 @@ public class AudioGuide extends BaseTimeEntity {
   private Set<AudioGuideTag> tags = new HashSet<>();
 
   @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
+  @OrderBy(value = "orderNumber ASC")
   private Set<AudioGuideCourse> course = new HashSet<>();
 
+  @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
+  private Set<AudioGuideLanguageContent> languageContents = new HashSet<>();
+
+  @ElementCollection(fetch = FetchType.LAZY)
+  @CollectionTable(name = "recommended_audio_guide_ids", joinColumns = {
+          @JoinColumn(name = "audio_guide_id")})
+  @Column(name = "recommended_guide_ids")
+  private List<String> recommendedAudioGuideIds = new ArrayList<>();
+
+  @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
+  private Set<AudioGuideTripsTipContainer> relatedTripsTips = new HashSet<>();
+
   @Builder
-  private AudioGuide(String title, String location, String estimatedTravelTime, String distance,
-      String overviewDescription, Set<String> category, List<String> images) {
-    this.title = title;
+  private AudioGuide(String location, String estimatedTravelTime, String distance,
+                     List<String> images, List<String> recommendedAudioGuideIds) {
     this.location = location;
     this.estimatedTravelTime = estimatedTravelTime;
     this.distance = distance;
-    this.overviewDescription = overviewDescription;
-    this.category = category;
     this.images = images;
+    this.recommendedAudioGuideIds = recommendedAudioGuideIds;
   }
 }

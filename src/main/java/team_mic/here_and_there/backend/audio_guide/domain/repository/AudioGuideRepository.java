@@ -11,8 +11,4 @@ import java.util.Optional;
 public interface AudioGuideRepository extends JpaRepository<AudioGuide, Long> {
 
   Optional<AudioGuide> findById(Long id);
-
-  Optional<AudioGuide> findByTitle(String title);
-
-  List<AudioGuide> findTop4ByCategory(String category);
 }

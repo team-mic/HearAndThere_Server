@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team_mic.here_and_there.backend.common.domain.BaseTimeEntity;
+import team_mic.here_and_there.backend.common.domain.Language;
 
 
 import javax.persistence.*;
@@ -26,8 +27,12 @@ public class Tag extends BaseTimeEntity {
   @OneToMany(mappedBy = "tag", fetch = FetchType.EAGER)
   private Set<AudioGuideTag> guides = new HashSet<>();
 
+  @Enumerated(EnumType.STRING)
+  private Language language;
+
   @Builder
-  private Tag(String name) {
+  private Tag(String name, Language language) {
     this.name = name;
+    this.language = language;
   }
 }

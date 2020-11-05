@@ -24,6 +24,7 @@ public class AudioTrackService {
 
   private static final Long RADIUS_METER_BOUNDARY = 50L;
 
+/*
   public ResAudioTrackInfoListDto getAudioGuidesTrackList(Long audioGuideId) {
 
     AudioGuide audioGuide = audioGuideService.findAudioGuideById(audioGuideId);
@@ -97,7 +98,7 @@ public class AudioTrackService {
     }
 
     return trackInfo;
-  }
+  }*/
 
   private AudioTrack findNearestTrackBelongingToRadius(
       Set<AudioGuideTrackContainer> trackContainers, Double userLatitude, Double userLongitude) {

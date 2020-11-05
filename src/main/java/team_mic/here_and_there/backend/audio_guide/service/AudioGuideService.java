@@ -25,6 +25,7 @@ public class AudioGuideService {
 
   private final static Integer RANDOM_AUDIO_GUIDES_COUNT = 5;
 
+  /*
   public ResAudioGuideListDto getAudioGuideList(String category) {
     if ("random".equals(category)) {
       return getRandomAudioGuideList();
@@ -86,7 +87,7 @@ public class AudioGuideService {
         .imageUrl(audioGuide.getImages().get(0))
         .tags(toTagsStringList(audioGuide.getTags()))
         .build();
-  }
+  }*/
 
   private List<String> toTagsStringList(Set<AudioGuideTag> tags) {
     List<String> list = new ArrayList<>();

@@ -30,6 +30,7 @@ public class AudioGuideDataService {
 
   private static final String AWS_CLOUD_FRONT_URL_PREFIX = "http://d2gqdan1weqbf0.cloudfront.net/";
 
+  /*
   public void insertDumpTracksIntoGuides() {
     List<AudioGuide> audioGuideList = audioGuideRepository.findAll();
 
@@ -731,5 +732,5 @@ public class AudioGuideDataService {
               .build());
       orderNumber++;
     }
-  }
+  }*/
 }

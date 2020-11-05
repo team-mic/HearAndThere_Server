@@ -15,7 +15,7 @@ public class AudioGuideDataController {
 
   private final AudioGuideDataService audioGuideDataService;
 
-  @ApiIgnore
+  /*@ApiIgnore
   @PostMapping("/audio-guides/audio-tracks/dump")
   public ResponseEntity<Void> insertDumpTracksIntoGuides() {
 
@@ -58,5 +58,5 @@ public class AudioGuideDataController {
     audioGuideDataService.insertBukchonTracksIntoGuide();
 
     return ResponseEntity.status(HttpStatus.OK).build();
-  }
+  }*/
 }

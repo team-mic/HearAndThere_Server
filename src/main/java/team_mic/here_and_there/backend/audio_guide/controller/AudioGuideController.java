@@ -25,7 +25,7 @@ public class AudioGuideController {
   private final AudioGuideService audioGuideService;
   private final AudioTrackService audioTrackService;
 
-  @ApiOperation(value = "메인 화면의 카테고리별 오디오 가이드 리스트",
+  /*@ApiOperation(value = "메인 화면의 카테고리별 오디오 가이드 리스트",
       notes = "[파라미터 category 종류]\n" +
           "1.(메인 화면 상단) random : traditional 과 shopping 오디오 가이드 5개가 랜덤으로 섞여서 내려옵니다.\n" +
           "2.(메인 화면 중간) traditional : traditional 카테고리에 해당되는 오디오 가이드 4개가 내려옵니다.\n" +
@@ -47,7 +47,7 @@ public class AudioGuideController {
     }
 
     return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideList(category));
-  }
+  }*/
 
   @ApiOperation(value = "오디오 가이드의 트랙들에 대한 Direction 폴리라인 위경도 정보",
       notes = "오디오 가이드의 Direction 폴리라인 위경도 리스트 정보를 제공합니다.\n "
@@ -70,7 +70,7 @@ public class AudioGuideController {
         .body(audioGuideService.getAudioGuideDirections(audioGuideId));
   }
 
-  @ApiOperation(value = "사용자 위치(위도,경도) 기반 반경 내 오디오 트랙의 정보",
+  /*@ApiOperation(value = "사용자 위치(위도,경도) 기반 반경 내 오디오 트랙의 정보",
       notes = "사용자의 위도,경도를 기준으로 반경 50m 이내에 존재하는 트랙의 정보를 제공합니다.\n "
           + "path-variable 에 오디오 가이드의 id를 넣어주세요.\n"
           + "user-latitude param 과 user-longitude param 에 사용자의 현재 위치 정보를 넣어주세요.\n"
@@ -121,5 +121,5 @@ public class AudioGuideController {
 
     return ResponseEntity.status(HttpStatus.OK)
         .body(audioTrackService.getAudioGuidesTrackList(audioGuideId));
-  }
+  }*/
 }

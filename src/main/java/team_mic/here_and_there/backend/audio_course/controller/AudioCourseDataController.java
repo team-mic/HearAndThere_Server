@@ -14,6 +14,7 @@ public class AudioCourseDataController {
 
   private final AudioCourseDataService audioCourseDataService;
 
+  /*
   @ApiIgnore
   @PostMapping("/audio-courses/bukchon")
   public ResponseEntity<Void> insertBukchonCourses(){
@@ -21,5 +22,5 @@ public class AudioCourseDataController {
     audioCourseDataService.insertBukchonCourses();
 
     return ResponseEntity.status(HttpStatus.OK).build();
-  }
+  }*/
 }
