@@ -10,5 +10,5 @@ public enum Language {
     KOREAN("kor"),
     ENGLISH("eng");
 
-    private final String language;
+    private final String version;
 }

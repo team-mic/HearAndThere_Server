@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
+import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideCategory;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideDirectionsDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideListDto;
-import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoListDto;
-import team_mic.here_and_there.backend.audio_guide.dto.response.ResNearestAudioTrackDto;
-import team_mic.here_and_there.backend.audio_guide.exception.NoCategoryParameterException;
+import team_mic.here_and_there.backend.audio_guide.exception.NoParameterException;
+import team_mic.here_and_there.backend.audio_guide.exception.WrongCategoryException;
 import team_mic.here_and_there.backend.audio_guide.service.AudioGuideService;
 import team_mic.here_and_there.backend.audio_guide.service.AudioTrackService;
 
@@ -26,27 +25,40 @@ public class AudioGuideController {
   private final AudioTrackService audioTrackService;
 
   @ApiOperation(value = "메인 화면의 카테고리별 오디오 가이드 리스트",
-      notes = "[category 종류]\n" +
-          "1.(메인 화면 상단) random : 오디오 가이드 5개가 랜덤으로 섞여서 내려옵니다.\n" +
-          "2.(메인 화면 중간) traditional : traditional 카테고리에 해당되는 오디오 가이드 4개가 내려옵니다.\n" +
-          "3.(메인 화면 하단) shopping : shopping 카테고리에 해당되는 오디오 가이드 4개가 내려옵니다.\n" +
-          "현재 덤프 데이터입니다.")
+      notes = "[category param 종류]\n" +
+          "1.(메인 화면 상단) random : 오디오 가이드 5개가 랜덤으로 내려옵니다.\n" +
+          "2.(메인 화면 중간) history : History 카테고리에 해당되는 오디오 가이드 fix data 4개가 내려옵니다.\n" +
+          "3.(메인 화면 하단) excursion : Excursion 카테고리에 해당되는 오디오 가이드 fix data 4개가 내려옵니다.\n" +
+          "현재 덤프 데이터입니다.\n"
+          + "[lag param 종류]\n"
+          + "kor : 한국어 버전\n"
+          + "eng : 영어 버전")
   @ApiResponses({
       @ApiResponse(code = 200, message = "OK"),
       @ApiResponse(code = 500, message = "Internal Server Error"),
-      @ApiResponse(code = 400, message = "No 'category' Path variable Error"),
+      @ApiResponse(code = 400, message = "No Parameter Error"),
       @ApiResponse(code = 404, message = "No corresponding Audio guide Data in DB")
   })
-  @GetMapping("/v1/audio-guides/{category:str}")
-  public ResponseEntity<ResAudioGuideListDto> getAudioGuideCategoryList(@PathVariable(value = "category") String category) {
+  @GetMapping("/v1/audio-guides/main")
+  public ResponseEntity<ResAudioGuideListDto> getAudioGuideCategoryList(
+      @ApiParam(value = "메인화면 오디오 가이드의 카테고리", required = true, example = "random")
+      @RequestParam(value = "category") String category,
+      @ApiParam(value = "언어버전", required = true, example = "kor")
+      @RequestParam(value = "lan") String language) {
 
-    if (category == null) {
-      throw new NoCategoryParameterException();
+    if (category == null || language == null) {
+      throw new NoParameterException();
     }
 
-    return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideCategoryList(category));
+    if(!category.equals(AudioGuideCategory.HISTORY.getQueryName()) &&
+        !category.equals(AudioGuideCategory.EXCURSION.getQueryName()) && !category.equals("random")){
+      throw new WrongCategoryException();
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideCategoryList(category, language));
   }
 
+  /*
   @ApiOperation(value = "오디오 가이드의 트랙들에 대한 Direction 폴리라인 위경도 정보",
       notes = "오디오 가이드의 Direction 폴리라인 위경도 리스트 정보를 제공합니다.\n "
           + "path-variable 에 오디오 가이드의 id를 넣어주세요.\n"
@@ -68,7 +80,7 @@ public class AudioGuideController {
         .body(audioGuideService.getAudioGuideDirections(audioGuideId));
   }
 
-  /*@ApiOperation(value = "사용자 위치(위도,경도) 기반 반경 내 오디오 트랙의 정보",
+  @ApiOperation(value = "사용자 위치(위도,경도) 기반 반경 내 오디오 트랙의 정보",
       notes = "사용자의 위도,경도를 기준으로 반경 50m 이내에 존재하는 트랙의 정보를 제공합니다.\n "
           + "path-variable 에 오디오 가이드의 id를 넣어주세요.\n"
           + "user-latitude param 과 user-longitude param 에 사용자의 현재 위치 정보를 넣어주세요.\n"
