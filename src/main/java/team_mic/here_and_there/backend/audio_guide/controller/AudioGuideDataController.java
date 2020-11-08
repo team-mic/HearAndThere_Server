@@ -106,7 +106,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/mangwon")
+  @PostMapping("/data/audio-guides/mangwon")
   public ResponseEntity<Void> insertMangwonGuides() {
 
     audioGuideDataService.insertMangwonGuides();
@@ -115,7 +115,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/audio-tracks/mangwon")
+  @PostMapping("/data/audio-guides/audio-tracks/mangwon")
   public ResponseEntity<Void> insertMangwonTracks() {
 
     audioGuideDataService.insertMangwonTracks();
@@ -124,7 +124,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/bukchon")
+  @PostMapping("/data/audio-guides/bukchon")
   public ResponseEntity<Void> insertBukchonGuides() {
 
     audioGuideDataService.insertBukchonGuides();
@@ -133,7 +133,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/audio-tracks/bukchon")
+  @PostMapping("/data/audio-guides/audio-tracks/bukchon")
   public ResponseEntity<Void> insertBukchonTracks() {
 
     audioGuideDataService.insertBukchonTracks();
@@ -142,7 +142,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/jamsil/good-neighborhood")
+  @PostMapping("/data/audio-guides/jamsil/good-neighborhood")
   public ResponseEntity<Void> insertJamsilGoodNeighborhoodGuides() {
 
     audioGuideDataService.insertJamsilGoodNeighborhoodGuides();
@@ -151,7 +151,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/audio-tracks/jamsil/good-neighborhood")
+  @PostMapping("/data/audio-guides/audio-tracks/jamsil/good-neighborhood")
   public ResponseEntity<Void> insertJamsilGoodNeighborhoodTracks() {
 
     audioGuideDataService.insertJamsilGoodNeighborhoodTracks();
@@ -160,7 +160,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/jamsil/special-tourist")
+  @PostMapping("/data/audio-guides/jamsil/special-tourist")
   public ResponseEntity<Void> insertJamsilSpecialTouristGuides() {
 
     audioGuideDataService.insertJamsilSpecialTouristGuides();
@@ -169,7 +169,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/audio-tracks/jamsil/special-tourist")
+  @PostMapping("/data/audio-guides/audio-tracks/jamsil/special-tourist")
   public ResponseEntity<Void> insertJamsilSpecialTouristTracks() {
 
     audioGuideDataService.insertJamsilSpecialTouristTracks();
@@ -178,7 +178,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/yongsan/center-of-seoul")
+  @PostMapping("/data/audio-guides/yongsan/center-of-seoul")
   public ResponseEntity<Void> insertYongsanCenterOfSeoulGuides() {
 
     audioGuideDataService.insertYongsanCenterOfSeoulGuides();
@@ -187,7 +187,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/audio-tracks/yongsan/center-of-seoul")
+  @PostMapping("/data/audio-guides/audio-tracks/yongsan/center-of-seoul")
   public ResponseEntity<Void> insertYongsanCenterOfSeoulTracks() {
 
     audioGuideDataService.insertYongsanCenterOfSeoulTracks();
@@ -196,7 +196,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/yongsan/history")
+  @PostMapping("/data/audio-guides/yongsan/history")
   public ResponseEntity<Void> insertYongsanHistoryGuides() {
 
     audioGuideDataService.insertYongsanHistoryGuides();
@@ -205,7 +205,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/audio-tracks/yongsan/history")
+  @PostMapping("/data/audio-guides/audio-tracks/yongsan/history")
   public ResponseEntity<Void> insertYongsanHistoryTracks() {
 
     audioGuideDataService.insertYongsanHistoryTracks();
@@ -214,7 +214,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/olympic-park")
+  @PostMapping("/data/audio-guides/olympic-park")
   public ResponseEntity<Void> insertOlympicParkGuides() {
 
     audioGuideDataService.insertOlympicParkGuides();
@@ -223,7 +223,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/audio-tracks/olympic-park")
+  @PostMapping("/data/audio-guides/audio-tracks/olympic-park")
   public ResponseEntity<Void> insertOlympicParkTracks() {
 
     audioGuideDataService.insertOlympicParkTracks();
@@ -232,7 +232,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/insadong")
+  @PostMapping("/data/audio-guides/insadong")
   public ResponseEntity<Void> insertInsadongGuides() {
 
     audioGuideDataService.insertInsadongGuides();
@@ -241,7 +241,7 @@ public class AudioGuideDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/audio-guides/audio-tracks/insadong")
+  @PostMapping("/data/audio-guides/audio-tracks/insadong")
   public ResponseEntity<Void> insertInsadongTracks() {
 
     audioGuideDataService.insertInsadongTracks();
