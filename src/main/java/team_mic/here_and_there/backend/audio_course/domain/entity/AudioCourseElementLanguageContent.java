@@ -24,15 +24,20 @@ public class AudioCourseElementLanguageContent {
 
     private Long tourApiAttractionContentId;
 
+    private Integer tourApiAttractionContentTypeId;
+
     @ManyToOne
     @JoinColumn(name = "audio_course_element_id")
     private AudioCourseElement audioCourseElement;
 
     @Builder
-    private AudioCourseElementLanguageContent(Language language, String title, Long tourApiAttractionContentId, AudioCourseElement audioCourseElement){
+    private AudioCourseElementLanguageContent(Language language, String title, Long tourApiAttractionContentId,
+        Integer tourApiAttractionContentTypeId,
+        AudioCourseElement audioCourseElement){
         this.language = language;
         this.title = title;
         this.tourApiAttractionContentId = tourApiAttractionContentId;
+        this.tourApiAttractionContentTypeId = tourApiAttractionContentTypeId;
         this.audioCourseElement = audioCourseElement;
     }
 }

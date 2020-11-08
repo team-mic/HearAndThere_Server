@@ -13,7 +13,7 @@ public class NoCategoryParameterException extends BaseException {
   private NoCategoryParameterException(HttpStatus status) {
     super(ErrorModel.builder()
         .httpStatus(status)
-        .message("파라미터로 오디오 가이드의 카테고리를 요청해주세요.")
+        .message("path variable 로 오디오 가이드의 카테고리를 요청해주세요.")
         .build());
   }
 }

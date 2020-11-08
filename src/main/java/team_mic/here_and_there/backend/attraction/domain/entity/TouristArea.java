@@ -24,10 +24,16 @@ public class TouristArea {
     @Enumerated(EnumType.STRING)
     private Language language;
 
+    private Integer areaCode;
+
+    private Integer sigunguCode;
+
     @Builder
-    private TouristArea(String thumbnailImage, String areaName, Language language){
+    private TouristArea(String thumbnailImage, String areaName, Language language, Integer areaCode, Integer sigunguCode){
         this.thumbnailImage = thumbnailImage;
         this.areaName = areaName;
         this.language = language;
+        this.areaCode = areaCode;
+        this.sigunguCode = sigunguCode;
     }
 }
