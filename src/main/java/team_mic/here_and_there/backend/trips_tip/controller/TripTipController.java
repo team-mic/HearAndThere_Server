@@ -18,7 +18,7 @@ import team_mic.here_and_there.backend.trips_tip.service.TripTipsService;
 public class TripTipController {
 
   private final TripTipsService tipsService;
-
+/*
   @ApiOperation(value = "메인 화면 하단의 여행 팁 리스트",
       notes = "현재 4개의 여행 팁 덤프 데이터가 내려옵니다.")
   @ApiResponses({
@@ -29,5 +29,5 @@ public class TripTipController {
   @GetMapping("/trip-tips")
   public ResponseEntity<ResTripTipsListDto> getTripTipsList() {
     return ResponseEntity.status(HttpStatus.OK).body(tipsService.getTripTipsList());
-  }
+  }*/
 }

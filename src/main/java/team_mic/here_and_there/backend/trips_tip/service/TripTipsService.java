@@ -16,7 +16,7 @@ import team_mic.here_and_there.backend.trips_tip.exception.NoTripTipsException;
 public class TripTipsService {
 
   private final TripTipRepository tripTipRepository;
-
+/*
   public ResTripTipsListDto getTripTipsList() {
 
     List<TripTip> tipsList = tripTipRepository.findTop4ByOrderByCreatedTimeDesc();
@@ -26,7 +26,7 @@ public class TripTipsService {
     List<ResTripTipItemDto> itemList = tipsList.parallelStream()
         .map(tripTip -> ResTripTipItemDto.builder()
             .tripTipId(tripTip.getId())
-            .imageUrl(tripTip.getImages().get(0))
+            .imageUrl(tripTip.getThumbnailImage().get(0))
             .title(tripTip.getTitle())
             .description(tripTip.getDescription())
             .build())
@@ -34,4 +34,5 @@ public class TripTipsService {
 
     return ResTripTipsListDto.builder().tripTipsList(itemList).build();
   }
+  */
 }

@@ -29,12 +29,7 @@ public class TripTip extends BaseTimeEntity {
   private String title;
 
   @Lob
-  private String description;
-
-  @ElementCollection(fetch = FetchType.LAZY)
-  @CollectionTable(name = "trip_tips_images", joinColumns = {@JoinColumn(name = "trip_tips_id")})
-  @Column(name = "image_url")
-  private List<String> images = new ArrayList<>();
+  private String thumbnailDescription;
 
   @OneToMany(mappedBy = "tripTip", fetch = FetchType.EAGER)
   private Set<AudioGuideTripsTipContainer> guides = new HashSet<>();
@@ -46,12 +41,11 @@ public class TripTip extends BaseTimeEntity {
   private String viewCount;
 
   @Builder
-  private TripTip(Language language, String title, String description, List<String> images,
+  private TripTip(Language language, String title, String thumbnailDescription,
                   String contentsUrl, String thumbnailImage, String viewCount) {
     this.language = language;
     this.title = title;
-    this.description = description;
-    this.images = images;
+    this.thumbnailDescription = thumbnailDescription;
     this.contentsUrl = contentsUrl;
     this.thumbnailImage = thumbnailImage;
     this.viewCount = viewCount;
