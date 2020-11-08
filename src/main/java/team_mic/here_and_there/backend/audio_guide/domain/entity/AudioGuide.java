@@ -55,14 +55,14 @@ public class AudioGuide extends BaseTimeEntity {
   @CollectionTable(name = "recommended_audio_guide_ids", joinColumns = {
           @JoinColumn(name = "audio_guide_id")})
   @Column(name = "recommended_guide_ids")
-  private List<String> recommendedAudioGuideIds = new ArrayList<>();
+  private List<Long> recommendedAudioGuideIds = new ArrayList<>();
 
   @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
   private Set<AudioGuideTripsTipContainer> relatedTripsTips = new HashSet<>();
 
   @Builder
   private AudioGuide(String location, String estimatedTravelTime, String distance,
-                     List<String> images, List<String> recommendedAudioGuideIds) {
+                     List<String> images, List<Long> recommendedAudioGuideIds) {
     this.location = location;
     this.estimatedTravelTime = estimatedTravelTime;
     this.distance = distance;
