@@ -8,7 +8,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-@JsonPropertyOrder({"audioGuideId", "title", "imageUrl", "audioFileUrl", "tags"})
+@JsonPropertyOrder({"audioGuideId", "title", "imageUrl", "tags"})
 public class ResAudioGuideItemDto {
 
   @ApiModelProperty(notes = "오디오 가이드 id")

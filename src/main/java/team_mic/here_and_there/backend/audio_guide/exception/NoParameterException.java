@@ -4,16 +4,16 @@ import org.springframework.http.HttpStatus;
 import team_mic.here_and_there.backend.exception.BaseException;
 import team_mic.here_and_there.backend.exception.ErrorModel;
 
-public class NoCategoryParameterException extends BaseException {
+public class NoParameterException extends BaseException {
 
-  public NoCategoryParameterException() {
+  public NoParameterException() {
     this(HttpStatus.BAD_REQUEST);
   }
 
-  private NoCategoryParameterException(HttpStatus status) {
+  private NoParameterException(HttpStatus status) {
     super(ErrorModel.builder()
         .httpStatus(status)
-        .message("path variable 로 오디오 가이드의 카테고리를 요청해주세요.")
+        .message("request parameter 를 모두 요청해주세요.")
         .build());
   }
 }

@@ -1,9 +1,12 @@
 package team_mic.here_and_there.backend.audio_guide.service;
 
+import javax.swing.text.html.Option;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponents;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
+import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideCategory;
+import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideLanguageContent;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideTrackContainer;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideRepository;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideDirectionsDto;
@@ -11,10 +14,12 @@ import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideIte
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResDirectionDto;
 import team_mic.here_and_there.backend.audio_guide.exception.NoCorrespondingAudioGuideException;
+import team_mic.here_and_there.backend.common.domain.Language;
 import team_mic.here_and_there.backend.location_tag.domain.entity.AudioGuideTag;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import team_mic.here_and_there.backend.location_tag.domain.entity.Tag;
 
 @RequiredArgsConstructor
 @Service
@@ -46,11 +51,11 @@ public class AudioGuideService {
         .category(category)
         .audioGuideList(list)
         .build();
-  }
+  }*/
 
-  private ResAudioGuideListDto getRandomAudioGuideList() {
+  private ResAudioGuideListDto getRandomAudioGuideList(String language) {
     int guidesSize = audioGuideRepository.findAll().size();
-    if(guidesSize == 0){
+    if (guidesSize == 0) {
       throw new NoCorrespondingAudioGuideException();
     }
     List<ResAudioGuideItemDto> list = new ArrayList<>();
@@ -71,27 +76,47 @@ public class AudioGuideService {
         count--;
         continue;
       }
-      list.add(toAudioGuideItem(audioGuide.get()));
+      list.add(toAudioGuideItem(audioGuide.get(), language));
     }
 
     return ResAudioGuideListDto.builder()
+        .language(language)
         .category("random")
         .audioGuideList(list)
         .build();
   }
 
-  private ResAudioGuideItemDto toAudioGuideItem(AudioGuide audioGuide) {
+  private ResAudioGuideItemDto toAudioGuideItem(AudioGuide audioGuide, String language) {
+
+    Set<AudioGuideLanguageContent> languageContentSet = audioGuide.getLanguageContents();
+    Optional<AudioGuideLanguageContent> languageContent = Optional.empty();
+    for (AudioGuideLanguageContent content : languageContentSet) {
+      if (language.equals(content.getLanguage().getVersion())) {
+        languageContent = Optional.of(content);
+      }
+    }
+
+    AudioGuideLanguageContent correspondingContent = languageContent
+        .orElseThrow(NoSuchElementException::new); //TODO : custom exception
+
     return ResAudioGuideItemDto.builder()
         .audioGuideId(audioGuide.getId())
-        .title(audioGuide.getTitle())
+        .title(correspondingContent.getTitle())
         .imageUrl(audioGuide.getImages().get(0))
-        .tags(toTagsStringList(audioGuide.getTags()))
+        .tags(toTagsStringList(audioGuide.getTags(), language))
         .build();
-  }*/
+  }
 
-  private List<String> toTagsStringList(Set<AudioGuideTag> tags) {
+  private List<String> toTagsStringList(Set<AudioGuideTag> tags, String language) {
     List<String> list = new ArrayList<>();
-    tags.forEach(audioGuideTag -> list.add(audioGuideTag.getTag().getName()));
+
+    for (AudioGuideTag audioGuideTag : tags) {
+      Tag tag = audioGuideTag.getTag();
+
+      if (language.equals(tag.getLanguage().getVersion())) {
+        list.add(tag.getName());
+      }
+    }
     return list;
   }
 
@@ -102,13 +127,62 @@ public class AudioGuideService {
 
   public ResAudioGuideDirectionsDto getAudioGuideDirections(Long audioGuideId) {
     AudioGuide audioGuide = findAudioGuideById(audioGuideId);
-    Set<AudioGuideTrackContainer> tracks= audioGuide.getTracks();
+    Set<AudioGuideTrackContainer> tracks = audioGuide.getTracks();
 
-    List<ResDirectionDto> directionsList = directionApiService.getTracksPedestrianDirections(tracks);
+    List<ResDirectionDto> directionsList = directionApiService
+        .getTracksPedestrianDirections(tracks);
 
     return ResAudioGuideDirectionsDto.builder()
         .audioGuideId(audioGuideId)
         .directions(directionsList)
         .build();
+  }
+
+  public ResAudioGuideListDto getAudioGuideCategoryList(String category, String language) {
+    if ("random".equals(category)) {
+      return getRandomAudioGuideList(language);
+    }
+
+    List<ResAudioGuideItemDto> guideList = new ArrayList();
+    String languageCategory = null;
+
+    if (category.equals(AudioGuideCategory.HISTORY.getQueryName())) {
+      Long[] mainHistoryGuideIds = {7L};
+      guideList = getAudioGuideItemList(mainHistoryGuideIds, language);
+
+      if(language.equals(Language.KOREAN.getVersion())){
+        languageCategory = AudioGuideCategory.HISTORY.getDatabaseKoreanName();
+      }
+      if(language.equals(Language.ENGLISH.getVersion())){
+        languageCategory = AudioGuideCategory.HISTORY.getDatabaseEnglishName();
+      }
+    }
+    if (category.equals(AudioGuideCategory.EXCURSION.getQueryName())) {
+      Long[] mainExcursionGuideIds = {13L, 6L, 3L, 2L};
+      guideList = getAudioGuideItemList(mainExcursionGuideIds, language);
+
+      if(language.equals(Language.KOREAN.getVersion())){
+        languageCategory = AudioGuideCategory.HISTORY.getDatabaseKoreanName();
+      }
+      if(language.equals(Language.ENGLISH.getVersion())){
+        languageCategory = AudioGuideCategory.HISTORY.getDatabaseEnglishName();
+      }
+    }
+
+    return ResAudioGuideListDto.builder()
+        .language(language)
+        .category(languageCategory)
+        .audioGuideList(guideList)
+        .build();
+  }
+
+  private List<ResAudioGuideItemDto> getAudioGuideItemList(Long[] mainGuideIds, String language) {
+    List<ResAudioGuideItemDto> list = new ArrayList<>();
+    for (Long guideId : mainGuideIds) {
+      AudioGuide guide = findAudioGuideById(guideId);
+      list.add(toAudioGuideItem(guide, language));
+    }
+
+    return list;
   }
 }
