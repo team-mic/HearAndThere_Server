@@ -14,6 +14,16 @@ public class TagDataController {
 
   private final TagDataService tagDataService;
 
+  //test 용
+  @ApiIgnore
+  @PostMapping("/data/tags/gongneung")
+  public ResponseEntity<Void> insertGongneungTag() {
+
+    tagDataService.insertGongneungTag();
+
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
   @ApiIgnore
   @PostMapping("/data/tags")
   public ResponseEntity<Void> insertTagsFromGongneungToInsadong() {

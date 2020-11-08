@@ -20,6 +20,25 @@ public class TagDataService {
   private final AudioGuideTagRepository audioGuideTagRepository;
   private final AudioGuideRepository audioGuideRepository;
 
+  public void insertGongneungTag(){
+    Tag engTag = tagRepository.save(Tag.builder()
+        .language(Language.ENGLISH)
+        .name("Gongneung")
+        .build());
+    Tag korTag = tagRepository.save(Tag.builder()
+        .language(Language.KOREAN)
+        .name("공릉")
+        .build());
+
+    audioGuideTagRepository.save(AudioGuideTag.builder()
+        .tag(engTag)
+        .audioGuide(audioGuideRepository.findById(1L).orElseThrow(NoSuchElementException::new))
+        .build());
+    audioGuideTagRepository.save(AudioGuideTag.builder()
+        .tag(korTag)
+        .audioGuide(audioGuideRepository.findById(1L).orElseThrow(NoSuchElementException::new))
+        .build());
+  }
   public void insertTagsFromGongneungToInsadong() {
 
     String[] engTagsArr = {"Gongneung", "Namsan","Noryanjin", "Daehak-Ro","Dongdaemun", "Mangwon", "Bukchon", "Jamsil", "Jamsil", "Yongsan", "Yongsan", "OlympicPark", "Insadong"};
