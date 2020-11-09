@@ -27,7 +27,10 @@ public class TripTipController {
   private final TripTipsService tipsService;
 
   @ApiOperation(value = "메인 화면 하단의 대표 2개의 글 콘텐츠 리스트",
-      notes = "* 메인 화면 하단에 삽입되는 2개의 고정 글 콘텐츠가 제공됩니다.")
+      notes = "* 메인 화면 하단에 삽입되는 2개의 고정 글 콘텐츠가 제공됩니다."
+          + "[lag param 종류]\n" +
+          "kor : 한국어 버전\n" +
+          "eng : 영어 버전")
   @ApiResponses({
       @ApiResponse(code = 200, message = "OK"),
       @ApiResponse(code = 400, message = "No parameter Error"),
@@ -47,7 +50,10 @@ public class TripTipController {
   }
 
   @ApiOperation(value = "메인 화면 하단의 글 콘텐츠 리스트 모두 보기",
-      notes = "* 메인화면 하단의 글 콘텐츠 view all 을 클릭할 경우, 모든 글 콘텐츠가 조회수 순으로 제공됩니다.")
+      notes = "* 메인화면 하단의 글 콘텐츠 view all 을 클릭할 경우, 모든 글 콘텐츠가 조회수 순으로 제공됩니다."
+          + "[lag param 종류]\n" +
+          "kor : 한국어 버전\n" +
+          "eng : 영어 버전")
   @ApiResponses({
       @ApiResponse(code = 200, message = "OK"),
       @ApiResponse(code = 400, message = "No parameter Error"),
