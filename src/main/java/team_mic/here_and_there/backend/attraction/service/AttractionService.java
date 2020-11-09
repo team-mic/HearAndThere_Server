@@ -2,7 +2,10 @@ package team_mic.here_and_there.backend.attraction.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Set;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.language.bm.Lang;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
@@ -12,7 +15,11 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+import team_mic.here_and_there.backend.attraction.domain.repository.TouristAreaRepository;
 import team_mic.here_and_there.backend.attraction.dto.response.AreaCodeAndNameListDto;
+import team_mic.here_and_there.backend.attraction.dto.response.ResMainFixedAttractionListDto;
+import team_mic.here_and_there.backend.attraction.dto.response.ResMainFixedAttractionListItemDto;
+import team_mic.here_and_there.backend.attraction.dto.response.ResTouristAreaListDto;
 import team_mic.here_and_there.backend.attraction.dto.response.TourApiBaseResModelDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAreaAttractionsListDto;
 
@@ -21,6 +28,7 @@ import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.util.List;
 import team_mic.here_and_there.backend.attraction.exception.InvalidAreaCodeException;
+import team_mic.here_and_there.backend.common.domain.Language;
 
 @Service
 public class AttractionService {
@@ -121,5 +129,89 @@ public class AttractionService {
         .getAreaName();
 
     return areaName;
+  }
+
+  public ResMainFixedAttractionListDto getFixedMainAttractionList(String area, String language) {
+    if (language.equals(Language.KOREAN.getVersion())) {
+      if (area.equals("seoul")) {
+        return getFixedSeoulAttractionList(Language.KOREAN);
+      }
+    }
+
+    if (language.equals(Language.ENGLISH.getVersion())) {
+      if (area.equals("seoul")) {
+        return getFixedSeoulAttractionList(Language.ENGLISH);
+      }
+    }
+    throw new NoSuchElementException();
+  }
+
+  private ResMainFixedAttractionListDto getFixedSeoulAttractionList(Language language) {
+    List<ResMainFixedAttractionListItemDto> itemList = new ArrayList<>();
+    String lanAreaName = null;
+
+    if(language.equals(Language.KOREAN)){
+      lanAreaName = "서울";
+
+      itemList.add(ResMainFixedAttractionListItemDto.builder()
+          .attractionContentId(126508L)
+          .attractionContentTypeId(12L)
+          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/23/2678623_image2_1.jpg")
+          .title("경복궁")
+          .build());
+      itemList.add(ResMainFixedAttractionListItemDto.builder()
+          .attractionContentId(126498L)
+          .attractionContentTypeId(12L)
+          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/77/2553577_image2_1.jpg")
+          .title("롯데월드")
+          .build());
+      itemList.add(ResMainFixedAttractionListItemDto.builder()
+          .attractionContentId(126535L)
+          .attractionContentTypeId(12L)
+          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/95/2660695_image2_1.jpg")
+          .title("N 서울타워")
+          .build());
+      itemList.add(ResMainFixedAttractionListItemDto.builder()
+          .attractionContentId(126537L)
+          .attractionContentTypeId(12L)
+          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/06/2512006_image2_1.jpg")
+          .title("북촌 한옥마을")
+          .build());
+    }
+
+    if(language.equals(Language.ENGLISH)){
+      lanAreaName = "Seoul";
+
+      itemList.add(ResMainFixedAttractionListItemDto.builder()
+          .attractionContentId(264337L)
+          .attractionContentTypeId(76L)
+          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/23/2678623_image2_1.jpg")
+          .title("Gyeongbokgung Palace")
+          .build());
+      itemList.add(ResMainFixedAttractionListItemDto.builder()
+          .attractionContentId(264152L)
+          .attractionContentTypeId(76L)
+          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/77/2553577_image2_1.jpg")
+          .title("Lotte World")
+          .build());
+      itemList.add(ResMainFixedAttractionListItemDto.builder()
+          .attractionContentId(264550L)
+          .attractionContentTypeId(76L)
+          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/95/2660695_image2_1.jpg")
+          .title("Namsan Seoul Tower")
+          .build());
+      itemList.add(ResMainFixedAttractionListItemDto.builder()
+          .attractionContentId(561382L)
+          .attractionContentTypeId(76L)
+          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/06/2512006_image2_1.jpg")
+          .title("Bukchon Hanok Village")
+          .build());
+    }
+
+    return ResMainFixedAttractionListDto.builder()
+        .areaName(lanAreaName)
+        .attractionItemList(itemList)
+        .language(language.getVersion())
+        .build();
   }
 }

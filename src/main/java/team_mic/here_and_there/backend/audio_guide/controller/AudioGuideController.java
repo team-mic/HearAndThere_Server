@@ -29,10 +29,9 @@ public class AudioGuideController {
           "1.(메인 화면 상단) random : 오디오 가이드 5개가 랜덤으로 내려옵니다.\n" +
           "2.(메인 화면 중간) history : History 카테고리에 해당되는 오디오 가이드 fix data 4개가 내려옵니다.\n" +
           "3.(메인 화면 하단) excursion : Excursion 카테고리에 해당되는 오디오 가이드 fix data 4개가 내려옵니다.\n" +
-          "현재 덤프 데이터입니다.\n"
-          + "[lag param 종류]\n"
-          + "kor : 한국어 버전\n"
-          + "eng : 영어 버전")
+          "[lag param 종류]\n" +
+          "kor : 한국어 버전\n" +
+          "eng : 영어 버전")
   @ApiResponses({
       @ApiResponse(code = 200, message = "OK"),
       @ApiResponse(code = 500, message = "Internal Server Error"),
