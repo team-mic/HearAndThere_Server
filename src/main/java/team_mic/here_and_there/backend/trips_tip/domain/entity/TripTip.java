@@ -1,7 +1,5 @@
 package team_mic.here_and_there.backend.trips_tip.domain.entity;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team_mic.here_and_there.backend.common.domain.BaseTimeEntity;
 import team_mic.here_and_there.backend.common.domain.Language;
 
 import javax.persistence.*;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Table(name = "audio_guide_language_contents")
 @Entity
-public class AudioGuideLanguageContent {
+public class AudioGuideLanguageContent extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
