@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @JsonPropertyOrder({"category", "language", "audioGuideList"})
-public class ResAudioGuideListDto {
+public class ResAudioGuideCategoryListDto {
 
   @ApiModelProperty("오디오 가이드의 카테고리")
   private String category;
@@ -21,7 +21,7 @@ public class ResAudioGuideListDto {
   private List<ResAudioGuideItemDto> audioGuideList;
 
   @Builder
-  private ResAudioGuideListDto(String category, String language,
+  private ResAudioGuideCategoryListDto(String category, String language,
       List<ResAudioGuideItemDto> audioGuideList) {
     this.category = category;
     this.language = language;

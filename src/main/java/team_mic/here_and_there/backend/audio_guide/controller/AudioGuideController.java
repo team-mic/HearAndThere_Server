@@ -5,12 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideCategory;
-import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideDirectionsDto;
-import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideListDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideCategoryListDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideOrderingListDto;
 import team_mic.here_and_there.backend.audio_guide.exception.NoParameterException;
 import team_mic.here_and_there.backend.audio_guide.exception.WrongCategoryException;
 import team_mic.here_and_there.backend.audio_guide.service.AudioGuideService;
@@ -24,11 +24,46 @@ public class AudioGuideController {
   private final AudioGuideService audioGuideService;
   private final AudioTrackService audioTrackService;
 
+  @ApiOperation(value = "정렬기준(조회수, 재생수, 랜덤)으로 count 개수만큼의 오디오 가이드 리스트 조회",
+      notes = "[order param 종류]\n" +
+          "1.(메인 화면 상단, 오디오가이드 화면 more audio guides, more audio guides view all) random : 오디오 가이드가 count 개수 만큼 랜덤으로 제공됩니다.\n" +
+          "2.(오디오가이드 화면 most popular, most popular view all) playingcount : 오디오 가이드가 재생수 기준으로 내림차순 정렬되어서 count 개수만큼 제공됩니다.\n" +
+          "3.(오디오가이드 화면 trending) viewcount : 오디오 가이드가 조회수 기준으로 내림차순 정렬되어서 count 개수만큼 제공됩니다.\n" +
+          "* order param 과 lan param 은 필수이지만, count 는 필수 param 이 아닙니다. view all 에서 사용해야 하는 전체 오디오가이드가 정렬기준으로 필요하다면 count param 없이 요청하세요.\n"+
+          "[lag param 종류]\n" +
+          "kor : 한국어 버전\n" +
+          "eng : 영어 버전")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK"),
+      @ApiResponse(code = 500, message = "Internal Server Error"),
+      @ApiResponse(code = 400, message = "No Parameter Error"),
+      @ApiResponse(code = 404, message = "No corresponding Audio guide Data in DB")
+  })
+  @GetMapping("/v1/audio-guides")
+  public ResponseEntity<ResAudioGuideOrderingListDto> getTopNAudioGuidesListByOrder(
+      @ApiParam(value = "가이드의 정렬 기준", required = true, example = "playingcount")
+      @RequestParam(value = "order") String order,
+      @ApiParam(value = "언어버전", required = true, example = "kor")
+      @RequestParam(value = "lan") String language,
+      @ApiParam(value = "응답받고 싶은 가이드 개수", example = "4")
+      @RequestParam(value = "count", required = false) Integer guideCount) {
+
+    if (order == null || language == null) {
+      throw new NoParameterException();
+    }
+
+    if(!order.equals("viewcount") && !order.equals("playingcount") && !order.equals("random")){
+      throw new HttpClientErrorException(HttpStatus.BAD_REQUEST); //TODO : custom exception
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getTopNAudioGuidesListByOrder(order, guideCount, language));
+  }
+
+
   @ApiOperation(value = "메인 화면의 카테고리별 오디오 가이드 리스트",
       notes = "[category param 종류]\n" +
-          "1.(메인 화면 상단) random : 오디오 가이드 5개가 랜덤으로 내려옵니다.\n" +
-          "2.(메인 화면 중간) history : History 카테고리에 해당되는 오디오 가이드 fix data 4개가 내려옵니다.\n" +
-          "3.(메인 화면 하단) excursion : Excursion 카테고리에 해당되는 오디오 가이드 fix data 4개가 내려옵니다.\n" +
+          "1.(메인 화면 중간) history : History 카테고리에 해당되는 오디오 가이드 fix data 4개가 내려옵니다.\n" +
+          "2.(메인 화면 하단) excursion : Excursion 카테고리에 해당되는 오디오 가이드 fix data 4개가 내려옵니다.\n" +
           "[lag param 종류]\n" +
           "kor : 한국어 버전\n" +
           "eng : 영어 버전")
@@ -39,7 +74,7 @@ public class AudioGuideController {
       @ApiResponse(code = 404, message = "No corresponding Audio guide Data in DB")
   })
   @GetMapping("/v1/audio-guides/main")
-  public ResponseEntity<ResAudioGuideListDto> getAudioGuideCategoryList(
+  public ResponseEntity<ResAudioGuideCategoryListDto> getAudioGuideCategoryList(
       @ApiParam(value = "메인화면 오디오 가이드의 카테고리", required = true, example = "random")
       @RequestParam(value = "category") String category,
       @ApiParam(value = "언어버전", required = true, example = "kor")
@@ -50,7 +85,7 @@ public class AudioGuideController {
     }
 
     if(!category.equals(AudioGuideCategory.HISTORY.getQueryName()) &&
-        !category.equals(AudioGuideCategory.EXCURSION.getQueryName()) && !category.equals("random")){
+        !category.equals(AudioGuideCategory.EXCURSION.getQueryName())){
       throw new WrongCategoryException();
     }
 
