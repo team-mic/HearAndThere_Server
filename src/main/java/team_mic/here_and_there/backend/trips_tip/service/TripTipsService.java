@@ -3,14 +3,15 @@ package team_mic.here_and_there.backend.trips_tip.service;
 import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team_mic.here_and_there.backend.common.domain.Language;
 import team_mic.here_and_there.backend.trips_tip.domain.entity.TripTip;
 import team_mic.here_and_there.backend.trips_tip.domain.repository.TripTipRepository;
+import team_mic.here_and_there.backend.trips_tip.dto.response.ResPatchedSingleTripTipDto;
 import team_mic.here_and_there.backend.trips_tip.dto.response.ResTripTipItemDto;
 import team_mic.here_and_there.backend.trips_tip.dto.response.ResTripTipsListDto;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import team_mic.here_and_there.backend.trips_tip.exception.NoTripTipsException;
 
 @RequiredArgsConstructor
@@ -74,6 +75,16 @@ public class TripTipsService {
     return ResTripTipsListDto.builder()
         .language(language)
         .tripTipsList(itemList)
+        .build();
+  }
+
+  @Transactional
+  public ResPatchedSingleTripTipDto updateTripTipViewCount(Long tripTipsId) {
+    TripTip tip = tripTipRepository.findById(tripTipsId).orElseThrow(NoTripTipsException::new);
+    tip.updateViewCount();
+    return ResPatchedSingleTripTipDto.builder()
+        .tripTipsId(tip.getId())
+        .updatedViewCount(tip.getViewCount())
         .build();
   }
 /*
