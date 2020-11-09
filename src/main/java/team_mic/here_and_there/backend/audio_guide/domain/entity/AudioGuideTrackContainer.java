@@ -6,12 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import team_mic.here_and_there.backend.common.domain.BaseTimeEntity;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "audio_guide_track_containers")
 @Entity
-public class AudioGuideTrackContainer {
+public class AudioGuideTrackContainer extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

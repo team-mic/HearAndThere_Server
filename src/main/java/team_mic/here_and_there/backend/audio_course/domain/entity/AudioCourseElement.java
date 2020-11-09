@@ -10,12 +10,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team_mic.here_and_there.backend.common.domain.BaseTimeEntity;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "audio_course_elements")
 @Entity
-public class AudioCourseElement {
+public class AudioCourseElement extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

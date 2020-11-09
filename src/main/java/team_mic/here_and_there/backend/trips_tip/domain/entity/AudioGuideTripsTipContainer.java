@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
 
 import javax.persistence.*;
+import team_mic.here_and_there.backend.common.domain.BaseTimeEntity;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "audio_guide_trips_tip_containers")
 @Entity
-public class AudioGuideTripsTipContainer {
+public class AudioGuideTripsTipContainer extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
