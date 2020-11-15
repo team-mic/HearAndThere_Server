@@ -112,4 +112,67 @@ public class AudioCourseDataController {
 
     return ResponseEntity.status(HttpStatus.OK).build();
   }
+
+  @ApiIgnore
+  @PostMapping("/data/audio-courses/deoksugung-palace")
+  public ResponseEntity<Void> insertDeoksugungPalaceCourses(){
+
+    audioCourseDataService.insertDeoksugungPalaceCourses();
+
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  @ApiIgnore
+  @PostMapping("/data/audio-courses/gyeongbokgung-palace")
+  public ResponseEntity<Void> insertGyeongbokgungPalaceCourses(){
+
+    audioCourseDataService.insertGyeongbokgungPalaceCourses();
+
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  @ApiIgnore
+  @PostMapping("/data/audio-courses/changdeokgung-palace")
+  public ResponseEntity<Void> insertChangdeokgungPalaceCourses(){
+
+    audioCourseDataService.insertChangdeokgungPalaceCourses();
+
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  @ApiIgnore
+  @PostMapping("/data/audio-courses/yeouido")
+  public ResponseEntity<Void> insertYeouidoCourses(){
+
+    audioCourseDataService.insertYeouidoCourses();
+
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  @ApiIgnore
+  @PostMapping("/data/audio-courses/yeongdeungpo")
+  public ResponseEntity<Void> insertYeongdeungpoCourses(){
+
+    audioCourseDataService.insertYeongdeungpoCourses();
+
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  @ApiIgnore
+  @PostMapping("/data/audio-courses/hongdae")
+  public ResponseEntity<Void> insertHongdaeCourses(){
+
+    audioCourseDataService.insertHongdaeCourses();
+
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  @ApiIgnore
+  @PostMapping("/data/audio-courses/buam-dong")
+  public ResponseEntity<Void> insertBuamdongCourses(){
+
+    audioCourseDataService.insertBuamdongCourses();
+
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
 }

@@ -2029,4 +2029,795 @@ public class AudioCourseDataService {
           .build());
     }
   }
+
+  public void insertDeoksugungPalaceCourses() {
+    List<AudioCourseElement> list = new ArrayList<>();
+
+    AudioCourseElement element1 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("55min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/DeoksugungPalace/1.png");
+            }})
+            .build());
+    list.add(element1);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element1)
+            .title("덕수궁")
+            .tourApiAttractionContentId(126509L)
+            .tourApiAttractionContentTypeId(12)
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element1)
+            .title("Deoksugung")
+            .tourApiAttractionContentId(264316L)
+            .tourApiAttractionContentTypeId(76)
+            .build());
+
+    AudioCourseElement element2 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("15min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/DeoksugungPalace/2.png");
+            }})
+            .build());
+    list.add(element2);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element2)
+            .title("덕수궁 돌담길")
+            .tourApiAttractionContentId(129186L)
+            .tourApiAttractionContentTypeId(12)
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element2)
+            .title("Deoksugung Stonewall Walkway/Dol-dam Road")
+            .tourApiAttractionContentId(1748351L)
+            .tourApiAttractionContentTypeId(76)
+            .build());
+
+    AudioCourseElement element3 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("15min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/DeoksugungPalace/3.jpg");
+            }})
+            .build());
+    list.add(element3);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element3)
+            .title("고종의 길")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element3)
+            .title("King Gojong’s Road")
+            .build());
+
+    AudioCourseElement element4 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("20min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/DeoksugungPalace/4.jpg");
+            }})
+            .build());
+    list.add(element4);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element4)
+            .title("정동공원")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element4)
+            .title("Jeongdong Park")
+            .build());
+
+    AudioCourseElement element5 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("15min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/DeoksugungPalace/5.jpg");
+            }})
+            .build());
+    list.add(element5);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element5)
+            .title("중명전")
+            .tourApiAttractionContentId(1017547L)
+            .tourApiAttractionContentTypeId(12)
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element5)
+            .title("Jungmyeongjeon")
+            .tourApiAttractionContentId(1034818L)
+            .tourApiAttractionContentTypeId(76)
+            .build());
+
+    AudioGuide audioGuide = audioGuideRepository.findById(14L)
+        .orElseThrow(() -> new NoSuchElementException());
+
+    for (int order = 0; order < list.size(); order++) {
+      audioGuideCourseRepository.save(AudioGuideCourse.builder()
+          .audioCourseElement(list.get(order))
+          .audioGuide(audioGuide)
+          .orderNumber(order + 1)
+          .build());
+    }
+  }
+
+  public void insertGyeongbokgungPalaceCourses() {
+    List<AudioCourseElement> list = new ArrayList<>();
+
+    AudioCourseElement element1 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("120min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/GyeongbokgungPalace/1.png");
+            }})
+            .build());
+    list.add(element1);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element1)
+            .title("경복궁")
+            .tourApiAttractionContentId(126508L)
+            .tourApiAttractionContentTypeId(12)
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element1)
+            .title("Gyeongbokgung Palace")
+            .tourApiAttractionContentId(264337L)
+            .tourApiAttractionContentTypeId(76)
+            .build());
+
+    AudioGuide audioGuide = audioGuideRepository.findById(15L)
+        .orElseThrow(() -> new NoSuchElementException());
+
+    for (int order = 0; order < list.size(); order++) {
+      audioGuideCourseRepository.save(AudioGuideCourse.builder()
+          .audioCourseElement(list.get(order))
+          .audioGuide(audioGuide)
+          .orderNumber(order + 1)
+          .build());
+    }
+  }
+
+  public void insertChangdeokgungPalaceCourses() {
+    List<AudioCourseElement> list = new ArrayList<>();
+
+    AudioCourseElement element1 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("60min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/ChangdeokgungPalace/1.png");
+            }})
+            .build());
+    list.add(element1);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element1)
+            .title("창덕궁")
+            .tourApiAttractionContentId(127642L)
+            .tourApiAttractionContentTypeId(12)
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element1)
+            .title("Changdeokgung Palace")
+            .tourApiAttractionContentId(264348L)
+            .tourApiAttractionContentTypeId(76)
+            .build());
+
+    AudioGuide audioGuide = audioGuideRepository.findById(16L)
+        .orElseThrow(() -> new NoSuchElementException());
+
+    for (int order = 0; order < list.size(); order++) {
+      audioGuideCourseRepository.save(AudioGuideCourse.builder()
+          .audioCourseElement(list.get(order))
+          .audioGuide(audioGuide)
+          .orderNumber(order + 1)
+          .build());
+    }
+  }
+
+  public void insertYeouidoCourses() {
+    List<AudioCourseElement> list = new ArrayList<>();
+
+    AudioCourseElement element1 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("5min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Yeouido/1.png");
+            }})
+            .build());
+    list.add(element1);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element1)
+            .title("여의도역")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element1)
+            .title("Yeouido Station")
+            .build());
+
+    AudioCourseElement element2 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("30min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Yeouido/2.png");
+            }})
+            .build());
+    list.add(element2);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element2)
+            .title("IFC몰")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element2)
+            .title("IFC Mall")
+            .build());
+
+    AudioCourseElement element3 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("30min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Yeouido/3.png");
+            }})
+            .build());
+    list.add(element3);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element3)
+            .title("SeMA벙커")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element3)
+            .title("SeMa Bunker")
+            .build());
+
+    AudioCourseElement element4 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("15min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Yeouido/4.png");
+            }})
+            .build());
+    list.add(element4);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element4)
+            .title("여의도공원")
+            .tourApiAttractionContentId(127955L)
+            .tourApiAttractionContentTypeId(12)
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element4)
+            .title("Yeouido Park")
+            .tourApiAttractionContentId(264340L)
+            .tourApiAttractionContentTypeId(76)
+            .build());
+
+    AudioCourseElement element5 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("25min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Yeouido/5.png");
+            }})
+            .build());
+    list.add(element5);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element5)
+            .title("국회의사당")
+            .tourApiAttractionContentId(126827L)
+            .tourApiAttractionContentTypeId(12)
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element5)
+            .title("Assembly building")
+            .tourApiAttractionContentId(264132L)
+            .tourApiAttractionContentTypeId(76)
+            .build());
+
+    AudioCourseElement element6 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("25min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Yeouido/6.png");
+            }})
+            .build());
+    list.add(element6);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element6)
+            .title("여의도한강공원")
+            .tourApiAttractionContentId(1059479L)
+            .tourApiAttractionContentTypeId(12)
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element6)
+            .title("Yeouido Han River Park")
+            .tourApiAttractionContentId(1064767L)
+            .tourApiAttractionContentTypeId(76)
+            .build());
+
+    AudioCourseElement element7 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("20min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Yeouido/7.png");
+            }})
+            .build());
+    list.add(element7);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element7)
+            .title("63 스퀘어")
+            .tourApiAttractionContentId(127699L)
+            .tourApiAttractionContentTypeId(12)
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element7)
+            .title("63 Square")
+            .tourApiAttractionContentId(264122L)
+            .tourApiAttractionContentTypeId(76)
+            .build());
+
+    AudioGuide audioGuide = audioGuideRepository.findById(17L)
+        .orElseThrow(() -> new NoSuchElementException());
+
+    for (int order = 0; order < list.size(); order++) {
+      audioGuideCourseRepository.save(AudioGuideCourse.builder()
+          .audioCourseElement(list.get(order))
+          .audioGuide(audioGuide)
+          .orderNumber(order + 1)
+          .build());
+    }
+  }
+
+  public void insertYeongdeungpoCourses() {
+    List<AudioCourseElement> list = new ArrayList<>();
+
+    AudioCourseElement element1 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("15min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Yeongdeungpo/1.jpg");
+            }})
+            .build());
+    list.add(element1);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element1)
+            .title("영등포공원")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element1)
+            .title("Yeongdeungpo Park")
+            .build());
+
+    AudioCourseElement element2 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("40min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Yeongdeungpo/2.png");
+            }})
+            .build());
+    list.add(element2);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element2)
+            .title("타임스퀘어")
+            .tourApiAttractionContentId(806322L)
+            .tourApiAttractionContentTypeId(38)
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element2)
+            .title("Time Square")
+            .tourApiAttractionContentId(834090L)
+            .tourApiAttractionContentTypeId(79)
+            .build());
+
+    AudioCourseElement element3 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("40min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Yeongdeungpo/3.png");
+            }})
+            .build());
+    list.add(element3);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element3)
+            .title("문래예술촌")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element3)
+            .title("Mullae Art Village")
+            .build());
+
+    AudioCourseElement element4 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("30min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Yeongdeungpo/4.png");
+            }})
+            .build());
+    list.add(element4);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element4)
+            .title("영등포로 지하쇼핑센터")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element4)
+            .title("Yeongdeungpo Underground Shopping Center")
+            .build());
+
+    AudioCourseElement element5 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("15min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Yeongdeungpo/5.jpeg");
+            }})
+            .build());
+    list.add(element5);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element5)
+            .title("영등포 먹자골목")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element5)
+            .title("Yeongdeungpo Food Alley")
+            .build());
+
+    AudioGuide audioGuide = audioGuideRepository.findById(18L)
+        .orElseThrow(() -> new NoSuchElementException());
+
+    for (int order = 0; order < list.size(); order++) {
+      audioGuideCourseRepository.save(AudioGuideCourse.builder()
+          .audioCourseElement(list.get(order))
+          .audioGuide(audioGuide)
+          .orderNumber(order + 1)
+          .build());
+    }
+  }
+
+  public void insertHongdaeCourses() {
+    List<AudioCourseElement> list = new ArrayList<>();
+
+    AudioCourseElement element1 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("10min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Hongdae/1.jpeg");
+            }})
+            .build());
+    list.add(element1);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element1)
+            .title("홍대입구")
+            .tourApiAttractionContentId(781031L)
+            .tourApiAttractionContentTypeId(12)
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element1)
+            .title("Hongik University Entrance")
+            .tourApiAttractionContentId(1326972L)
+            .tourApiAttractionContentTypeId(76)
+            .build());
+
+    AudioCourseElement element2 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("20min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Hongdae/2.jpeg");
+            }})
+            .build());
+    list.add(element2);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element2)
+            .title("1984")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element2)
+            .title("1984")
+            .build());
+
+    AudioCourseElement element3 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("20min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Hongdae/3.png");
+            }})
+            .build());
+    list.add(element3);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element3)
+            .title("공상온도")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element3)
+            .title("Gongsang Ondo")
+            .build());
+
+    AudioCourseElement element4 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("20min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Hongdae/4.png");
+            }})
+            .build());
+    list.add(element4);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element4)
+            .title("온고당서점")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element4)
+            .title("Ongodang Bookstore")
+            .build());
+
+    AudioCourseElement element5 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("20min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Hongdae/5.jpeg");
+            }})
+            .build());
+    list.add(element5);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element5)
+            .title("안도북스")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element5)
+            .title("Ando Books")
+            .build());
+
+    AudioCourseElement element6 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("30min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Hongdae/6.jpeg");
+            }})
+            .build());
+    list.add(element6);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element6)
+            .title("경의선숲길 (경의선 책거리)")
+            .tourApiAttractionContentId(2500229L)
+            .tourApiAttractionContentTypeId(12)
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element6)
+            .title("Gyeongui Line Forest Road (Gyeongui Line Book Street)")
+            .tourApiAttractionContentId(2538121L)
+            .tourApiAttractionContentTypeId(76)
+            .build());
+
+    AudioGuide audioGuide = audioGuideRepository.findById(19L)
+        .orElseThrow(() -> new NoSuchElementException());
+
+    for (int order = 0; order < list.size(); order++) {
+      audioGuideCourseRepository.save(AudioGuideCourse.builder()
+          .audioCourseElement(list.get(order))
+          .audioGuide(audioGuide)
+          .orderNumber(order + 1)
+          .build());
+    }
+  }
+
+  public void insertBuamdongCourses() {
+    List<AudioCourseElement> list = new ArrayList<>();
+
+    AudioCourseElement element1 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("20min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Buam-dong/1.jpeg");
+            }})
+            .build());
+    list.add(element1);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element1)
+            .title("청운공원(윤동주시인의 언덕)")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element1)
+            .title("Cheongun Park (Yoon Dong-ju Hill)")
+            .build());
+
+    AudioCourseElement element2 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("20min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Buam-dong/2.jpeg");
+            }})
+            .build());
+    list.add(element2);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element2)
+            .title("윤동주문학관")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element2)
+            .title("Yoon Dong-ju Literary Museum")
+            .build());
+
+    AudioCourseElement element3 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("30min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Buam-dong/3.png");
+            }})
+            .build());
+    list.add(element3);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element3)
+            .title("환기미술관")
+            .tourApiAttractionContentId(129760L)
+            .tourApiAttractionContentTypeId(14)
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element3)
+            .title("Whanki (Art) Museum")
+            .tourApiAttractionContentId(268099L)
+            .tourApiAttractionContentTypeId(78)
+            .build());
+
+    AudioCourseElement element4 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("20min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Buam-dong/4.png");
+            }})
+            .build());
+    list.add(element4);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element4)
+            .title("백사실계곡")
+            .tourApiAttractionContentId(809372L)
+            .tourApiAttractionContentTypeId(12)
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element4)
+            .title("Baeksasil Valley")
+            .tourApiAttractionContentId(1851871L)
+            .tourApiAttractionContentTypeId(76)
+            .build());
+
+    AudioCourseElement element5 = audioCourseElementRepository.save(
+        AudioCourseElement.builder()
+            .estimatedTravelTime("40min")
+            .images(new ArrayList<String>() {{
+              add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_courses/Buam-dong/5.png");
+            }})
+            .build());
+    list.add(element5);
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.KOREAN)
+            .audioCourseElement(element5)
+            .title("산모퉁이카페(커피프린스1호점 촬영지)")
+            .build());
+    audioCourseElementLanguageContentRepository.save(
+        AudioCourseElementLanguageContent.builder()
+            .language(Language.ENGLISH)
+            .audioCourseElement(element5)
+            .title("San-motung-i Cafe (Coffee Prince's No.1 shooting location)")
+            .build());
+
+    AudioGuide audioGuide = audioGuideRepository.findById(20L)
+        .orElseThrow(() -> new NoSuchElementException());
+
+    for (int order = 0; order < list.size(); order++) {
+      audioGuideCourseRepository.save(AudioGuideCourse.builder()
+          .audioCourseElement(list.get(order))
+          .audioGuide(audioGuide)
+          .orderNumber(order + 1)
+          .build());
+    }
+  }
 }
