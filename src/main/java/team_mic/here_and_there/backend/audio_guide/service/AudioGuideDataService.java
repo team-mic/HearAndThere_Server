@@ -35,10 +35,10 @@ public class AudioGuideDataService {
                         .estimatedTravelTime("2 hours")
                         .location("Nowon-gu")
                         .images(new ArrayList<String>() {{
-                            add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/images/Gongneung/1.jpeg");
-                            add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/images/Gongneung/2.jpeg");
-                            add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/images/Gongneung/3.jpeg");
-                            add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/images/Gongneung/4.jpeg");
+                            add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/images/Gongneung/1.jpg");
+                            add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/images/Gongneung/2.png");
+                            add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/images/Gongneung/3.jpg");
+                            add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/images/Gongneung/4.jpg");
                         }})
                         .build());
 

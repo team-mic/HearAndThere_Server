@@ -85,7 +85,7 @@ public class TripTipController {
   @PatchMapping("/v1/trip-tips/{trip-tips-id:^[0-9]+$}")
   public ResponseEntity<ResPatchedSingleTripTipDto> updateTripTipViewCount(
       @PathVariable(value = "trip-tips-id") Long tripTipsId,
-      @ApiParam(value = "update 할 필드(ex 조회수)", required = true, example = "kor")
+      @ApiParam(value = "update 할 필드(ex 조회수)", required = true, example = "viewcount")
       @RequestParam(value = "update-field") String updateField){
     if (tripTipsId == null || !updateField.equals("viewcount")) {
       throw new HttpClientErrorException(HttpStatus.BAD_REQUEST); //TODO : custom exception
