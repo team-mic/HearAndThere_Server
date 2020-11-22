@@ -1,8 +1,12 @@
 package team_mic.here_and_there.backend.audio_guide.service;
 
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.language.bm.Lang;
 import org.springframework.stereotype.Service;
+import team_mic.here_and_there.backend.audio_course.domain.entity.AudioCourseElement;
+import team_mic.here_and_there.backend.audio_course.dto.response.ResAudioCourseInfoItemDto;
+import team_mic.here_and_there.backend.audio_course.service.AudioCourseService;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideCategory;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideLanguageContent;
@@ -13,7 +17,9 @@ import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideDir
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideCategoryListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideOrderingListDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResDirectionDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResSingleAudioGuideDetailDto;
 import team_mic.here_and_there.backend.audio_guide.exception.NoCorrespondingAudioGuideException;
 import team_mic.here_and_there.backend.common.domain.Language;
 import team_mic.here_and_there.backend.location_tag.domain.entity.AudioGuideTag;
@@ -26,8 +32,11 @@ import team_mic.here_and_there.backend.location_tag.domain.entity.Tag;
 public class AudioGuideService {
 
   private final AudioGuideRepository audioGuideRepository;
-  private final DirectionApiService directionApiService;
   private final AudioGuideLanguageContentRepository audioGuideLanguageContentRepository;
+
+  private final DirectionApiService directionApiService;
+  private final AudioTrackService audioTrackService;
+  private final AudioCourseService audioCourseService;
 
   private final static Integer RANDOM_AUDIO_GUIDES_COUNT = 5;
 
@@ -54,7 +63,8 @@ public class AudioGuideService {
         .build();
   }*/
 
-  private ResAudioGuideOrderingListDto getRandomAudioGuideList(Integer randomCount, String language) {
+  private ResAudioGuideOrderingListDto getRandomAudioGuideList(Integer randomCount,
+      String language) {
     int guidesSize = audioGuideRepository.findAll().size();
     if (guidesSize == 0) {
       throw new NoCorrespondingAudioGuideException();
@@ -126,7 +136,7 @@ public class AudioGuideService {
     return audioGuideRepository.findById(audioGuideId)
         .orElseThrow(() -> new NoCorrespondingAudioGuideException());
   }
-
+  /*
   public ResAudioGuideDirectionsDto getAudioGuideDirections(Long audioGuideId) {
     AudioGuide audioGuide = findAudioGuideById(audioGuideId);
     Set<AudioGuideTrackContainer> tracks = audioGuide.getTracks();
@@ -138,7 +148,7 @@ public class AudioGuideService {
         .audioGuideId(audioGuideId)
         .directions(directionsList)
         .build();
-  }
+  }*/
 
   public ResAudioGuideCategoryListDto getAudioGuideCategoryList(String category, String language) {
 
@@ -149,10 +159,10 @@ public class AudioGuideService {
       Long[] mainHistoryGuideIds = {7L};
       guideList = getAudioGuideItemList(mainHistoryGuideIds, language);
 
-      if(language.equals(Language.KOREAN.getVersion())){
+      if (language.equals(Language.KOREAN.getVersion())) {
         languageCategory = AudioGuideCategory.HISTORY.getDatabaseKoreanName();
       }
-      if(language.equals(Language.ENGLISH.getVersion())){
+      if (language.equals(Language.ENGLISH.getVersion())) {
         languageCategory = AudioGuideCategory.HISTORY.getDatabaseEnglishName();
       }
     }
@@ -160,10 +170,10 @@ public class AudioGuideService {
       Long[] mainExcursionGuideIds = {13L, 6L, 3L, 2L};
       guideList = getAudioGuideItemList(mainExcursionGuideIds, language);
 
-      if(language.equals(Language.KOREAN.getVersion())){
+      if (language.equals(Language.KOREAN.getVersion())) {
         languageCategory = AudioGuideCategory.HISTORY.getDatabaseKoreanName();
       }
-      if(language.equals(Language.ENGLISH.getVersion())){
+      if (language.equals(Language.ENGLISH.getVersion())) {
         languageCategory = AudioGuideCategory.HISTORY.getDatabaseEnglishName();
       }
     }
@@ -185,48 +195,53 @@ public class AudioGuideService {
     return list;
   }
 
-  public ResAudioGuideOrderingListDto getTopNAudioGuidesListByOrder(String order, Integer guideCount, String language) {
+  public ResAudioGuideOrderingListDto getTopNAudioGuidesListByOrder(String order,
+      Integer guideCount, String language) {
     List<AudioGuideLanguageContent> languageContents = new ArrayList<>();
     List<ResAudioGuideItemDto> resultList = new ArrayList<>();
 
-    Integer totalGuidesCount = (int)(audioGuideRepository.count());
-    if(guideCount == null){
+    Integer totalGuidesCount = (int) (audioGuideRepository.count());
+    if (guideCount == null) {
       guideCount = totalGuidesCount;
     }
-    if(guideCount > totalGuidesCount){
+    if (guideCount > totalGuidesCount) {
       throw new NoCorrespondingAudioGuideException(); //TODO custom exception
     }
 
-    if(order.equals("random")){
+    if (order.equals("random")) {
       return getRandomAudioGuideList(guideCount, language);
     }
 
-    if(language.equals(Language.KOREAN.getVersion())){
-      if(order.equals("viewcount")){
-        languageContents = audioGuideLanguageContentRepository.findAllByLanguageOrderByViewCountDesc(Language.KOREAN);
+    if (language.equals(Language.KOREAN.getVersion())) {
+      if (order.equals("viewcount")) {
+        languageContents = audioGuideLanguageContentRepository
+            .findAllByLanguageOrderByViewCountDesc(Language.KOREAN);
       }
 
-      if(order.equals("playingcount")){
-        languageContents = audioGuideLanguageContentRepository.findAllByLanguageOrderByPlayingCountDesc(Language.KOREAN);
-      }
-    }
-
-    if(language.equals(Language.ENGLISH.getVersion())){
-      if(order.equals("viewcount")){
-        languageContents = audioGuideLanguageContentRepository.findAllByLanguageOrderByViewCountDesc(Language.ENGLISH);
-      }
-
-      if(order.equals("playingcount")){
-        languageContents = audioGuideLanguageContentRepository.findAllByLanguageOrderByPlayingCountDesc(Language.ENGLISH);
+      if (order.equals("playingcount")) {
+        languageContents = audioGuideLanguageContentRepository
+            .findAllByLanguageOrderByPlayingCountDesc(Language.KOREAN);
       }
     }
 
-    if(languageContents.isEmpty()){
+    if (language.equals(Language.ENGLISH.getVersion())) {
+      if (order.equals("viewcount")) {
+        languageContents = audioGuideLanguageContentRepository
+            .findAllByLanguageOrderByViewCountDesc(Language.ENGLISH);
+      }
+
+      if (order.equals("playingcount")) {
+        languageContents = audioGuideLanguageContentRepository
+            .findAllByLanguageOrderByPlayingCountDesc(Language.ENGLISH);
+      }
+    }
+
+    if (languageContents.isEmpty()) {
       throw new NoCorrespondingAudioGuideException();
     }
 
-    for(int count=0; count<guideCount; count++){
-      AudioGuideLanguageContent languageContent= languageContents.get(count);
+    for (int count = 0; count < guideCount; count++) {
+      AudioGuideLanguageContent languageContent = languageContents.get(count);
       AudioGuide guide = languageContent.getAudioGuide();
 
       resultList.add(ResAudioGuideItemDto.builder()
@@ -242,6 +257,47 @@ public class AudioGuideService {
         .language(language)
         .guideCounts(guideCount)
         .orderBy(order)
+        .build();
+  }
+
+  public ResSingleAudioGuideDetailDto getSingleAudioGuideDetail(Long audioGuideId,
+      String language) {
+
+    AudioGuide guide = findAudioGuideById(audioGuideId);
+    Set<AudioGuideLanguageContent> languageContentSet = guide.getLanguageContents();
+    Optional<AudioGuideLanguageContent> languageContent = Optional.empty();
+
+    for (AudioGuideLanguageContent guideLanguageContent : languageContentSet) {
+      if (guideLanguageContent.getLanguage().getVersion().equals(language)) {
+        languageContent = Optional.of(guideLanguageContent);
+      }
+    }
+
+    AudioGuideLanguageContent correspondingContent = languageContent
+        .orElseThrow(NoSuchElementException::new); //TODO : custom exception
+
+    List<ResAudioTrackInfoItemDto> tracks = audioTrackService
+        .getAudioGuidesTrackList(guide, language);
+    List<ResAudioGuideItemDto> recommendedGuides = guide.getRecommendedAudioGuideIds().stream()
+        .map(guideId -> toAudioGuideItem(findAudioGuideById(guideId), language))
+        .collect(Collectors.toList());
+    List<ResAudioCourseInfoItemDto> courses = audioCourseService
+        .getAudioGuidesCourseList(guide, language);
+
+    return ResSingleAudioGuideDetailDto.builder()
+        .language(language)
+        .audioGuideId(guide.getId())
+        .distance(guide.getDistance())
+        .estimatedTravelTime(guide.getEstimatedTravelTime())
+        .location(guide.getLocation())
+        .guideImages(guide.getImages())
+        .title(correspondingContent.getTitle())
+        .overviewDescription(correspondingContent.getOverviewDescription())
+        .tags(toTagsStringList(guide.getTags(), language))
+        .tracksList(tracks)
+        .recommendedAudioGuidesList(recommendedGuides)
+        .coursesList(courses)
+        .recommendedContentsList(new ArrayList<>()) //TODO : 지금은 모두 empty 인 상황 / 일반적인 로직으로 적용하기
         .build();
   }
 }
