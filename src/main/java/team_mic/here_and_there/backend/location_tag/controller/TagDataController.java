@@ -25,11 +25,22 @@ public class TagDataController {
   }
 
   @ApiIgnore
-  @PostMapping("/data/tags")
+  @PostMapping("/data/tags/gongneung-to-insadong")
   public ResponseEntity<Void> insertTagsFromGongneungToInsadong() {
 
     tagDataService.insertTagsFromGongneungToInsadong();
 
     return ResponseEntity.status(HttpStatus.OK).build();
   }
+
+  @ApiIgnore
+  @PostMapping("/data/tags/deoksugung-to-buamdong")
+  public ResponseEntity<Void> insertTagsFromDeoksugungToBuamdong() {
+
+    tagDataService.insertTagsFromDeoksugungToBuamdong();
+
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+
 }
