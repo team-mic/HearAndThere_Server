@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideCategory;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideCategoryListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideOrderingListDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResPatchedSingleAudioGuideDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResSingleAudioGuideDetailDto;
 import team_mic.here_and_there.backend.audio_guide.exception.NoParameterException;
 import team_mic.here_and_there.backend.audio_guide.exception.WrongCategoryException;
@@ -24,6 +26,21 @@ public class AudioGuideController {
 
   private final AudioGuideService audioGuideService;
 
+  @ApiOperation(value = "오디오 가이드 상세 페이지 조회",
+      notes = "* 오디오 가이드 id 에 해당하는 상세페이지 정보를 제공합니다.\n"
+          + "[제공되는 정보]\n"
+          + "1. 오디오 가이드의 기본 상세 정보 \n"
+          + "2. 오디오 가이드의 트랙별 정보 리스트(재생 트랙 순서대로 정렬)\n"
+          + "3. 오디오 가이드의 코스 요소별 정보 리스트(코스 요소 순서대로 정렬)\n"
+          + "4. 해당 오디오 가이드의 추천 가이드 리스트\n"
+          + "5. 해당 오디오 가이드의 추천 글콘텐츠(현재 기획 상 없으므로 항상 빈리스트가 내려갑니다.)\n"+
+          "[lag param 종류]\n" +
+          "kor : 한국어 버전\n" +
+          "eng : 영어 버전")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK"),
+      @ApiResponse(code = 500, message = "Internal Server Error")
+  })
   @GetMapping("/v1/audio-guides/{audio-guide-id:^[0-9]+$}")
   public ResponseEntity<ResSingleAudioGuideDetailDto> getSingleAudioGuideDetail(
       @PathVariable(value = "audio-guide-id") Long audioGuideId,
@@ -32,6 +49,34 @@ public class AudioGuideController {
 
     return ResponseEntity.status(HttpStatus.OK).body(
         audioGuideService.getSingleAudioGuideDetail(audioGuideId, language));
+  }
+
+  @ApiOperation(value = "오디오 가이드의 조회수/재생수 업데이트",
+      notes = "* 오디오 가이드를 클릭하여 상세보기로 넘어갈 경우, viewcount 를 업데이트 해야합니다.\n"
+          + "* 오디오 가이드를 재생할 경우, playcount 를 업데이트 해야합니다.\n"
+          + "[update-field param 종류]\n"
+          + "1. viewcount : 조회수\n"
+          + "2. playcount : 재생수\n"
+          + "* 반드시 PATCH로 요청해주세요. response 의 경우 update 완료된 조회수를 제공합니다.\n"
+          + "* 언어 버전에 맞는 정보가 업데이트 됩니다.")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK"),
+      @ApiResponse(code = 400, message = "parameter Error"),
+      @ApiResponse(code = 404, message = "No audio guide data in DB"),
+      @ApiResponse(code = 500, message = "Internal Server Error")
+  })
+  @PatchMapping("/v1/audio-guides/{audio-guide-id:^[0-9]+$}")
+  public ResponseEntity<ResPatchedSingleAudioGuideDto> updateAudioGuideCountingColumn(
+      @PathVariable(value = "audio-guide-id") Long audioGuideId,
+      @ApiParam(value = "update 할 필드", required = true, example = "playcount")
+      @RequestParam(value = "update-field") String updateField,
+      @ApiParam(value = "언어버전", required = true, example = "kor")
+      @RequestParam(value = "lan") String language){
+    if (!updateField.equals("viewcount") && !updateField.equals("playcount")) {
+      throw new HttpClientErrorException(HttpStatus.BAD_REQUEST); //TODO : custom exception
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.updateAudioGuideCountingColumn(audioGuideId, updateField, language));
   }
 
   @ApiOperation(value = "정렬기준(조회수, 재생수, 랜덤)으로 count 개수만큼의 오디오 가이드 리스트 조회",

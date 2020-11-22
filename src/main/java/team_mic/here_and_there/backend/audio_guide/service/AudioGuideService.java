@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.language.bm.Lang;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team_mic.here_and_there.backend.audio_course.domain.entity.AudioCourseElement;
 import team_mic.here_and_there.backend.audio_course.dto.response.ResAudioCourseInfoItemDto;
 import team_mic.here_and_there.backend.audio_course.service.AudioCourseService;
@@ -19,6 +20,7 @@ import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideCat
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideOrderingListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResDirectionDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResPatchedSingleAudioGuideDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResSingleAudioGuideDetailDto;
 import team_mic.here_and_there.backend.audio_guide.exception.NoCorrespondingAudioGuideException;
 import team_mic.here_and_there.backend.common.domain.Language;
@@ -298,6 +300,43 @@ public class AudioGuideService {
         .recommendedAudioGuidesList(recommendedGuides)
         .coursesList(courses)
         .recommendedContentsList(new ArrayList<>()) //TODO : 지금은 모두 empty 인 상황 / 일반적인 로직으로 적용하기
+        .build();
+  }
+
+  @Transactional
+  public ResPatchedSingleAudioGuideDto updateAudioGuideCountingColumn(Long audioGuideId,
+      String updateField,
+      String language) {
+
+    AudioGuide guide = findAudioGuideById(audioGuideId);
+    Set<AudioGuideLanguageContent> languageContentSet = guide.getLanguageContents();
+    Optional<AudioGuideLanguageContent> languageContent = Optional.empty();
+    if(updateField.equals("viewcount")){
+      for(AudioGuideLanguageContent content : languageContentSet){
+        if(content.getLanguage().getVersion().equals(language)){
+          languageContent = Optional.of(content);
+          content.updateViewCount();
+        }
+      }
+    }
+
+    if(updateField.equals("playcount")){
+      for(AudioGuideLanguageContent content : languageContentSet){
+        if(content.getLanguage().getVersion().equals(language)){
+          languageContent = Optional.of(content);
+          content.updatePlayingCount();
+        }
+      }
+    }
+
+    AudioGuideLanguageContent correspondingContent = languageContent.orElseThrow(NoSuchElementException::new);
+
+    return ResPatchedSingleAudioGuideDto.builder()
+        .audioGuideId(guide.getId())
+        .language(language)
+        .updatedField(updateField)
+        .guidePlayCount(correspondingContent.getPlayingCount())
+        .guideViewCount(correspondingContent.getViewCount())
         .build();
   }
 }

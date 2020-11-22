@@ -37,6 +37,14 @@ public class AudioGuideLanguageContent extends BaseTimeEntity {
 
     private String playingCount;
 
+    public void updateViewCount(){
+        this.viewCount =  String.valueOf(Long.parseLong(viewCount) + 1L);
+    }
+
+    public void updatePlayingCount(){
+        this.playingCount =  String.valueOf(Long.parseLong(playingCount) + 1L);
+    }
+
     @Builder
     private AudioGuideLanguageContent(Language language, String title, String category,
                                       String overviewDescription, AudioGuide audioGuide,
