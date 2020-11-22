@@ -158,7 +158,7 @@ public class AudioGuideService {
     String languageCategory = null;
 
     if (category.equals(AudioGuideCategory.HISTORY.getQueryName())) {
-      Long[] mainHistoryGuideIds = {7L};
+      Long[] mainHistoryGuideIds = {7L, 15L, 16L, 14L};
       guideList = getAudioGuideItemList(mainHistoryGuideIds, language);
 
       if (language.equals(Language.KOREAN.getVersion())) {
