@@ -5,16 +5,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideCategory;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideCategoryListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideOrderingListDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResSingleAudioGuideDetailDto;
 import team_mic.here_and_there.backend.audio_guide.exception.NoParameterException;
 import team_mic.here_and_there.backend.audio_guide.exception.WrongCategoryException;
 import team_mic.here_and_there.backend.audio_guide.service.AudioGuideService;
-import team_mic.here_and_there.backend.audio_guide.service.AudioTrackService;
 
 @Api(tags = "오디오 가이드 API")
 @RestController
@@ -22,7 +23,16 @@ import team_mic.here_and_there.backend.audio_guide.service.AudioTrackService;
 public class AudioGuideController {
 
   private final AudioGuideService audioGuideService;
-  private final AudioTrackService audioTrackService;
+
+  @GetMapping("/v1/audio-guides/{audio-guide-id:^[0-9]+$}")
+  public ResponseEntity<ResSingleAudioGuideDetailDto> getSingleAudioGuideDetail(
+      @PathVariable(value = "audio-guide-id") Long audioGuideId,
+      @ApiParam(value = "언어버전", required = true, example = "kor")
+      @RequestParam(value = "lan") String language){
+
+    return ResponseEntity.status(HttpStatus.OK).body(
+        audioGuideService.getSingleAudioGuideDetail(audioGuideId, language));
+  }
 
   @ApiOperation(value = "정렬기준(조회수, 재생수, 랜덤)으로 count 개수만큼의 오디오 가이드 리스트 조회",
       notes = "[order param 종류]\n" +
