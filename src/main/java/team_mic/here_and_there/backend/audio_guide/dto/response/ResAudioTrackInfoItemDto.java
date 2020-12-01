@@ -29,23 +29,15 @@ public class ResAudioTrackInfoItemDto {
   @ApiModelProperty(notes = "오디오 트랙 이미지")
   private List<String> images;
 
-  @ApiModelProperty(notes = "오디오 트랙의 위도")
-  private Double trackLatitude;
-
-  @ApiModelProperty(notes = "오디오 트랙의 경도")
-  private Double trackLongitude;
-
   @Builder
   private ResAudioTrackInfoItemDto(Long audioTrackId, String title, String runningTime,
       List<String> images, String audioFileUrl,
-      Integer orderNumber, Double trackLatitude, Double trackLongitude) {
+      Integer orderNumber) {
     this.audioTrackId = audioTrackId;
     this.title = title;
     this.runningTime = runningTime;
     this.images = images;
     this.audioFileUrl = audioFileUrl;
     this.trackOrderNumber = orderNumber;
-    this.trackLatitude = trackLatitude;
-    this.trackLongitude = trackLongitude;
   }
 }

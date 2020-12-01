@@ -54,8 +54,6 @@ public class AudioTrackService {
     return ResAudioTrackInfoItemDto.builder()
         .audioTrackId(track.getId())
         .orderNumber(audioGuideTrackContainer.getOrderNumber())
-        .trackLongitude(track.getLocationLongitude())
-        .trackLatitude(track.getLocationLatitude())
         .images(track.getImages())
         .title(correspondingContent.getTitle())
         .audioFileUrl(correspondingContent.getAudioFileUrl())
