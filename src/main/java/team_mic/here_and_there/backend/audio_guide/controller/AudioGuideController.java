@@ -13,6 +13,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideCategory;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideCategoryListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideDirectionsDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideLocationListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideOrderingListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResPatchedSingleAudioGuideDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResSingleAudioGuideDetailDto;
@@ -26,6 +27,24 @@ import team_mic.here_and_there.backend.audio_guide.service.AudioGuideService;
 public class AudioGuideController {
 
   private final AudioGuideService audioGuideService;
+
+
+  @ApiOperation(value = "지도탭 - 전체 오디오 가이드의 첫 트랙 위경도 리스트 및 가이드 대표 정보 조회",
+      notes = "* 전체 오디오 가이드의 첫 트랙 point 위경도 리스트와 가이드의 대표 정보를 제공합니다.\n"+
+          "[lag param 종류]\n" +
+          "kor : 한국어 버전\n" +
+          "eng : 영어 버전")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK"),
+      @ApiResponse(code = 500, message = "Internal Server Error")
+  })
+  @GetMapping("/v1/audio-guides/map")
+  public ResponseEntity<ResAudioGuideLocationListDto> getAudioGuideLocationList(
+      @ApiParam(value = "언어버전", required = true, example = "kor")
+      @RequestParam(value = "lan") String language) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(audioGuideService.getAudioGuideLocationMap(language));
+  }
 
   @ApiOperation(value = "오디오 가이드 상세 페이지 조회",
       notes = "* 오디오 가이드 id 에 해당하는 상세페이지 정보를 제공합니다.\n"
