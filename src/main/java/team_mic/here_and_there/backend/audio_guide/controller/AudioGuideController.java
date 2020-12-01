@@ -29,7 +29,7 @@ public class AudioGuideController {
   private final AudioGuideService audioGuideService;
 
 
-  @ApiOperation(value = "지도탭 - 전체 오디오 가이드의 첫 트랙 위경도 리스트 및 가이드 대표 정보 조회",
+  @ApiOperation(value = "[지도탭] 전체 오디오 가이드의 첫 트랙 위경도 리스트 및 가이드 대표 정보 조회",
       notes = "* 전체 오디오 가이드의 첫 트랙 point 위경도 리스트와 가이드의 대표 정보를 제공합니다.\n"+
           "[lag param 종류]\n" +
           "kor : 한국어 버전\n" +
@@ -38,7 +38,7 @@ public class AudioGuideController {
       @ApiResponse(code = 200, message = "OK"),
       @ApiResponse(code = 500, message = "Internal Server Error")
   })
-  @GetMapping("/v1/audio-guides/map")
+  @GetMapping("/v1/audio-guides/point-locations")
   public ResponseEntity<ResAudioGuideLocationListDto> getAudioGuideLocationList(
       @ApiParam(value = "언어버전", required = true, example = "kor")
       @RequestParam(value = "lan") String language) {
