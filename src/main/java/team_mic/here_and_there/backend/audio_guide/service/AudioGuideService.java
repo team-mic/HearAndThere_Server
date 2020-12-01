@@ -12,11 +12,15 @@ import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideCategory;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideLanguageContent;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideTrackContainer;
+import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioTrack;
+import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioTrackLanguageContent;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideLanguageContentRepository;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideRepository;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideDirectionsDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideCategoryListDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideLocationItemDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideLocationListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideOrderingListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResDirectionDto;
@@ -348,6 +352,44 @@ public class AudioGuideService {
         .updatedField(updateField)
         .guidePlayCount(correspondingContent.getPlayingCount())
         .guideViewCount(correspondingContent.getViewCount())
+        .build();
+  }
+
+  public ResAudioGuideLocationListDto getAudioGuideLocationMap(String language) {
+    List<AudioGuide> guideList = audioGuideRepository.findAll();
+    List<ResAudioGuideLocationItemDto> locationItemList =
+        guideList.stream()
+            .map(guide -> toLocationItem(guide, language))
+            .collect(Collectors.toList());
+
+    return ResAudioGuideLocationListDto.builder()
+        .language(language)
+        .guideLocationsList(locationItemList)
+        .build();
+  }
+
+  private ResAudioGuideLocationItemDto toLocationItem(AudioGuide guide, String language) {
+    AudioTrack firstTrack = guide.getTracks().iterator().next().getAudioTrack();
+
+    Optional<AudioGuideLanguageContent> languageContent = Optional.empty();
+    for(AudioGuideLanguageContent content : guide.getLanguageContents()){
+      if(content.getLanguage().getVersion().equals(language)){
+        languageContent = Optional.of(content);
+      }
+    }
+
+    AudioGuideLanguageContent correspondingContent = languageContent.orElseThrow(
+        NoSuchElementException::new); //TODO : custom exception
+
+    return ResAudioGuideLocationItemDto.builder()
+        .audioGuideId(guide.getId())
+        .firstTrackLatitude(firstTrack.getLocationLatitude())
+        .firstTrackLongitude(firstTrack.getLocationLongitude())
+        .guideTitle(correspondingContent.getTitle())
+        .guideDistance(guide.getDistance())
+        .guideEstimatedTravelTime(guide.getEstimatedTravelTime())
+        .guideLocation(guide.getLocation())
+        .guideImageUrl(guide.getImages().get(0))
         .build();
   }
 }
