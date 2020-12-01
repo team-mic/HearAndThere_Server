@@ -22,6 +22,7 @@ import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInf
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResDirectionDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResPatchedSingleAudioGuideDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResSingleAudioGuideDetailDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResTrackPointDto;
 import team_mic.here_and_there.backend.audio_guide.exception.NoCorrespondingAudioGuideException;
 import team_mic.here_and_there.backend.common.domain.Language;
 import team_mic.here_and_there.backend.location_tag.domain.entity.AudioGuideTag;
@@ -138,19 +139,29 @@ public class AudioGuideService {
     return audioGuideRepository.findById(audioGuideId)
         .orElseThrow(() -> new NoCorrespondingAudioGuideException());
   }
-  /*
+
   public ResAudioGuideDirectionsDto getAudioGuideDirections(Long audioGuideId) {
     AudioGuide audioGuide = findAudioGuideById(audioGuideId);
     Set<AudioGuideTrackContainer> tracks = audioGuide.getTracks();
+
+    List<ResTrackPointDto> trackPointList = tracks.parallelStream()
+            .map(audioGuideTrackContainer -> ResTrackPointDto.builder()
+            .trackId(audioGuideTrackContainer.getAudioTrack().getId())
+            .trackOrder(audioGuideTrackContainer.getOrderNumber())
+            .trackLatitude(audioGuideTrackContainer.getAudioTrack().getLocationLatitude())
+            .trackLongitude(audioGuideTrackContainer.getAudioTrack().getLocationLongitude())
+            .build())
+        .collect(Collectors.toList());
 
     List<ResDirectionDto> directionsList = directionApiService
         .getTracksPedestrianDirections(tracks);
 
     return ResAudioGuideDirectionsDto.builder()
         .audioGuideId(audioGuideId)
+        .trackPoints(trackPointList)
         .directions(directionsList)
         .build();
-  }*/
+  }
 
   public ResAudioGuideCategoryListDto getAudioGuideCategoryList(String category, String language) {
 

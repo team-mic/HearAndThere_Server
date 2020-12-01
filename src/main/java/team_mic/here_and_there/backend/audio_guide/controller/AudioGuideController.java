@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideCategory;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideCategoryListDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideDirectionsDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideOrderingListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResPatchedSingleAudioGuideDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResSingleAudioGuideDetailDto;
@@ -147,27 +148,27 @@ public class AudioGuideController {
     return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideCategoryList(category, language));
   }
 
-  /*
-  @ApiOperation(value = "오디오 가이드의 트랙들에 대한 Direction 폴리라인 위경도 정보",
-      notes = "오디오 가이드의 Direction 폴리라인 위경도 리스트 정보를 제공합니다.\n "
+
+  @ApiOperation(value = "오디오 가이드의 트랙들에 대한 Point 위경도와 Direction 폴리라인 위경도 정보",
+      notes = "오디오 가이드의 각 트랙 Point 들의 위경도 리스트 정보와 Direction 폴리라인 위경도 리스트 정보를 제공합니다.\n "
           + "path-variable 에 오디오 가이드의 id를 넣어주세요.\n"
-          + "위경도 정보에 대한 폴리라인 list 는 클라이언트 개발의 편의를 위해 [ {A점 위도, A점 경도}, {B점 위도, B점 경도}, {B점 위도, B점 경도}, {C점 위도, C점 경도}, {C점 위도, C점 경도},{D점 위도, D점 경도}...] 와 같은 형식의 포맷입니다.\n"
-          + "현재 DB에 저장된 오디오 가이드의 id는 1~9까지 존재합니다.\n"
-          + "For Test Application : **북촌 가이드의 id는 9입니다. 북촌 가이드의 경우에만 테스트가 가능합니다.**")
+          + "위경도 정보에 대한 폴리라인 list 는 클라이언트 개발의 편의를 위해 [ {A점 위도, A점 경도}, {B점 위도, B점 경도}, {B점 위도, B점 경도}, {C점 위도, C점 경도}, {C점 위도, C점 경도},{D점 위도, D점 경도}...] 와 같은 형식의 포맷입니다.\n")
   @ApiImplicitParam(name = "audio-guide-id", value = "오디오 가이드의 id", required = true,
-      dataType = "Long", paramType = "path", defaultValue = "9"
+      dataType = "Long", paramType = "path", defaultValue = "1"
   )
   @ApiResponses({
       @ApiResponse(code = 200, message = "OK"),
       @ApiResponse(code = 500, message = "Internal Server Error"),
       @ApiResponse(code = 404, message = "No corresponding Audio guide Data in DB")
   })
-  @GetMapping("/audio-guides/{audio-guide-id:^[0-9]+$}/directions")
+  @GetMapping("/v1/audio-guides/{audio-guide-id:^[0-9]+$}/directions")
   public ResponseEntity<ResAudioGuideDirectionsDto> getAudioGuideDirections(
       @PathVariable(value = "audio-guide-id") Long audioGuideId) {
     return ResponseEntity.status(HttpStatus.OK)
         .body(audioGuideService.getAudioGuideDirections(audioGuideId));
   }
+
+  /*
 
   @ApiOperation(value = "사용자 위치(위도,경도) 기반 반경 내 오디오 트랙의 정보",
       notes = "사용자의 위도,경도를 기준으로 반경 50m 이내에 존재하는 트랙의 정보를 제공합니다.\n "
