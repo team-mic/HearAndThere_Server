@@ -182,7 +182,7 @@ public class AudioGuideController {
   })
   @GetMapping("/v1/audio-guides/{audio-guide-id:^[0-9]+$}/directions")
   public ResponseEntity<ResAudioGuideDirectionsDto> getAudioGuideDirections(
-      @PathVariable(value = "audio-guide-id") Long audioGuideId) {
+      @PathVariable(value = "audio-guide-id") Long audioGuideId) throws InterruptedException {
     return ResponseEntity.status(HttpStatus.OK)
         .body(audioGuideService.getAudioGuideDirections(audioGuideId));
   }

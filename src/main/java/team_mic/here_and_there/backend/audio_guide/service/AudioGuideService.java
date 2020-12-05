@@ -144,7 +144,8 @@ public class AudioGuideService {
         .orElseThrow(() -> new NoCorrespondingAudioGuideException());
   }
 
-  public ResAudioGuideDirectionsDto getAudioGuideDirections(Long audioGuideId) {
+  public ResAudioGuideDirectionsDto getAudioGuideDirections(Long audioGuideId)
+      throws InterruptedException {
     AudioGuide audioGuide = findAudioGuideById(audioGuideId);
     Set<AudioGuideTrackContainer> tracks = audioGuide.getTracks();
 

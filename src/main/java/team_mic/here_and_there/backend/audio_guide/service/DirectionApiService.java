@@ -1,7 +1,6 @@
 package team_mic.here_and_there.backend.audio_guide.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -16,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-import team_mic.here_and_there.backend.attraction.dto.response.AreaCodeAndNameListDto;
-import team_mic.here_and_there.backend.attraction.dto.response.TourApiBaseResModelDto;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideTrackContainer;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioTrack;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResDirectionDto;
@@ -43,7 +40,8 @@ public class DirectionApiService {
     this.restTemplate = restTemplateBuilder.build();
   }
 
-  public List<ResDirectionDto> getTracksPedestrianDirections(Set<AudioGuideTrackContainer> tracks) {
+  public List<ResDirectionDto> getTracksPedestrianDirections(Set<AudioGuideTrackContainer> tracks)
+      throws InterruptedException {
 
     Integer trackSize = tracks.size();
     Integer maxStopoverRequestCount = trackSize / MAX_STOPOVER_CONTAINS_START_AND_END_POINT;
@@ -51,13 +49,13 @@ public class DirectionApiService {
         trackSize - (1 + (MAX_STOPOVER_CONTAINS_START_AND_END_POINT - 1) * maxStopoverRequestCount)
             + 1;
 
-    UriComponentsBuilder builder = createBaseUriBuilder(PEDESTRIAN_DIRECTIONS_URI_PATH);
     Iterator<AudioGuideTrackContainer> tracksIterator = tracks.iterator();
     AudioTrack startTrack = tracksIterator.next().getAudioTrack();
     List<ResDirectionDto> directionList = new ArrayList<>();
 
     //max stopover request
     for (int requestCount = 0; requestCount < maxStopoverRequestCount; requestCount++) {
+      UriComponentsBuilder builder = createBaseUriBuilder(PEDESTRIAN_DIRECTIONS_URI_PATH);
 
       builder.queryParam("startX", startTrack.getLocationLongitude())
           .queryParam("startY", startTrack.getLocationLatitude());
@@ -77,23 +75,22 @@ public class DirectionApiService {
 
     //final remaining request
     if (remainingStopoverFinalRequestTrackCount != 1) {
+      Thread.sleep(500);
       UriComponentsBuilder finalBuilder = createBaseUriBuilder(PEDESTRIAN_DIRECTIONS_URI_PATH);
 
       finalBuilder.queryParam("startX", startTrack.getLocationLongitude())
           .queryParam("startY", startTrack.getLocationLatitude());
 
-      if(remainingStopoverFinalRequestTrackCount != 2){
-        finalBuilder.queryParam("passList",
+      finalBuilder.queryParam("passList",
             getPassListOfStops(tracksIterator, remainingStopoverFinalRequestTrackCount - 2));
-      }
 
       AudioTrack endTrack = tracksIterator.next().getAudioTrack();
-
       finalBuilder.queryParam("endX", endTrack.getLocationLongitude())
           .queryParam("endY", endTrack.getLocationLatitude());
 
       TmapApiBaseResModelDto modelDto = callPedestrianDirectionsApi(finalBuilder.build());
       getCoordinatesDirectionList(modelDto, directionList);
+      System.out.println("final list size:"+ directionList.size());
     }
 
     return directionList;
@@ -104,10 +101,7 @@ public class DirectionApiService {
     modelDto.getFeatureList().forEach(feature -> {
       Geometry geometry = feature.getGeometry();
       if(geometry.getType().equals("LineString")){
-        System.out.println("linestring");
         geometry.getCoordinates().forEach(coordinate -> {
-          System.out.println(coordinate.toString());
-          System.out.println(coordinate.getClass());
           Double longitude = ((List<Double>)coordinate).get(0);
           Double latitude = ((List<Double>)coordinate).get(1);
           System.out.println("Lon:"+longitude+"lat:"+latitude);
@@ -122,7 +116,7 @@ public class DirectionApiService {
 
   private TmapApiBaseResModelDto callPedestrianDirectionsApi(UriComponents components) {
     HttpEntity<?> httpEntity = createHttpEntityHeader();
-
+    System.out.println("uri: "+components.toUriString());
     return restTemplate.exchange(components.toUriString(), HttpMethod.POST, httpEntity,
         new ParameterizedTypeReference<TmapApiBaseResModelDto>() {
         }).getBody();
@@ -130,6 +124,9 @@ public class DirectionApiService {
 
   private String getPassListOfStops(Iterator<AudioGuideTrackContainer> tracksIterator,
       Integer stopsCount) {
+
+    if(stopsCount == 0) return null;
+
     StringBuilder builder = new StringBuilder();
 
     for (int stopCount = 0; stopCount < stopsCount; stopCount++) {
@@ -148,6 +145,8 @@ public class DirectionApiService {
     HttpHeaders headers = new HttpHeaders();
     headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
     headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+    headers.set(HttpHeaders.HOST, "apis.openapi.sk.com");
+    headers.add(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
     headers.set(APP_KEY, appKey);
     return new HttpEntity<>(headers);
   }
@@ -157,6 +156,7 @@ public class DirectionApiService {
     return UriComponentsBuilder.fromHttpUrl(tmapApiUrl + appendUrl)
         .queryParam("version", "1")
         .queryParam("reqCoordType", "WGS84GEO")
+        .queryParam("resCoordType", "WGS84GEO")
         .queryParam("startName", "출발지")
         .queryParam("endName", "목적지");
   }
