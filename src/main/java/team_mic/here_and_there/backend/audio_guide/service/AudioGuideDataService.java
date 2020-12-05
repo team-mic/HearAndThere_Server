@@ -808,8 +808,8 @@ public class AudioGuideDataService {
                 .build());
 
         AudioTrack track2 = audioTrackRepository.save(AudioTrack.builder()
-                .locationLongitude(126.942139)
-                .locationLatitude(37.513502)
+                .locationLongitude(127.002798)
+                .locationLatitude(37.580380)
                 .images(new ArrayList<String>() {{
                     add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_tracks/images/Daehak-Ro/2-1.png");
                     add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_tracks/images/Daehak-Ro/2-2.png");

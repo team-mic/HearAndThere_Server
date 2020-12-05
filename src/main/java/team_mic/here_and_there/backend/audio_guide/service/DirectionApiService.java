@@ -82,8 +82,10 @@ public class DirectionApiService {
       finalBuilder.queryParam("startX", startTrack.getLocationLongitude())
           .queryParam("startY", startTrack.getLocationLatitude());
 
-      finalBuilder.queryParam("passList",
-          getPassListOfStops(tracksIterator, remainingStopoverFinalRequestTrackCount - 2));
+      if(remainingStopoverFinalRequestTrackCount != 2){
+        finalBuilder.queryParam("passList",
+            getPassListOfStops(tracksIterator, remainingStopoverFinalRequestTrackCount - 2));
+      }
 
       AudioTrack endTrack = tracksIterator.next().getAudioTrack();
 
@@ -137,7 +139,6 @@ public class DirectionApiService {
           .append(track.getLocationLatitude().toString())
           .append("_");
     }
-
     String passList = builder.toString();
 
     return passList.substring(0, passList.length() - 1);
