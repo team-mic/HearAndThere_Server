@@ -1,6 +1,7 @@
 package team_mic.here_and_there.backend.attraction.controller;
 
 import io.swagger.annotations.*;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.language.bm.Lang;
 import org.springframework.http.HttpStatus;
@@ -74,7 +75,7 @@ public class AttractionController {
   @ApiOperation(value = "지역별 관광지 리스트",
       notes = "지역코드, 시군구코드에 해당하는 tour api 지역별 관광지 리스트를 제공합니다.\n"
           + "[param]"
-          + "* page-number : (required) 페이지네이션을 제공합니다. 원하는 페이지 번호를 입력해주세요.\n"
+          + "* page-number : (required) 페이지네이션을 제공합니다. 원하는 페이지 번호를 입력해주세요.마지막 페이지를 초과했다면 attractionsList 에 빈 리스트[] 가 들어갑니다.\n"
           + "* page-size : 한 페이지 당 관광지 데이터의 개수를 설정할 수 있습니다. 요청하지 않을 경우, 디폴트는 30 개 입니다.\n"
           + "* area-code : (required) 지역 코드입니다. 지역코드에 대한 리스트는 /tourist-areas 에서 알 수 있습니다.\n"
           + "* sigungu-area-code : 시군구 코드 입니다. 시군구 코드가 없는 경우, 요청할 필요는 없습니다. 시군구코드에 대한 리스트는 /tourist-areas 에서 알 수 있습니다.\n"
@@ -98,7 +99,7 @@ public class AttractionController {
       @RequestParam(value = "area-code") Integer areaCode,
       @ApiParam(value = "지역 시군구코드(optional)", example = "1")
       @RequestParam(value = "sigungu-area-code", required = false) Integer sigunguAreaCode)
-      throws UnsupportedEncodingException {
+      throws IOException {
 
     if (!language.equals(Language.KOREAN.getVersion()) && !language.equals(Language.ENGLISH.getVersion())) {
       throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
