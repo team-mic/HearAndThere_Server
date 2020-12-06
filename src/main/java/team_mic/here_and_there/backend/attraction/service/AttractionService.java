@@ -6,6 +6,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.language.bm.Lang;
+import org.omg.CORBA.INTERNAL;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,6 +17,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+import team_mic.here_and_there.backend.attraction.domain.entity.TouristArea;
 import team_mic.here_and_there.backend.attraction.domain.repository.TouristAreaRepository;
 import team_mic.here_and_there.backend.attraction.dto.response.AreaCodeAndNameListDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResMainFixedAttractionListDto;
@@ -35,58 +38,23 @@ public class AttractionService {
 
   private final RestTemplate restTemplate;
 
-  @Value("${tour.api.url}")
-  private String tourApiUrl;
+  @Autowired
+  private TouristAreaService touristAreaService;
 
-  @Value("${tour.api.serviceKey}")
-  private String serviceKey;
+  @Value("${tour.api.url.kor}")
+  private String korTourApiUrl;
+
+  @Value("${tour.api.url.eng}")
+  private String engTourApiUrl;
+
+  @Value("${tour.api.serviceKey.kor}")
+  private String korServiceKey;
+
+  @Value("${tour.api.serviceKey.eng}")
+  private String engServiceKey;
 
   public AttractionService(RestTemplateBuilder restTemplateBuilder) {
     this.restTemplate = restTemplateBuilder.build();
-  }
-
-  public ResAreaAttractionsListDto getAreaAttractions(Integer areaCode)
-      throws UnsupportedEncodingException {
-
-    if (isInvalidAreaCode(areaCode)) {
-      throw new InvalidAreaCodeException();
-    }
-
-    UriComponentsBuilder builder = createBaseUriBuilder("/areaBasedList");
-
-    UriComponents components = builder.queryParam("contentTypeId", 76)
-        .queryParam("areaCode", areaCode)
-        .queryParam("sigunguCode")
-        .queryParam("cat1")
-        .queryParam("cat2")
-        .queryParam("cat3")
-        .queryParam("listYN", "Y")
-        .queryParam("arrange", "A")
-        .queryParam("numOfRows", 10)
-        .queryParam("pageNo", 1)
-        .build(false);
-
-    HttpEntity<?> httpEntity = createHttpEntityHeader();
-
-    TourApiBaseResModelDto<ResAreaAttractionsListDto> modelDto =
-        restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
-            new ParameterizedTypeReference<TourApiBaseResModelDto<ResAreaAttractionsListDto>>() {
-            }).getBody();
-
-    ResAreaAttractionsListDto listDto = modelDto.getResponse().getBody().getItems();
-
-    String areaName = getAreaNameFromAreaCode(areaCode);
-
-    listDto.getAttractionList()
-        .forEach(resAreaAttractionItemDto -> resAreaAttractionItemDto.setAreaName(areaName));
-
-    return listDto;
-  }
-
-  private boolean isInvalidAreaCode(Integer areaCode) {
-    return !new ArrayList<>(
-        Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 31, 32, 33, 34, 35, 36, 37, 38, 39))
-        .contains(areaCode);
   }
 
   private HttpEntity<?> createHttpEntityHeader() {
@@ -96,16 +64,27 @@ public class AttractionService {
     return new HttpEntity<>(headers);
   }
 
-  private UriComponentsBuilder createBaseUriBuilder(String appendUrl)
+  private UriComponentsBuilder createBaseUriBuilder(String language, String appendUrl)
       throws UnsupportedEncodingException {
+    String baseUrl = null;
+    String serviceKey = null;
 
-    return UriComponentsBuilder.fromHttpUrl(tourApiUrl + appendUrl)
+    if (language.equals(Language.KOREAN.getVersion())) {
+      baseUrl = korTourApiUrl;
+      serviceKey = korServiceKey;
+    }
+    if (language.equals(Language.ENGLISH.getVersion())) {
+      baseUrl = engTourApiUrl;
+      serviceKey = engServiceKey;
+    }
+
+    return UriComponentsBuilder.fromHttpUrl(baseUrl + appendUrl)
         .queryParam("ServiceKey", URLDecoder.decode(serviceKey, "UTF-8"))
         .queryParam("MobileOS", "ETC")
         .queryParam("MobileApp", "HearAndThere")
         .queryParam("_type", "json");
   }
-
+/*
   private String getAreaNameFromAreaCode(Integer areaCode) throws UnsupportedEncodingException {
 
     UriComponentsBuilder builder = createBaseUriBuilder("/areaCode");
@@ -129,8 +108,9 @@ public class AttractionService {
         .getAreaName();
 
     return areaName;
-  }
+  }*/
 
+  /*
   public ResMainFixedAttractionListDto getFixedMainAttractionList(String area, String language) {
     if (language.equals(Language.KOREAN.getVersion())) {
       if (area.equals("seoul")) {
@@ -213,5 +193,47 @@ public class AttractionService {
         .attractionItemList(itemList)
         .language(language.getVersion())
         .build();
+  }
+  */
+
+
+  public ResAreaAttractionsListDto getAreaAttractionsList(Integer areaCode, Integer sigunguAreaCode,
+      Integer pageNumber, Integer pageSize, String language)
+      throws UnsupportedEncodingException {
+
+    if(!touristAreaService.isValidAreaCode(areaCode, sigunguAreaCode)){
+      throw new HttpClientErrorException(HttpStatus.BAD_REQUEST); // TODO : custom exception
+    }
+
+    UriComponentsBuilder builder = createBaseUriBuilder(language, "/areaBasedList");
+
+    UriComponents components = builder
+        .queryParam("areaCode", areaCode)
+        .queryParam("sigunguCode", sigunguAreaCode)
+        .queryParam("listYN", "Y")
+        .queryParam("arrange", "P")
+        .queryParam("numOfRows", pageSize)
+        .queryParam("pageNo", pageNumber)
+        .build(false);
+
+    HttpEntity<?> httpEntity = createHttpEntityHeader();
+
+    TourApiBaseResModelDto<ResAreaAttractionsListDto> modelDto =
+        restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
+            new ParameterizedTypeReference<TourApiBaseResModelDto<ResAreaAttractionsListDto>>() {
+            }).getBody();
+
+    ResAreaAttractionsListDto listDto = modelDto.getResponse().getBody().getItems();
+
+    TouristArea area = touristAreaService.getTouristArea(language, areaCode, sigunguAreaCode);
+    listDto.setAreaName(area.getAreaName());
+    listDto.setAreaMainImageUrl(area.getThumbnailImage());
+    listDto.setLanguage(language);
+    listDto.setAreaCode(areaCode);
+    listDto.setListOrder("popular");
+    listDto.setSigunguAreaCode(sigunguAreaCode);
+    listDto.setPageNumber(pageNumber);
+
+    return listDto;
   }
 }
