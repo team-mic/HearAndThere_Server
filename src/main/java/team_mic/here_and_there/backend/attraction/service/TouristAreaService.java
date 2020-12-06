@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.language.bm.Lang;
 import org.springframework.stereotype.Service;
 import team_mic.here_and_there.backend.attraction.domain.entity.TouristArea;
 import team_mic.here_and_there.backend.attraction.domain.repository.TouristAreaRepository;
@@ -49,5 +50,33 @@ public class TouristAreaService {
         .sigunguAreaCode(area.getSigunguCode())
         .areaThumbnailImageUrl(area.getThumbnailImage())
         .build();
+  }
+
+  public TouristArea getTouristArea(String languageVersion, Integer areaCode, Integer sigunguAreaCode) {
+    TouristArea touristArea;
+    Language language= null;
+
+    if(languageVersion.equals(Language.KOREAN.getVersion())){
+      language = Language.KOREAN;
+    }
+    if(languageVersion.equals(Language.ENGLISH.getVersion())){
+      language = Language.ENGLISH;
+    }
+
+    if(sigunguAreaCode==null){
+      touristArea = touristAreaRepository.findByAreaCodeAndLanguage(areaCode, language)
+              .orElseThrow(NoSuchElementException::new);
+    }else{
+      touristArea = touristAreaRepository.findByAreaCodeAndSigunguCodeAndLanguage(areaCode, sigunguAreaCode, language)
+          .orElseThrow(NoSuchElementException::new);
+    }
+    return touristArea;
+  }
+
+  public boolean isValidAreaCode(Integer areaCode, Integer sigunguAreaCode) {
+    if(sigunguAreaCode == null){
+      return touristAreaRepository.existsByAreaCode(areaCode);
+    }
+    return touristAreaRepository.existsByAreaCodeAndSigunguCode(areaCode, sigunguAreaCode);
   }
 }

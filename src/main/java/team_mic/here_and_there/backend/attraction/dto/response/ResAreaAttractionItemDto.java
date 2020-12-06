@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonPropertyOrder({"attractionContentId", "attractionContentTypeId", "title", "areaName", "imageUrl"})
+@JsonPropertyOrder({"attractionContentId", "attractionContentTypeId", "title", "imageUrl"})
 public class ResAreaAttractionItemDto {
 
   @ApiModelProperty(notes = "관광명소 content id")
@@ -19,9 +19,6 @@ public class ResAreaAttractionItemDto {
 
   @ApiModelProperty(notes = "관광명소 content type id")
   private Long attractionContentTypeId;
-
-  @ApiModelProperty(notes = "관광명소의 지역명", required = true)
-  private String areaName;
 
   @ApiModelProperty(notes = "관광명소의 대표 이미지")
   private String imageUrl;
@@ -59,9 +56,4 @@ public class ResAreaAttractionItemDto {
   public Long getAttractionContentTypeId() {
     return this.attractionContentTypeId;
   }
-
-  public void setAreaName(String areaName) {
-    this.areaName = areaName;
-  }
-
 }
