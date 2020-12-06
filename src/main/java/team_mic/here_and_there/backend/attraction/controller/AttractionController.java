@@ -91,7 +91,7 @@ public class AttractionController {
   })
   @GetMapping("/v1/attractions/detail")
   public ResponseEntity<ResAttractionsDetailDto> getAttractionDetail(
-      @ApiParam(value = "언어버전", required = true, example = "kor")
+      @ApiParam(value = "언어버전", required = true, example = "eng")
       @RequestParam(value = "lan") String language,
       @ApiParam(value = "관광지 content id", required = true, example = "1326972")
       @RequestParam(value = "content-id") Long contentId,
