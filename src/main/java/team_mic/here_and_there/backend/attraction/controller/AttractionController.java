@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpClientErrorException.BadRequest;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAreaAttractionsListDto;
+import team_mic.here_and_there.backend.attraction.dto.response.ResAttractionsDetailDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResMainFixedAttractionListDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResTouristAreaListDto;
 import team_mic.here_and_there.backend.attraction.exception.NoAreaCodeParameterException;
@@ -71,6 +72,40 @@ public class AttractionController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(attractionService.getFixedMainAttractionList(area, language));
   }*/
+
+  @ApiOperation(value = "관광지 상세 페이지 조회",
+      notes = "* content-id, content-type-id 에 해당하는 관광지의 상세 페이지를 조회합니다.\n"
+          +"* 제공되는 정보\n"
+          + "1. detailCommonInfo : 모든 관광지들이 공통적으로 가지고 있는 기본 정보\n"
+          + "2. detailIntroductionInfo : content-type-id 에 따라서 개별적으로 tour api 에서 제공하는 정보.(content-type-id 에 따라 필드가 달라집니다. 제공되는 필드 정보는 https://github.com/team-mic/HearAndThere_Server/issues/58 에서 확인 가능합니다.)"
+          + "3. imagesList : tour api 에서 제공하는 관광지 이미지 + 기획상 추가된 관광지 이미지\n"
+          + "4. hasRelatedAudioGuides : 관광지와 연결된 추천 오디오 가이드의 존재여부\n"
+          + "5. relatedAudioGuidesCount : 관광지와 연결된 추천 오디오 가이드 개수\n"
+          + "6. relatedAudioGuideLists : 관광지와 연결된 추천 오디오 가이드 정보 리스트\n"
+          + "[lag param 종류]\n" +
+          "kor : 한국어 버전\n" +
+          "eng : 영어 버전")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK", response = ResAttractionsDetailDto.class),
+      @ApiResponse(code = 500, message = "Internal Server Error"),
+  })
+  @GetMapping("/v1/attractions/detail")
+  public ResponseEntity<ResAttractionsDetailDto> getAttractionDetail(
+      @ApiParam(value = "언어버전", required = true, example = "kor")
+      @RequestParam(value = "lan") String language,
+      @ApiParam(value = "관광지 content id", required = true, example = "1326972")
+      @RequestParam(value = "content-id") Long contentId,
+      @ApiParam(value = "관광지 content type id", required = true, example = "76")
+      @RequestParam(value = "content-type-id") Integer contentTypeId)
+      throws UnsupportedEncodingException {
+
+    if (!language.equals(Language.KOREAN.getVersion()) && !language.equals(Language.ENGLISH.getVersion())) {
+      throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+    }
+
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(attractionService.getAttractionDetail(contentId, contentTypeId, language));
+  }
 
   @ApiOperation(value = "지역별 관광지 리스트",
       notes = "지역코드, 시군구코드에 해당하는 tour api 지역별 관광지 리스트를 제공합니다.\n"

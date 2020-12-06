@@ -105,7 +105,7 @@ public class AudioGuideService {
         .build();
   }
 
-  private ResAudioGuideItemDto toAudioGuideItem(AudioGuide audioGuide, String language) {
+  public ResAudioGuideItemDto toAudioGuideItem(AudioGuide audioGuide, String language) {
 
     Set<AudioGuideLanguageContent> languageContentSet = audioGuide.getLanguageContents();
     Optional<AudioGuideLanguageContent> languageContent = Optional.empty();
