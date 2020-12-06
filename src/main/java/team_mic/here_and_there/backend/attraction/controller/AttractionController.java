@@ -86,7 +86,7 @@ public class AttractionController {
           "kor : 한국어 버전\n" +
           "eng : 영어 버전")
   @ApiResponses({
-      @ApiResponse(code = 200, message = "OK", response = ResAreaAttractionsListDto.class),
+      @ApiResponse(code = 200, message = "OK", response = ResAttractionsDetailDto.class),
       @ApiResponse(code = 500, message = "Internal Server Error"),
   })
   @GetMapping("/v1/attractions/detail")
