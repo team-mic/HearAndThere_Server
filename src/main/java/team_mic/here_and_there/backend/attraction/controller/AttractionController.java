@@ -77,7 +77,7 @@ public class AttractionController {
       notes = "* content-id, content-type-id 에 해당하는 관광지의 상세 페이지를 조회합니다.\n"
           +"* 제공되는 정보\n"
           + "1. detailCommonInfo : 모든 관광지들이 공통적으로 가지고 있는 기본 정보\n"
-          + "2. detailIntroductionInfo : content-type-id 에 따라서 개별적으로 tour api 에서 제공하는 정보.(content-type-id 에 따라 필드가 달라집니다. 제공되는 필드 정보는 https://github.com/team-mic/HearAndThere_Server/issues/58 에서 확인 가능합니다.)"
+          + "2. detailIntroductionInfo : content-type-id 에 따라서 개별적으로 tour api 에서 제공하는 정보.(content-type-id 에 따라 필드가 달라집니다. 제공되는 필드 정보는 https://github.com/team-mic/HearAndThere_Server/issues/58 에서 확인 가능합니다.)\n"
           + "3. imagesList : tour api 에서 제공하는 관광지 이미지 + 기획상 추가된 관광지 이미지\n"
           + "4. hasRelatedAudioGuides : 관광지와 연결된 추천 오디오 가이드의 존재여부\n"
           + "5. relatedAudioGuidesCount : 관광지와 연결된 추천 오디오 가이드 개수\n"
