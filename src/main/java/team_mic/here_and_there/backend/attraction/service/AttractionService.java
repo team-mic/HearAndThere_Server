@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -18,7 +20,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-import sun.awt.image.ImageWatched.Link;
 import team_mic.here_and_there.backend.attraction.domain.entity.TouristArea;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAttractionDetailCommonDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAttractionDetailImageListDto;
@@ -256,7 +257,11 @@ public class AttractionService {
     ResAttractionDetailCommonDto detailCommonDto= getDetailCommon(contentId, contentTypeId, language);
 
     LinkedHashMap<String, Object> detailIntroMap = getDetailIntroMap(contentId, contentTypeId, language);
+
     List<String> images = getAttractionDetailImages(contentId, contentTypeId, language);
+    if(detailCommonDto.getImage() != null){
+      images.add(detailCommonDto.getImage());
+    }
 
     Set<AudioGuide> guides = new HashSet<>();
     Set<AudioCourseElement> relatedCourses = audioCourseService.getRelatedCourse(contentId, contentTypeId, language);
@@ -308,9 +313,6 @@ public class AttractionService {
 
       detailImages.addAll(images);
     }
-
-
-
     return detailImages;
   }
 
@@ -333,6 +335,12 @@ public class AttractionService {
     detailIntroMap.remove("contentid");
     detailIntroMap.remove("contenttypeid");
 
+    for(Entry<String, Object> entry : detailIntroMap.entrySet()){
+      if(entry.getValue().getClass() == String.class){
+        detailIntroMap.put(entry.getKey(), parseHtmlToPlainText((String) entry.getValue()));
+      }
+    }
+
     return detailIntroMap;
   }
 
@@ -346,14 +354,28 @@ public class AttractionService {
         .queryParam("addrinfoYN", "Y")
         .queryParam("mapinfoYN", "Y")
         .queryParam("overviewYN", "Y")
+        .queryParam("firstImageYN", "Y")
         .build(false);
 
     HttpEntity<?> httpEntity = createHttpEntityHeader();
-    TourApiBaseResModelDto<ResAttractionsDetailDto> detailCommonDto =
+    TourApiBaseResModelDto<ResAttractionsDetailDto> modelDto =
         restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
             new ParameterizedTypeReference<TourApiBaseResModelDto<ResAttractionsDetailDto>>() {
             }).getBody();
 
-    return detailCommonDto.getResponse().getBody().getItems().getDetailCommonInfo();
+    ResAttractionDetailCommonDto detailCommonDto = modelDto.getResponse().getBody().getItems().getDetailCommonInfo();
+
+    if(detailCommonDto.getHomepage() != null){
+      detailCommonDto.setHomepage(parseHtmlToPlainText(detailCommonDto.getHomepage()));
+    }
+    if (detailCommonDto.getOverview() != null) {
+      detailCommonDto.setOverview(parseHtmlToPlainText(detailCommonDto.getOverview()));
+    }
+
+    return detailCommonDto;
+  }
+
+  private String parseHtmlToPlainText(String htmlString){
+    return Jsoup.parse(htmlString).wholeText();
   }
 }
