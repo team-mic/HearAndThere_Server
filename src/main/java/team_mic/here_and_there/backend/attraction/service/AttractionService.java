@@ -3,6 +3,11 @@ package team_mic.here_and_there.backend.attraction.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -13,12 +18,21 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+import sun.awt.image.ImageWatched.Link;
 import team_mic.here_and_there.backend.attraction.domain.entity.TouristArea;
+import team_mic.here_and_there.backend.attraction.dto.response.ResAttractionDetailCommonDto;
+import team_mic.here_and_there.backend.attraction.dto.response.ResAttractionDetailImageListDto;
+import team_mic.here_and_there.backend.attraction.dto.response.ResAttractionsDetailDto;
 import team_mic.here_and_there.backend.attraction.dto.response.TourApiBaseResModelDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAreaAttractionsListDto;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import team_mic.here_and_there.backend.audio_course.domain.entity.AudioCourseElement;
+import team_mic.here_and_there.backend.audio_course.service.AudioCourseService;
+import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideItemDto;
+import team_mic.here_and_there.backend.audio_guide.service.AudioGuideService;
 import team_mic.here_and_there.backend.common.domain.Language;
 
 @Service
@@ -30,6 +44,10 @@ public class AttractionService {
   private TouristAreaService touristAreaService;
   @Autowired
   private ObjectMapper mapper;
+  @Autowired
+  private AudioCourseService audioCourseService;
+  @Autowired
+  private AudioGuideService audioGuideService;
 
   @Value("${tour.api.url.kor}")
   private String korTourApiUrl;
@@ -214,7 +232,7 @@ public class AttractionService {
 
     ResAreaAttractionsListDto listDto = new ResAreaAttractionsListDto();
 
-    if(modelDto.getResponse().getBody().getItems().getClass()==String.class){ //for last page
+    if(modelDto.getResponse().getBody().getItems().getClass() == String.class){ //for last page
       listDto.setAttractionList(new ArrayList<>());
     }else{
       listDto = mapper.convertValue(modelDto.getResponse().getBody().getItems(), ResAreaAttractionsListDto.class);
@@ -230,5 +248,112 @@ public class AttractionService {
     listDto.setPageNumber(pageNumber);
 
     return listDto;
+  }
+
+  public ResAttractionsDetailDto getAttractionDetail(Long contentId, Integer contentTypeId, String language)
+      throws UnsupportedEncodingException {
+
+    ResAttractionDetailCommonDto detailCommonDto= getDetailCommon(contentId, contentTypeId, language);
+
+    LinkedHashMap<String, Object> detailIntroMap = getDetailIntroMap(contentId, contentTypeId, language);
+    List<String> images = getAttractionDetailImages(contentId, contentTypeId, language);
+
+    Set<AudioGuide> guides = new HashSet<>();
+    Set<AudioCourseElement> relatedCourses = audioCourseService.getRelatedCourse(contentId, contentTypeId, language);
+    relatedCourses.forEach(audioCourseElement -> {
+      audioCourseElement.getGuides()
+          .forEach(audioGuideCourse -> guides.add(audioGuideCourse.getAudioGuide()));
+
+      images.addAll(audioCourseElement.getImages());
+    });
+
+    List<ResAudioGuideItemDto> relatedGuidesList = guides.stream()
+        .map(guide -> audioGuideService.toAudioGuideItem(guide, language))
+        .collect(Collectors.toList());
+
+    return ResAttractionsDetailDto.builder()
+        .contentId(contentId)
+        .contentTypeId(contentTypeId)
+        .language(language)
+        .detailCommonInfo(detailCommonDto)
+        .detailIntroductionInfo(detailIntroMap)
+        .hasRelatedAudioGuides(guides.size()!=0 ? true : false)
+        .relatedAudioGuidesCount(guides.size())
+        .relatedAudioGuideLists(relatedGuidesList)
+        .imagesList(images)
+        .build();
+  }
+
+  private List<String> getAttractionDetailImages(Long contentId, Integer contentTypeId,
+      String language) throws UnsupportedEncodingException {
+    List<String> detailImages = new ArrayList<>();
+
+    UriComponents components = createBaseUriBuilder(language, "/detailImage")
+        .queryParam("contentId", contentId)
+        .queryParam("contentTypeId", contentTypeId)
+        .queryParam("imageYN", "Y")
+        .build(false);
+
+    HttpEntity<?> httpEntity = createHttpEntityHeader();
+    TourApiBaseResModelDto<?> modelDto =
+        restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
+            new ParameterizedTypeReference<TourApiBaseResModelDto<?>>() {
+            }).getBody();
+
+    if(modelDto.getResponse().getBody().getItems().getClass()!=String.class){
+      ResAttractionDetailImageListDto imageListDto = mapper.convertValue(modelDto.getResponse().getBody().getItems(), ResAttractionDetailImageListDto.class);
+      List<String> images = imageListDto.getImageList().stream()
+          .map(imageItemDto -> imageItemDto.getImage())
+          .collect(Collectors.toList());
+
+      detailImages.addAll(images);
+    }
+
+
+
+    return detailImages;
+  }
+
+  private LinkedHashMap<String, Object> getDetailIntroMap(Long contentId, Integer contentTypeId,
+      String language) throws UnsupportedEncodingException {
+    UriComponents components = createBaseUriBuilder(language, "/detailIntro")
+        .queryParam("contentId", contentId)
+        .queryParam("contentTypeId", contentTypeId)
+        .build(false);
+
+    HttpEntity<?> httpEntity = createHttpEntityHeader();
+    TourApiBaseResModelDto<LinkedHashMap> modelDto =
+        restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
+            new ParameterizedTypeReference<TourApiBaseResModelDto<LinkedHashMap>>() {
+            }).getBody();
+
+    LinkedHashMap<String, Object> detailIntroMap =
+        mapper.convertValue(modelDto.getResponse().getBody()
+            .getItems().get("item"), LinkedHashMap.class);
+    detailIntroMap.remove("contentid");
+    detailIntroMap.remove("contenttypeid");
+
+    return detailIntroMap;
+  }
+
+  private ResAttractionDetailCommonDto getDetailCommon(Long contentId, Integer contentTypeId,
+      String language) throws UnsupportedEncodingException {
+
+    UriComponents components = createBaseUriBuilder(language, "/detailCommon")
+        .queryParam("contentId", contentId)
+        .queryParam("contentTypeId", contentTypeId)
+        .queryParam("defaultYN", "Y")
+        .queryParam("addrinfoYN", "Y")
+        .queryParam("mapinfoYN", "Y")
+        .queryParam("overviewYN", "Y")
+        .build(false);
+
+    HttpEntity<?> httpEntity = createHttpEntityHeader();
+    TourApiBaseResModelDto<ResAttractionsDetailDto> detailCommonDto =
+        restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
+            new ParameterizedTypeReference<TourApiBaseResModelDto<ResAttractionsDetailDto>>() {
+            }).getBody();
+
+    return detailCommonDto.getResponse().getBody().getItems().getDetailCommonInfo();
   }
 }
