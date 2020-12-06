@@ -40,7 +40,7 @@ public class ResAreaAttractionsListDto {
   private List<ResAreaAttractionItemDto> attractionList;
 
   @JsonSetter("item")
-  private void setAttractionList(List<ResAreaAttractionItemDto> attractionList) {
+  public void setAttractionList(List<ResAreaAttractionItemDto> attractionList) {
     this.attractionList = attractionList;
   }
 

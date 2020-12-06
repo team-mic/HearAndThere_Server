@@ -1,12 +1,8 @@
 package team_mic.here_and_there.backend.attraction.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.codec.language.bm.Lang;
-import org.omg.CORBA.INTERNAL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -18,19 +14,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import team_mic.here_and_there.backend.attraction.domain.entity.TouristArea;
-import team_mic.here_and_there.backend.attraction.domain.repository.TouristAreaRepository;
-import team_mic.here_and_there.backend.attraction.dto.response.AreaCodeAndNameListDto;
-import team_mic.here_and_there.backend.attraction.dto.response.ResMainFixedAttractionListDto;
-import team_mic.here_and_there.backend.attraction.dto.response.ResMainFixedAttractionListItemDto;
-import team_mic.here_and_there.backend.attraction.dto.response.ResTouristAreaListDto;
 import team_mic.here_and_there.backend.attraction.dto.response.TourApiBaseResModelDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAreaAttractionsListDto;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 import java.net.URLDecoder;
-import java.util.List;
-import team_mic.here_and_there.backend.attraction.exception.InvalidAreaCodeException;
 import team_mic.here_and_there.backend.common.domain.Language;
 
 @Service
@@ -40,6 +28,8 @@ public class AttractionService {
 
   @Autowired
   private TouristAreaService touristAreaService;
+  @Autowired
+  private ObjectMapper mapper;
 
   @Value("${tour.api.url.kor}")
   private String korTourApiUrl;
@@ -199,7 +189,7 @@ public class AttractionService {
 
   public ResAreaAttractionsListDto getAreaAttractionsList(Integer areaCode, Integer sigunguAreaCode,
       Integer pageNumber, Integer pageSize, String language)
-      throws UnsupportedEncodingException {
+      throws IOException {
 
     if(!touristAreaService.isValidAreaCode(areaCode, sigunguAreaCode)){
       throw new HttpClientErrorException(HttpStatus.BAD_REQUEST); // TODO : custom exception
@@ -217,13 +207,18 @@ public class AttractionService {
         .build(false);
 
     HttpEntity<?> httpEntity = createHttpEntityHeader();
-
-    TourApiBaseResModelDto<ResAreaAttractionsListDto> modelDto =
+    TourApiBaseResModelDto<?> modelDto =
         restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
-            new ParameterizedTypeReference<TourApiBaseResModelDto<ResAreaAttractionsListDto>>() {
+            new ParameterizedTypeReference<TourApiBaseResModelDto<?>>() {
             }).getBody();
 
-    ResAreaAttractionsListDto listDto = modelDto.getResponse().getBody().getItems();
+    ResAreaAttractionsListDto listDto = new ResAreaAttractionsListDto();
+
+    if(modelDto.getResponse().getBody().getItems().getClass()==String.class){ //for last page
+      listDto.setAttractionList(new ArrayList<>());
+    }else{
+      listDto = mapper.convertValue(modelDto.getResponse().getBody().getItems(), ResAreaAttractionsListDto.class);
+    }
 
     TouristArea area = touristAreaService.getTouristArea(language, areaCode, sigunguAreaCode);
     listDto.setAreaName(area.getAreaName());
