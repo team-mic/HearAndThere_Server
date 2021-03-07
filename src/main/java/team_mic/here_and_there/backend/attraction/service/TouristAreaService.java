@@ -1,5 +1,6 @@
 package team_mic.here_and_there.backend.attraction.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -11,12 +12,14 @@ import team_mic.here_and_there.backend.attraction.domain.repository.TouristAreaR
 import team_mic.here_and_there.backend.attraction.dto.response.ResTouristAreaListDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResTouristAreaListItemDto;
 import team_mic.here_and_there.backend.common.domain.Language;
+import team_mic.here_and_there.backend.common.util.FunctionalUtil;
 
 @RequiredArgsConstructor
 @Service
 public class TouristAreaService {
 
   private final TouristAreaRepository touristAreaRepository;
+  private final AttractionService attractionService;
 
   public ResTouristAreaListDto getTouristAreasInformation(String language) {
     List<TouristArea> areaList = new ArrayList<>();
@@ -34,7 +37,9 @@ public class TouristAreaService {
     }
 
     List<ResTouristAreaListItemDto> areaItemList = new ArrayList<>();
-    areaList.forEach(area -> areaItemList.add(toTouristAreaListItem(area)));
+    areaList.forEach(
+        FunctionalUtil.throwingConsumerWrapper(area -> areaItemList.add(toTouristAreaListItem(area)))
+    );
 
     return ResTouristAreaListDto.builder()
         .language(language)
@@ -42,13 +47,14 @@ public class TouristAreaService {
         .build();
   }
 
-  private ResTouristAreaListItemDto toTouristAreaListItem(TouristArea area) {
+  private ResTouristAreaListItemDto toTouristAreaListItem(TouristArea area) throws UnsupportedEncodingException {
     return ResTouristAreaListItemDto.builder()
         .areaName(area.getAreaName())
         .areaCode(area.getAreaCode())
         .hasSigunguAreaCode(area.getSigunguCode() != null ? true : false)
         .sigunguAreaCode(area.getSigunguCode())
         .areaThumbnailImageUrl(area.getThumbnailImage())
+        .totalAttractionsCount(attractionService.getAreaAttractionsCount(area.getAreaCode(), area.getSigunguCode(), area.getLanguage().getVersion()))
         .build();
   }
 

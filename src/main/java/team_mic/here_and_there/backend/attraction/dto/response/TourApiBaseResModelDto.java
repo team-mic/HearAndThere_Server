@@ -32,6 +32,9 @@ public class TourApiBaseResModelDto<T> {
 
       @JsonProperty("items")
       private T items;
+
+      @JsonProperty("totalCount")
+      private String areaAttractionsCount;
     }
   }
 }
