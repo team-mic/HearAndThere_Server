@@ -93,118 +93,6 @@ public class AttractionService {
         .queryParam("MobileApp", "HearAndThere")
         .queryParam("_type", "json");
   }
-/*
-  private String getAreaNameFromAreaCode(Integer areaCode) throws UnsupportedEncodingException {
-
-    UriComponentsBuilder builder = createBaseUriBuilder("/areaCode");
-    UriComponents components = builder.queryParam("numOfRows", 17)
-        .queryParam("pageNo", 1)
-        .build(false);
-
-    HttpEntity<?> httpEntity = createHttpEntityHeader();
-
-    TourApiBaseResModelDto<AreaCodeAndNameListDto> modelDto =
-        restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
-            new ParameterizedTypeReference<TourApiBaseResModelDto<AreaCodeAndNameListDto>>() {
-            }).getBody();
-
-    AreaCodeAndNameListDto listDto = modelDto.getResponse().getBody().getItems();
-
-    String areaName = listDto.getAreaCodeAndNameItemList().stream()
-        .filter(areaCodeAndNameItemDto -> areaCodeAndNameItemDto.getCode() == areaCode)
-        .findFirst()
-        .orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST))
-        .getAreaName();
-
-    return areaName;
-  }*/
-
-  /*
-  public ResMainFixedAttractionListDto getFixedMainAttractionList(String area, String language) {
-    if (language.equals(Language.KOREAN.getVersion())) {
-      if (area.equals("seoul")) {
-        return getFixedSeoulAttractionList(Language.KOREAN);
-      }
-    }
-
-    if (language.equals(Language.ENGLISH.getVersion())) {
-      if (area.equals("seoul")) {
-        return getFixedSeoulAttractionList(Language.ENGLISH);
-      }
-    }
-    throw new NoSuchElementException();
-  }
-
-  private ResMainFixedAttractionListDto getFixedSeoulAttractionList(Language language) {
-    List<ResMainFixedAttractionListItemDto> itemList = new ArrayList<>();
-    String lanAreaName = null;
-
-    if(language.equals(Language.KOREAN)){
-      lanAreaName = "서울";
-
-      itemList.add(ResMainFixedAttractionListItemDto.builder()
-          .attractionContentId(126508L)
-          .attractionContentTypeId(12L)
-          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/23/2678623_image2_1.jpg")
-          .title("경복궁")
-          .build());
-      itemList.add(ResMainFixedAttractionListItemDto.builder()
-          .attractionContentId(126498L)
-          .attractionContentTypeId(12L)
-          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/77/2553577_image2_1.jpg")
-          .title("롯데월드")
-          .build());
-      itemList.add(ResMainFixedAttractionListItemDto.builder()
-          .attractionContentId(126535L)
-          .attractionContentTypeId(12L)
-          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/95/2660695_image2_1.jpg")
-          .title("N 서울타워")
-          .build());
-      itemList.add(ResMainFixedAttractionListItemDto.builder()
-          .attractionContentId(126537L)
-          .attractionContentTypeId(12L)
-          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/06/2512006_image2_1.jpg")
-          .title("북촌 한옥마을")
-          .build());
-    }
-
-    if(language.equals(Language.ENGLISH)){
-      lanAreaName = "Seoul";
-
-      itemList.add(ResMainFixedAttractionListItemDto.builder()
-          .attractionContentId(264337L)
-          .attractionContentTypeId(76L)
-          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/23/2678623_image2_1.jpg")
-          .title("Gyeongbokgung Palace")
-          .build());
-      itemList.add(ResMainFixedAttractionListItemDto.builder()
-          .attractionContentId(264152L)
-          .attractionContentTypeId(76L)
-          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/77/2553577_image2_1.jpg")
-          .title("Lotte World")
-          .build());
-      itemList.add(ResMainFixedAttractionListItemDto.builder()
-          .attractionContentId(264550L)
-          .attractionContentTypeId(76L)
-          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/95/2660695_image2_1.jpg")
-          .title("Namsan Seoul Tower")
-          .build());
-      itemList.add(ResMainFixedAttractionListItemDto.builder()
-          .attractionContentId(561382L)
-          .attractionContentTypeId(76L)
-          .thumbnailImageUrl("http://tong.visitkorea.or.kr/cms/resource/06/2512006_image2_1.jpg")
-          .title("Bukchon Hanok Village")
-          .build());
-    }
-
-    return ResMainFixedAttractionListDto.builder()
-        .areaName(lanAreaName)
-        .attractionItemList(itemList)
-        .language(language.getVersion())
-        .build();
-  }
-  */
-
 
   public ResAreaAttractionsListDto getAreaAttractionsList(Integer areaCode, Integer sigunguAreaCode,
       Integer pageNumber, Integer pageSize, String language)
@@ -249,6 +137,30 @@ public class AttractionService {
     listDto.setPageNumber(pageNumber);
 
     return listDto;
+  }
+
+  public Integer getAreaAttractionsCount(Integer areaCode, Integer sigunguAreaCode, String language)
+      throws UnsupportedEncodingException {
+
+    if(!touristAreaService.isValidAreaCode(areaCode, sigunguAreaCode)){
+      throw new HttpClientErrorException(HttpStatus.BAD_REQUEST); // TODO : custom exception
+    }
+
+    UriComponentsBuilder builder = createBaseUriBuilder(language, "/areaBasedList");
+
+    UriComponents components = builder
+        .queryParam("areaCode", areaCode)
+        .queryParam("sigunguCode", sigunguAreaCode)
+        .queryParam("listYN", "N")
+        .build(false);
+
+    HttpEntity<?> httpEntity = createHttpEntityHeader();
+    TourApiBaseResModelDto<?> modelDto =
+        restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
+            new ParameterizedTypeReference<TourApiBaseResModelDto<?>>() {
+            }).getBody();
+
+    return Integer.valueOf(modelDto.getResponse().getBody().getAreaAttractionsCount());
   }
 
   public ResAttractionsDetailDto getAttractionDetail(Long contentId, Integer contentTypeId, String language)
