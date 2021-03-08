@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.jsoup.Jsoup;
@@ -21,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import team_mic.here_and_there.backend.attraction.domain.entity.TouristArea;
+import team_mic.here_and_there.backend.attraction.domain.repository.TouristAreaRepository;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAttractionDetailCommonDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAttractionDetailImageListDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAttractionsDetailDto;
@@ -42,13 +44,13 @@ public class AttractionService {
   private final RestTemplate restTemplate;
 
   @Autowired
-  private TouristAreaService touristAreaService;
-  @Autowired
   private ObjectMapper mapper;
   @Autowired
   private AudioCourseService audioCourseService;
   @Autowired
   private AudioGuideService audioGuideService;
+  @Autowired
+  private TouristAreaRepository touristAreaRepository;
 
   @Value("${tour.api.url.kor}")
   private String korTourApiUrl;
@@ -98,7 +100,7 @@ public class AttractionService {
       Integer pageNumber, Integer pageSize, String language)
       throws IOException {
 
-    if(!touristAreaService.isValidAreaCode(areaCode, sigunguAreaCode)){
+    if(!isValidAreaCode(areaCode, sigunguAreaCode)){
       throw new HttpClientErrorException(HttpStatus.BAD_REQUEST); // TODO : custom exception
     }
 
@@ -127,7 +129,7 @@ public class AttractionService {
       listDto = mapper.convertValue(modelDto.getResponse().getBody().getItems(), ResAreaAttractionsListDto.class);
     }
 
-    TouristArea area = touristAreaService.getTouristArea(language, areaCode, sigunguAreaCode);
+    TouristArea area = getTouristArea(language, areaCode, sigunguAreaCode);
     listDto.setAreaName(area.getAreaName());
     listDto.setAreaMainImageUrl(area.getThumbnailImage());
     listDto.setLanguage(language);
@@ -142,7 +144,7 @@ public class AttractionService {
   public Integer getAreaAttractionsCount(Integer areaCode, Integer sigunguAreaCode, String language)
       throws UnsupportedEncodingException {
 
-    if(!touristAreaService.isValidAreaCode(areaCode, sigunguAreaCode)){
+    if(!isValidAreaCode(areaCode, sigunguAreaCode)){
       throw new HttpClientErrorException(HttpStatus.BAD_REQUEST); // TODO : custom exception
     }
 
@@ -289,5 +291,33 @@ public class AttractionService {
 
   private String parseHtmlToPlainText(String htmlString){
     return Jsoup.parse(htmlString).wholeText();
+  }
+
+  private boolean isValidAreaCode(Integer areaCode, Integer sigunguAreaCode) {
+    if(sigunguAreaCode == null){
+      return touristAreaRepository.existsByAreaCode(areaCode);
+    }
+    return touristAreaRepository.existsByAreaCodeAndSigunguCode(areaCode, sigunguAreaCode);
+  }
+
+  private TouristArea getTouristArea(String languageVersion, Integer areaCode, Integer sigunguAreaCode) {
+    TouristArea touristArea;
+    Language language= null;
+
+    if(languageVersion.equals(Language.KOREAN.getVersion())){
+      language = Language.KOREAN;
+    }
+    if(languageVersion.equals(Language.ENGLISH.getVersion())){
+      language = Language.ENGLISH;
+    }
+
+    if(sigunguAreaCode==null){
+      touristArea = touristAreaRepository.findByAreaCodeAndLanguage(areaCode, language)
+          .orElseThrow(NoSuchElementException::new);
+    }else{
+      touristArea = touristAreaRepository.findByAreaCodeAndSigunguCodeAndLanguage(areaCode, sigunguAreaCode, language)
+          .orElseThrow(NoSuchElementException::new);
+    }
+    return touristArea;
   }
 }
