@@ -160,7 +160,7 @@ public class AttractionService {
             new ParameterizedTypeReference<TourApiBaseResModelDto<?>>() {
             }).getBody();
 
-    return Integer.valueOf(modelDto.getResponse().getBody().getAreaAttractionsCount());
+    return modelDto.getResponse().getBody().getAreaAttractionsCount();
   }
 
   public ResAttractionsDetailDto getAttractionDetail(Long contentId, Integer contentTypeId, String language)
