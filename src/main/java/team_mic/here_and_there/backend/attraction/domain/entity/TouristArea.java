@@ -29,12 +29,21 @@ public class TouristArea extends BaseTimeEntity {
 
     private Integer sigunguCode;
 
+    private Integer totalAttractionsCount;
+
+    public TouristArea updateTotalAttractionsCount(Integer totalAttractionsCount){
+        this.totalAttractionsCount = totalAttractionsCount;
+        return this;
+    }
+
     @Builder
-    private TouristArea(String thumbnailImage, String areaName, Language language, Integer areaCode, Integer sigunguCode){
+    private TouristArea(String thumbnailImage, String areaName, Language language,
+        Integer areaCode, Integer sigunguCode, Integer totalAttractionsCount){
         this.thumbnailImage = thumbnailImage;
         this.areaName = areaName;
         this.language = language;
         this.areaCode = areaCode;
         this.sigunguCode = sigunguCode;
+        this.totalAttractionsCount = totalAttractionsCount;
     }
 }

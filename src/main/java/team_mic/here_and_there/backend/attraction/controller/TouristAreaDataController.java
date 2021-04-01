@@ -31,4 +31,13 @@ public class TouristAreaDataController {
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    //임시
+    @ApiIgnore
+    @PostMapping("/data/tourist-areas/attractions-count")
+    public ResponseEntity<Void> insertTouristAreaAttractionsCount(){
+        touristAreaDataService.insertTouristAreaAttractionsCount();
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

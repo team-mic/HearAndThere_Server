@@ -1,5 +1,6 @@
 package team_mic.here_and_there.backend.attraction.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team_mic.here_and_there.backend.attraction.domain.entity.TouristArea;
@@ -356,5 +357,19 @@ public class TouristAreaDataService {
         .sigunguCode(2)
         .build());
 
+  }
+
+  @Transactional
+  public void insertTouristAreaAttractionsCount() {
+    Integer[] korTotalAttractionsCount = new Integer[]{3188, 832, 1085, 752, 194, 346, 532, 286, 358, 447, 160, 538, 403, 278, 265, 418, 230, 268, 129, 264, 236, 142};
+    Integer[] engTotalAttractionsCount = new Integer[]{1716, 374, 325, 167, 47, 108, 103, 95, 81, 247, 65, 68, 61, 62, 58, 249,46, 41, 40, 56, 31, 33};
+
+    List<TouristArea> korTouristAreas = touristAreaRepository.findAllByLanguageOrderByIdAsc(Language.KOREAN);
+    List<TouristArea> engTouristAreas = touristAreaRepository.findAllByLanguageOrderByIdAsc(Language.ENGLISH);
+
+    for (int index = 0; index < korTouristAreas.size(); index++) {
+      korTouristAreas.get(index).updateTotalAttractionsCount(korTotalAttractionsCount[index]);
+      engTouristAreas.get(index).updateTotalAttractionsCount(engTotalAttractionsCount[index]);
+    }
   }
 }

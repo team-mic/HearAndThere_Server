@@ -62,7 +62,8 @@ public class TouristAreaService {
         .hasSigunguAreaCode(area.getSigunguCode() != null ? true : false)
         .sigunguAreaCode(area.getSigunguCode())
         .areaThumbnailImageUrl(area.getThumbnailImage())
-        .totalAttractionsCount(attractionService.getAreaAttractionsCount(area.getAreaCode(), area.getSigunguCode(), area.getLanguage().getVersion()))
+        //.totalAttractionsCount(attractionService.getAreaAttractionsCount(area.getAreaCode(), area.getSigunguCode(), area.getLanguage().getVersion()))
+        .totalAttractionsCount(area.getTotalAttractionsCount())
         .build();
   }
 }
