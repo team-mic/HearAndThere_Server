@@ -35,7 +35,7 @@ public class ResAttractionDetailCommonDto {
   private String address;
 
   @JsonProperty("zipcode")
-  private Long zipcode;
+  private String zipcode;
 
   private Double mapLongitude;
 
