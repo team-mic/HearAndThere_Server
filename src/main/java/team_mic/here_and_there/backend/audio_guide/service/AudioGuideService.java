@@ -190,10 +190,10 @@ public class AudioGuideService {
       guideList = getAudioGuideItemList(mainExcursionGuideIds, language);
 
       if (language.equals(Language.KOREAN.getVersion())) {
-        languageCategory = AudioGuideCategory.HISTORY.getDatabaseKoreanName();
+        languageCategory = AudioGuideCategory.EXCURSION.getDatabaseKoreanName();
       }
       if (language.equals(Language.ENGLISH.getVersion())) {
-        languageCategory = AudioGuideCategory.HISTORY.getDatabaseEnglishName();
+        languageCategory = AudioGuideCategory.EXCURSION.getDatabaseEnglishName();
       }
     }
 
