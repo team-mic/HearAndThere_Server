@@ -3,24 +3,19 @@ package team_mic.here_and_there.backend.attraction.controller;
 import io.swagger.annotations.*;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.codec.language.bm.Lang;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpClientErrorException.BadRequest;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAreaAttractionsListDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAttractionsDetailDto;
-import team_mic.here_and_there.backend.attraction.dto.response.ResMainFixedAttractionListDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResTouristAreaListDto;
-import team_mic.here_and_there.backend.attraction.exception.NoAreaCodeParameterException;
 import team_mic.here_and_there.backend.attraction.service.AttractionService;
 
 import java.io.UnsupportedEncodingException;
 import team_mic.here_and_there.backend.attraction.service.TouristAreaService;
-import team_mic.here_and_there.backend.audio_guide.exception.NoParameterException;
 import team_mic.here_and_there.backend.common.domain.Language;
 
 @Api(tags = "관광 명소 API")
