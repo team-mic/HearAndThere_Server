@@ -90,7 +90,7 @@ public class AudioGuideService {
         continue;
       }
       Optional<AudioGuide> audioGuide = audioGuideRepository.findById((long) randomId);
-      if (!audioGuide.isPresent()) {
+      if (!audioGuide.isPresent() || !isBetaAudioGuideId((long)randomId)) {
         count--;
         continue;
       }
@@ -173,19 +173,20 @@ public class AudioGuideService {
     List<ResAudioGuideItemDto> guideList = new ArrayList();
     String languageCategory = null;
 
-    if (category.equals(AudioGuideCategory.HISTORY.getQueryName())) {
-      Long[] mainHistoryGuideIds = {7L, 15L, 16L, 14L};
+    if (category.equals(AudioGuideCategory.ART.getQueryName())) {
+      Long[] mainHistoryGuideIds = {4L, 20L, 18L, 9L};
       guideList = getAudioGuideItemList(mainHistoryGuideIds, language);
 
       if (language.equals(Language.KOREAN.getVersion())) {
-        languageCategory = AudioGuideCategory.HISTORY.getDatabaseKoreanName();
+
+        languageCategory = AudioGuideCategory.ART.getDatabaseKoreanName();
       }
       if (language.equals(Language.ENGLISH.getVersion())) {
-        languageCategory = AudioGuideCategory.HISTORY.getDatabaseEnglishName();
+        languageCategory = AudioGuideCategory.ART.getDatabaseEnglishName();
       }
     }
     if (category.equals(AudioGuideCategory.EXCURSION.getQueryName())) {
-      Long[] mainExcursionGuideIds = {13L, 6L, 3L, 2L};
+      Long[] mainExcursionGuideIds = {10L, 6L, 8L};
       guideList = getAudioGuideItemList(mainExcursionGuideIds, language);
 
       if (language.equals(Language.KOREAN.getVersion())) {
@@ -218,7 +219,7 @@ public class AudioGuideService {
     List<AudioGuideLanguageContent> languageContents = new ArrayList<>();
     List<ResAudioGuideItemDto> resultList = new ArrayList<>();
 
-    Integer totalGuidesCount = (int) (audioGuideRepository.count());
+    Integer totalGuidesCount = filterBetaGuides(audioGuideRepository.findAll()).size();
     if (guideCount == null) {
       guideCount = totalGuidesCount;
     }
@@ -261,6 +262,11 @@ public class AudioGuideService {
     for (int count = 0; count < guideCount; count++) {
       AudioGuideLanguageContent languageContent = languageContents.get(count);
       AudioGuide guide = languageContent.getAudioGuide();
+
+      if(!isBetaAudioGuideId(guide.getId())){
+        guideCount++;
+        continue;
+      }
 
       resultList.add(ResAudioGuideItemDto.builder()
           .title(languageContent.getTitle())
@@ -358,8 +364,10 @@ public class AudioGuideService {
 
   public ResAudioGuideLocationListDto getAudioGuideLocationMap(String language) {
     List<AudioGuide> guideList = audioGuideRepository.findAll();
+
+    List<AudioGuide> filteredGuideList = filterBetaGuides(guideList);
     List<ResAudioGuideLocationItemDto> locationItemList =
-        guideList.stream()
+        filteredGuideList.stream()
             .map(guide -> toLocationItem(guide, language))
             .collect(Collectors.toList());
 
@@ -392,5 +400,21 @@ public class AudioGuideService {
         .guideLocation(guide.getLocation())
         .guideImageUrl(guide.getImages().get(0))
         .build();
+  }
+
+  private List<AudioGuide> filterBetaGuides(List<AudioGuide> guides){
+
+    return guides.parallelStream()
+        .filter(guide -> isBetaAudioGuideId(guide.getId()))
+        .collect(Collectors.toList());
+  }
+
+  public boolean isBetaAudioGuideId(Long audioGuideId){
+    List<Long> betaGuidesId = new ArrayList<Long>(){{
+      add(8L); add(9L); add(4L); add(5L); add(18L);
+      add(20L); add(6L); add(7L); add(10L); add(13L);
+    }};
+
+    return betaGuidesId.contains(audioGuideId);
   }
 }

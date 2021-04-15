@@ -137,8 +137,8 @@ public class AudioGuideController {
 
   @ApiOperation(value = "메인 화면의 카테고리별 오디오 가이드 리스트",
       notes = "[category param 종류]\n" +
-          "1.(메인 화면 중간) history : History 카테고리에 해당되는 오디오 가이드 fix data 4개가 내려옵니다.\n" +
-          "2.(메인 화면 하단) excursion : Excursion 카테고리에 해당되는 오디오 가이드 fix data 4개가 내려옵니다.\n" +
+          "1.(메인 화면 중간) art : Art 카테고리에 해당되는 오디오 가이드 4개가 내려옵니다.\n" +
+          "2.(메인 화면 하단) excursion : Excursion 카테고리에 해당되는 오디오 가이드 3개가 내려옵니다.\n" +
           "[lag param 종류]\n" +
           "kor : 한국어 버전\n" +
           "eng : 영어 버전")
@@ -159,7 +159,7 @@ public class AudioGuideController {
       throw new NoParameterException();
     }
 
-    if(!category.equals(AudioGuideCategory.HISTORY.getQueryName()) &&
+    if(!category.equals(AudioGuideCategory.ART.getQueryName()) &&
         !category.equals(AudioGuideCategory.EXCURSION.getQueryName())){
       throw new WrongCategoryException();
     }
