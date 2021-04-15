@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import javassist.NotFoundException;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.*;
@@ -5035,5 +5036,50 @@ public class AudioGuideDataService {
               .audioGuide(audioGuide)
               .build());
     }
+  }
+
+  @Transactional
+  public void modifyYongsanHistoryTracks() {
+    AudioGuide audioGuide = audioGuideRepository.findById(11L).orElseThrow(() -> new NoSuchElementException());
+
+    AudioGuideTrackContainer trackContainer =
+        audioGuide.getTracks().stream()
+        .filter(audioGuideTrackContainer -> audioGuideTrackContainer.getOrderNumber().equals(5))
+        .findFirst()
+        .orElseThrow(NoSuchElementException::new);
+
+    audioGuideTrackContainerRepository.delete(trackContainer);
+
+    AudioTrack track = audioTrackRepository.save(AudioTrack.builder()
+        .locationLongitude(126.968347)
+        .locationLatitude(37.528980)
+        .images(new ArrayList<String>() {{
+          add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_tracks/images/Yongsan/a_village_full_of_history_and_culture/5-3.png?w=300&h=300&f=webp&q=90");
+          add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_tracks/images/Yongsan/a_village_full_of_history_and_culture/5-1.jpg?w=300&h=300&f=webp&q=90");
+          add(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_tracks/images/Yongsan/a_village_full_of_history_and_culture/5-2.jpg?w=300&h=300&f=webp&q=90");
+        }})
+        .build());
+
+    audioTrackLanguageContentRepository.save(AudioTrackLanguageContent.builder()
+        .language(Language.KOREAN)
+        .audioTrack(track)
+        .title("아모레퍼시픽 미술관")
+        .runningTime("02:33")
+        .audioFileUrl(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_tracks/audio-files/Yongsan/a_village_full_of_history_and_culture/kor/5.+%EC%95%84%EB%AA%A8%EB%A0%88%ED%8D%BC%EC%8B%9C%ED%94%BD+%EB%AF%B8%EC%88%A0%EA%B4%80+%EC%88%98%EC%A0%95%EB%B3%B8.m4a")
+        .build());
+    audioTrackLanguageContentRepository.save(AudioTrackLanguageContent.builder()
+        .language(Language.ENGLISH)
+        .audioTrack(track)
+        .title("Amorepacific Museum of Art")
+        .runningTime("02:32")
+        .audioFileUrl(AWS_CLOUD_FRONT_URL_PREFIX + "/audio-guides/audio_tracks/audio-files/Yongsan/a_village_full_of_history_and_culture/eng/5_+AMOREPACIFIC+Museum+of+Art.mp3")
+        .build());
+
+    audioGuideTrackContainerRepository.save(
+        AudioGuideTrackContainer.builder()
+            .audioTrack(track)
+            .orderNumber(5)
+            .audioGuide(audioGuide)
+            .build());
   }
 }

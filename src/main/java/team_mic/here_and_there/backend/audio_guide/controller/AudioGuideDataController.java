@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 import team_mic.here_and_there.backend.audio_guide.service.AudioGuideDataService;
@@ -366,6 +367,14 @@ public class AudioGuideDataController {
   public ResponseEntity<Void> insertBuamdongTracks() {
 
     audioGuideDataService.insertBuamdongTracks();
+
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  @ApiIgnore
+  @PutMapping("/data/audio-guides/audio-tracks/yongsan/history")
+  public ResponseEntity<Void> modifyYongsanHistoryTracks(){
+    audioGuideDataService.modifyYongsanHistoryTracks();
 
     return ResponseEntity.status(HttpStatus.OK).build();
   }
