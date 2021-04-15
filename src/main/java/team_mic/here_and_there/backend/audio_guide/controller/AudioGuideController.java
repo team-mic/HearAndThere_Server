@@ -150,7 +150,7 @@ public class AudioGuideController {
   })
   @GetMapping("/v1/audio-guides/main")
   public ResponseEntity<ResAudioGuideCategoryListDto> getAudioGuideCategoryList(
-      @ApiParam(value = "메인화면 오디오 가이드의 카테고리", required = true, example = "history")
+      @ApiParam(value = "메인화면 오디오 가이드의 카테고리", required = true, example = "art")
       @RequestParam(value = "category") String category,
       @ApiParam(value = "언어버전", required = true, example = "kor")
       @RequestParam(value = "lan") String language) {
