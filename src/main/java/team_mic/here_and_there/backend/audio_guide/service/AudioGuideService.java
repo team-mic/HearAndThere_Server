@@ -33,6 +33,7 @@ import team_mic.here_and_there.backend.location_tag.domain.entity.AudioGuideTag;
 
 import java.util.*;
 import team_mic.here_and_there.backend.location_tag.domain.entity.Tag;
+import team_mic.here_and_there.backend.util.ImageSizeType;
 
 @RequiredArgsConstructor
 @Service
@@ -121,7 +122,7 @@ public class AudioGuideService {
     return ResAudioGuideItemDto.builder()
         .audioGuideId(audioGuide.getId())
         .title(correspondingContent.getTitle())
-        .thumbnailImageUrl(audioGuide.getImages().get(0))
+        .thumbnailImageUrl(audioGuide.getImages().get(0) + ImageSizeType.SMALL.getSuffix())
         .tags(toTagsStringList(audioGuide.getTags(), language))
         .build();
   }
@@ -314,7 +315,9 @@ public class AudioGuideService {
         .distance(guide.getDistance())
         .estimatedTravelTime(guide.getEstimatedTravelTime())
         .location(guide.getLocation())
-        .guideImages(guide.getImages())
+        .guideImages(guide.getImages().stream()
+            .map(image -> image + ImageSizeType.MIDDLE.getSuffix())
+            .collect(Collectors.toList()))
         .title(correspondingContent.getTitle())
         .overviewDescription(correspondingContent.getOverviewDescription())
         .tags(toTagsStringList(guide.getTags(), language))

@@ -20,6 +20,7 @@ import team_mic.here_and_there.backend.audio_guide.dto.response.ResNearestAudioT
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResNearestAudioTrackInfoDto;
 import team_mic.here_and_there.backend.common.domain.Language;
 import team_mic.here_and_there.backend.common.util.DistanceCalculate;
+import team_mic.here_and_there.backend.util.ImageSizeType;
 
 @RequiredArgsConstructor
 @Service
@@ -30,7 +31,7 @@ public class AudioTrackService {
 
   public List<ResAudioTrackInfoItemDto> getAudioGuidesTrackList(AudioGuide guide, String language) {
 
-    List<ResAudioTrackInfoItemDto> trackList = guide.getTracks().parallelStream()
+    List<ResAudioTrackInfoItemDto> trackList = guide.getTracks().stream()
         .map(audioGuideTrackContainer -> toAudioTrackInfoItem(audioGuideTrackContainer, language))
         .collect(Collectors.toList());
 
@@ -54,7 +55,11 @@ public class AudioTrackService {
     return ResAudioTrackInfoItemDto.builder()
         .audioTrackId(track.getId())
         .orderNumber(audioGuideTrackContainer.getOrderNumber())
-        .images(track.getImages())
+        .thumbnailImage(track.getImages().get(0) + ImageSizeType.THUMBNAIL.getSuffix())
+        .images(track.getImages().stream()
+            .map(image-> image + ImageSizeType.LARGE.getSuffix())
+            .collect(Collectors.toList())
+        )
         .title(correspondingContent.getTitle())
         .audioFileUrl(correspondingContent.getAudioFileUrl())
         .runningTime(correspondingContent.getRunningTime())

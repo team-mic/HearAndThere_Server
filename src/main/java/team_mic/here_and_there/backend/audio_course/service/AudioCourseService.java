@@ -18,6 +18,7 @@ import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideTrack
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioTrack;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioTrackLanguageContent;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoItemDto;
+import team_mic.here_and_there.backend.util.ImageSizeType;
 
 @RequiredArgsConstructor
 @Service
@@ -65,7 +66,9 @@ public class AudioCourseService {
 
     return ResAudioCourseInfoItemDto.builder()
         .audioCourseId(courseElement.getId())
-        .courseImages(courseElement.getImages())
+        .courseImages(courseElement.getImages().stream()
+            .map(image-> image + ImageSizeType.THUMBNAIL.getSuffix())
+            .collect(Collectors.toList()))
         .courseOrderNumber(audioGuideCourse.getOrderNumber())
         .estimatedTravelTime(courseElement.getEstimatedTravelTime())
         .title(correspondingContent.getTitle())
