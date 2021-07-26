@@ -1,4 +1,4 @@
-package team_mic.here_and_there.backend.util;
+package team_mic.here_and_there.backend.common.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

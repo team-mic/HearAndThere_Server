@@ -14,11 +14,7 @@ import team_mic.here_and_there.backend.audio_course.domain.entity.AudioGuideCour
 import team_mic.here_and_there.backend.audio_course.domain.repository.AudioCourseElementLanguageContentRepository;
 import team_mic.here_and_there.backend.audio_course.dto.response.ResAudioCourseInfoItemDto;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
-import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideTrackContainer;
-import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioTrack;
-import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioTrackLanguageContent;
-import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoItemDto;
-import team_mic.here_and_there.backend.util.ImageSizeType;
+import team_mic.here_and_there.backend.common.domain.ImageSizeType;
 
 @RequiredArgsConstructor
 @Service

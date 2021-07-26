@@ -19,6 +19,7 @@ import team_mic.here_and_there.backend.attraction.domain.repository.TouristAreaR
 import team_mic.here_and_there.backend.attraction.dto.response.ResTouristAreaListDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResTouristAreaListItemDto;
 import team_mic.here_and_there.backend.attraction.dto.response.TourApiBaseResModelDto;
+import team_mic.here_and_there.backend.common.domain.ImageSizeType;
 import team_mic.here_and_there.backend.common.domain.Language;
 import team_mic.here_and_there.backend.common.util.FunctionalUtil;
 
@@ -61,7 +62,7 @@ public class TouristAreaService {
         .areaCode(area.getAreaCode())
         .hasSigunguAreaCode(area.getSigunguCode() != null ? true : false)
         .sigunguAreaCode(area.getSigunguCode())
-        .areaThumbnailImageUrl(area.getThumbnailImage())
+        .areaThumbnailImageUrl(area.getThumbnailImage() + ImageSizeType.SMALL.getSuffix())
         //.totalAttractionsCount(attractionService.getAreaAttractionsCount(area.getAreaCode(), area.getSigunguCode(), area.getLanguage().getVersion()))
         .totalAttractionsCount(area.getTotalAttractionsCount())
         .build();
