@@ -2,10 +2,8 @@ package team_mic.here_and_there.backend.audio_guide.service;
 
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.codec.language.bm.Lang;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team_mic.here_and_there.backend.audio_course.domain.entity.AudioCourseElement;
 import team_mic.here_and_there.backend.audio_course.dto.response.ResAudioCourseInfoItemDto;
 import team_mic.here_and_there.backend.audio_course.service.AudioCourseService;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
@@ -13,7 +11,6 @@ import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideCateg
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideLanguageContent;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideTrackContainer;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioTrack;
-import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioTrackLanguageContent;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideLanguageContentRepository;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideRepository;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideDirectionsDto;
@@ -33,6 +30,7 @@ import team_mic.here_and_there.backend.location_tag.domain.entity.AudioGuideTag;
 
 import java.util.*;
 import team_mic.here_and_there.backend.location_tag.domain.entity.Tag;
+import team_mic.here_and_there.backend.common.domain.ImageSizeType;
 
 @RequiredArgsConstructor
 @Service
@@ -121,7 +119,7 @@ public class AudioGuideService {
     return ResAudioGuideItemDto.builder()
         .audioGuideId(audioGuide.getId())
         .title(correspondingContent.getTitle())
-        .thumbnailImageUrl(audioGuide.getImages().get(0))
+        .thumbnailImageUrl(audioGuide.getImages().get(0) + ImageSizeType.SMALL.getSuffix())
         .tags(toTagsStringList(audioGuide.getTags(), language))
         .build();
   }
@@ -190,10 +188,10 @@ public class AudioGuideService {
       guideList = getAudioGuideItemList(mainExcursionGuideIds, language);
 
       if (language.equals(Language.KOREAN.getVersion())) {
-        languageCategory = AudioGuideCategory.HISTORY.getDatabaseKoreanName();
+        languageCategory = AudioGuideCategory.EXCURSION.getDatabaseKoreanName();
       }
       if (language.equals(Language.ENGLISH.getVersion())) {
-        languageCategory = AudioGuideCategory.HISTORY.getDatabaseEnglishName();
+        languageCategory = AudioGuideCategory.EXCURSION.getDatabaseEnglishName();
       }
     }
 
@@ -220,11 +218,8 @@ public class AudioGuideService {
     List<ResAudioGuideItemDto> resultList = new ArrayList<>();
 
     Integer totalGuidesCount = filterBetaGuides(audioGuideRepository.findAll()).size();
-    if (guideCount == null) {
+    if (guideCount == null || guideCount > totalGuidesCount) {
       guideCount = totalGuidesCount;
-    }
-    if (guideCount > totalGuidesCount) {
-      throw new NoCorrespondingAudioGuideException(); //TODO custom exception
     }
 
     if (order.equals("random")) {
@@ -271,7 +266,7 @@ public class AudioGuideService {
       resultList.add(ResAudioGuideItemDto.builder()
           .title(languageContent.getTitle())
           .audioGuideId(guide.getId())
-          .thumbnailImageUrl(guide.getImages().get(0))
+          .thumbnailImageUrl(guide.getImages().get(0) + ImageSizeType.SMALL.getSuffix())
           .tags(toTagsStringList(guide.getTags(), language))
           .build());
     }
@@ -314,7 +309,9 @@ public class AudioGuideService {
         .distance(guide.getDistance())
         .estimatedTravelTime(guide.getEstimatedTravelTime())
         .location(guide.getLocation())
-        .guideImages(guide.getImages())
+        .guideImages(guide.getImages().stream()
+            .map(image -> image + ImageSizeType.MIDDLE.getSuffix())
+            .collect(Collectors.toList()))
         .title(correspondingContent.getTitle())
         .overviewDescription(correspondingContent.getOverviewDescription())
         .tags(toTagsStringList(guide.getTags(), language))
@@ -398,13 +395,13 @@ public class AudioGuideService {
         .guideDistance(guide.getDistance())
         .guideEstimatedTravelTime(guide.getEstimatedTravelTime())
         .guideLocation(guide.getLocation())
-        .guideImageUrl(guide.getImages().get(0))
+        .guideImageUrl(guide.getImages().get(0) + ImageSizeType.MIDDLE.getSuffix())
         .build();
   }
 
   private List<AudioGuide> filterBetaGuides(List<AudioGuide> guides){
 
-    return guides.parallelStream()
+    return guides.stream()
         .filter(guide -> isBetaAudioGuideId(guide.getId()))
         .collect(Collectors.toList());
   }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team_mic.here_and_there.backend.common.domain.ImageSizeType;
 import team_mic.here_and_there.backend.common.domain.Language;
 import team_mic.here_and_there.backend.trips_tip.domain.entity.TripTip;
 import team_mic.here_and_there.backend.trips_tip.domain.repository.TripTipRepository;
@@ -49,7 +50,7 @@ public class TripTipsService {
     return ResTripTipItemDto.builder()
         .tripTipId(tip.getId())
         .title(tip.getTitle())
-        .thumbnailImageUrl(tip.getThumbnailImage())
+        .thumbnailImageUrl(tip.getThumbnailImage() + ImageSizeType.MIDDLE.getSuffix())
         .contentsUrl(tip.getContentsUrl())
         .thumbnailDescription(tip.getThumbnailDescription())
         .build();

@@ -36,6 +36,7 @@ import team_mic.here_and_there.backend.audio_course.service.AudioCourseService;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideItemDto;
 import team_mic.here_and_there.backend.audio_guide.service.AudioGuideService;
+import team_mic.here_and_there.backend.common.domain.ImageSizeType;
 import team_mic.here_and_there.backend.common.domain.Language;
 
 @Service
@@ -131,7 +132,7 @@ public class AttractionService {
 
     TouristArea area = getTouristArea(language, areaCode, sigunguAreaCode);
     listDto.setAreaName(area.getAreaName());
-    listDto.setAreaMainImageUrl(area.getThumbnailImage());
+    listDto.setAreaMainImageUrl(area.getThumbnailImage() + ImageSizeType.MIDDLE.getSuffix());
     listDto.setLanguage(language);
     listDto.setAreaCode(areaCode);
     listDto.setListOrder("popular");
@@ -185,7 +186,10 @@ public class AttractionService {
           .filter(audioGuideCourse -> audioGuideService.isBetaAudioGuideId(audioGuideCourse.getAudioGuide().getId()))
           .forEach(audioGuideCourse -> guides.add(audioGuideCourse.getAudioGuide()));
 
-      images.addAll(audioCourseElement.getImages());
+      images.addAll(audioCourseElement.getImages().stream()
+        .map(image->image + ImageSizeType.MIDDLE.getSuffix())
+        .collect(Collectors.toList())
+      );
     });
 
     List<ResAudioGuideItemDto> relatedGuidesList = guides.stream()
