@@ -407,11 +407,6 @@ public class AudioGuideService {
   }
 
   public boolean isBetaAudioGuideId(Long audioGuideId){
-    List<Long> betaGuidesId = new ArrayList<Long>(){{
-      add(8L); add(9L); add(4L); add(5L); add(18L);
-      add(20L); add(6L); add(7L); add(10L); add(13L);
-    }};
-
-    return betaGuidesId.contains(audioGuideId);
+    return !audioGuideId.equals(14L);
   }
 }

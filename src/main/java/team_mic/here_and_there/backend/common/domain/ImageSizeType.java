@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ImageSizeType {
-  THUMBNAIL(50, 50, "webp"),
+  THUMBNAIL(100, 100, "webp"),
   SMALL(300,300, "webp"),
   MIDDLE(800, 800, "webp"),
   LARGE(1200, 1200, "webp");
