@@ -88,7 +88,7 @@ public class AudioGuideService {
         continue;
       }
       Optional<AudioGuide> audioGuide = audioGuideRepository.findById((long) randomId);
-      if (!audioGuide.isPresent() || !isBetaAudioGuideId((long)randomId)) {
+      if (!audioGuide.isPresent()) {
         count--;
         continue;
       }
@@ -217,7 +217,7 @@ public class AudioGuideService {
     List<AudioGuideLanguageContent> languageContents = new ArrayList<>();
     List<ResAudioGuideItemDto> resultList = new ArrayList<>();
 
-    Integer totalGuidesCount = filterBetaGuides(audioGuideRepository.findAll()).size();
+    Integer totalGuidesCount = audioGuideRepository.findAll().size();
     if (guideCount == null || guideCount > totalGuidesCount) {
       guideCount = totalGuidesCount;
     }
@@ -257,11 +257,6 @@ public class AudioGuideService {
     for (int count = 0; count < guideCount; count++) {
       AudioGuideLanguageContent languageContent = languageContents.get(count);
       AudioGuide guide = languageContent.getAudioGuide();
-
-      if(!isBetaAudioGuideId(guide.getId())){
-        guideCount++;
-        continue;
-      }
 
       resultList.add(ResAudioGuideItemDto.builder()
           .title(languageContent.getTitle())
@@ -362,9 +357,8 @@ public class AudioGuideService {
   public ResAudioGuideLocationListDto getAudioGuideLocationMap(String language) {
     List<AudioGuide> guideList = audioGuideRepository.findAll();
 
-    List<AudioGuide> filteredGuideList = filterBetaGuides(guideList);
     List<ResAudioGuideLocationItemDto> locationItemList =
-        filteredGuideList.stream()
+        guideList.stream()
             .map(guide -> toLocationItem(guide, language))
             .collect(Collectors.toList());
 
@@ -397,16 +391,5 @@ public class AudioGuideService {
         .guideLocation(guide.getLocation())
         .guideImageUrl(guide.getImages().get(0) + ImageSizeType.MIDDLE.getSuffix())
         .build();
-  }
-
-  private List<AudioGuide> filterBetaGuides(List<AudioGuide> guides){
-
-    return guides.stream()
-        .filter(guide -> isBetaAudioGuideId(guide.getId()))
-        .collect(Collectors.toList());
-  }
-
-  public boolean isBetaAudioGuideId(Long audioGuideId){
-    return !audioGuideId.equals(14L);
   }
 }

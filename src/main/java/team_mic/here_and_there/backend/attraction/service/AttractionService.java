@@ -183,7 +183,6 @@ public class AttractionService {
     relatedCourses.forEach(audioCourseElement -> {
       audioCourseElement.getGuides()
           .stream()
-          .filter(audioGuideCourse -> audioGuideService.isBetaAudioGuideId(audioGuideCourse.getAudioGuide().getId()))
           .forEach(audioGuideCourse -> guides.add(audioGuideCourse.getAudioGuide()));
 
       images.addAll(audioCourseElement.getImages().stream()
