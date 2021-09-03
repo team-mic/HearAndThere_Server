@@ -275,7 +275,7 @@ public class AudioGuideService {
   }
 
   public ResSingleAudioGuideDetailDto getSingleAudioGuideDetail(Long audioGuideId,
-      String language) {
+      String language, Boolean isHlsSupport) {
 
     AudioGuide guide = findAudioGuideById(audioGuideId);
     Set<AudioGuideLanguageContent> languageContentSet = guide.getLanguageContents();
@@ -291,7 +291,8 @@ public class AudioGuideService {
         .orElseThrow(NoSuchElementException::new); //TODO : custom exception
 
     List<ResAudioTrackInfoItemDto> tracks = audioTrackService
-        .getAudioGuidesTrackList(guide, language);
+        .getAudioGuidesTrackList(guide, language, isHlsSupport);
+
     List<ResAudioGuideItemDto> recommendedGuides = guide.getRecommendedAudioGuideIds().stream()
         .map(guideId -> toAudioGuideItem(findAudioGuideById(guideId), language))
         .collect(Collectors.toList());

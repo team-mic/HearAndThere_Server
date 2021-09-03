@@ -65,10 +65,13 @@ public class AudioGuideController {
   public ResponseEntity<ResSingleAudioGuideDetailDto> getSingleAudioGuideDetail(
       @PathVariable(value = "audio-guide-id") Long audioGuideId,
       @ApiParam(value = "언어버전", required = true, example = "kor")
-      @RequestParam(value = "lan") String language){
+      @RequestParam(value = "lan") String language,
+      @ApiParam(value = "HLS support", example = "true")
+      @RequestParam(value = "hls", required = false) Boolean isHlsSupport){
+
 
     return ResponseEntity.status(HttpStatus.OK).body(
-        audioGuideService.getSingleAudioGuideDetail(audioGuideId, language));
+        audioGuideService.getSingleAudioGuideDetail(audioGuideId, language, isHlsSupport));
   }
 
   @ApiOperation(value = "오디오 가이드의 조회수/재생수 업데이트",
