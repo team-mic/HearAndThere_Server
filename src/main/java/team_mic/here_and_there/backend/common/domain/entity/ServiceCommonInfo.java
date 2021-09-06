@@ -15,7 +15,7 @@ import team_mic.here_and_there.backend.common.domain.BaseTimeEntity;
 @Entity
 public class ServiceCommonInfo extends BaseTimeEntity {
   @Id
-  private String key;
+  private String infoName;
 
   private String value;
 
@@ -24,8 +24,8 @@ public class ServiceCommonInfo extends BaseTimeEntity {
   }
 
   @Builder
-  private ServiceCommonInfo(String key, String value){
-    this.key = key;
+  private ServiceCommonInfo(String infoName, String value){
+    this.infoName = infoName;
     this.value = value;
   }
 }
