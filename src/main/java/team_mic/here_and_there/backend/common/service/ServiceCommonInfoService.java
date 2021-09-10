@@ -15,7 +15,7 @@ public class ServiceCommonInfoService {
   private final static String AOS_APP_VERSION_KEY = "aos-app-version:latest";
 
   public String getLatestAppVersionOfService() {
-    ServiceCommonInfo serviceCommonInfo = serviceCommonInfoRepository.findByKeyEquals(AOS_APP_VERSION_KEY)
+    ServiceCommonInfo serviceCommonInfo = serviceCommonInfoRepository.findByInfoNameEquals(AOS_APP_VERSION_KEY)
         .orElseThrow(NoSuchElementException::new); //TODO custom exception
 
     return serviceCommonInfo.getValue();
@@ -23,10 +23,10 @@ public class ServiceCommonInfoService {
 
   @Transactional
   public void updateLatestAppVersionOfService(String latestVersion) {
-    ServiceCommonInfo serviceCommonInfo = serviceCommonInfoRepository.findByKeyEquals(AOS_APP_VERSION_KEY)
+    ServiceCommonInfo serviceCommonInfo = serviceCommonInfoRepository.findByInfoNameEquals(AOS_APP_VERSION_KEY)
         .orElse(serviceCommonInfoRepository.save(ServiceCommonInfo
             .builder()
-            .key(AOS_APP_VERSION_KEY)
+            .infoName(AOS_APP_VERSION_KEY)
             .value(latestVersion)
             .build()));
 

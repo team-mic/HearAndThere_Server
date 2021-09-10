@@ -7,5 +7,5 @@ import team_mic.here_and_there.backend.common.domain.entity.ServiceCommonInfo;
 
 @Repository
 public interface ServiceCommonInfoRepository extends JpaRepository<ServiceCommonInfo, String> {
-  Optional<ServiceCommonInfo> findByKeyEquals(String key);
+  Optional<ServiceCommonInfo> findByInfoNameEquals(String key);
 }

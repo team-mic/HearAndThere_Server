@@ -16,6 +16,6 @@ public enum ImageSizeType {
   private final String format;
 
   public String getSuffix(){
-    return "?w="+ width + "&h="+ height + "&f=" + format;
+    return "?f=" + format;
   }
 }
