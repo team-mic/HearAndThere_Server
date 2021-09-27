@@ -1,6 +1,7 @@
 package team_mic.here_and_there.backend.audio_guide.controller;
 
 import io.swagger.annotations.*;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
-import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideCategory;
+import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideMainCategory;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideCategoryListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideDirectionsDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideLocationListDto;
@@ -162,14 +163,31 @@ public class AudioGuideController {
       throw new NoParameterException();
     }
 
-    if(!category.equals(AudioGuideCategory.ART.getQueryName()) &&
-        !category.equals(AudioGuideCategory.EXCURSION.getQueryName())){
+    if(!category.equals(AudioGuideMainCategory.ART.getQueryName()) &&
+        !category.equals(AudioGuideMainCategory.EXCURSION.getQueryName())){
       throw new WrongCategoryException();
     }
 
     return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideCategoryList(category, language));
   }
 
+  @ApiOperation(value = "[v2] 메인 화면의 사용자 관심 랜덤 카테고리 오디오 가이드 리스트",
+      notes = "메인화면에는 사용자가 관심있는 2개의 랜덤 소카테고리에 해당하는 가이드 리스트가 내려옵니다.\n" +
+          "[lag param 종류]\n" +
+          "kor : 한국어 버전\n" +
+          "eng : 영어 버전")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK"),
+      @ApiResponse(code = 500, message = "Internal Server Error"),
+      @ApiResponse(code = 400, message = "No Parameter Error"),
+      @ApiResponse(code = 404, message = "No corresponding Audio guide Data in DB")
+  })
+  @GetMapping("/v2/audio-guides/main")
+  public ResponseEntity<List<ResAudioGuideCategoryListDto>> getAudioGuideCategoryListV2(
+      @ApiParam(value = "언어버전", required = true, example = "kor")
+      @RequestParam(value = "lan") String language) {
+    return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideCategoryListV2(language));
+  }
 
   @ApiOperation(value = "오디오 가이드의 트랙들에 대한 Point 위경도와 Direction 폴리라인 위경도 정보",
       notes = "오디오 가이드의 각 트랙 Point 들의 위경도 리스트 정보와 Direction 폴리라인 위경도 리스트 정보를 제공합니다.\n "

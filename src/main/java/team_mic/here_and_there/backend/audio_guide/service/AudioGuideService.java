@@ -1,14 +1,16 @@
 package team_mic.here_and_there.backend.audio_guide.service;
 
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team_mic.here_and_there.backend.audio_course.dto.response.ResAudioCourseInfoItemDto;
 import team_mic.here_and_there.backend.audio_course.service.AudioCourseService;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
-import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideCategory;
+import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideMainCategory;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideLanguageContent;
+import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideSubCategory;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideTrackContainer;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioTrack;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideLanguageContentRepository;
@@ -120,17 +122,28 @@ public class AudioGuideService {
         .audioGuideId(audioGuide.getId())
         .title(correspondingContent.getTitle())
         .thumbnailImageUrl(audioGuide.getImages().get(0) + ImageSizeType.SMALL.getSuffix())
-        .tags(toTagsStringList(audioGuide.getTags(), language))
+        .tags(toTagsStringList(audioGuide.getTags(), correspondingContent.getLanguage()))
         .build();
   }
 
-  private List<String> toTagsStringList(Set<AudioGuideTag> tags, String language) {
+  public ResAudioGuideItemDto toAudioGuideItem(AudioGuideLanguageContent guideLanguageContent) {
+    AudioGuide audioGuide = guideLanguageContent.getAudioGuide();
+
+    return ResAudioGuideItemDto.builder()
+        .audioGuideId(audioGuide.getId())
+        .title(guideLanguageContent.getTitle())
+        .thumbnailImageUrl(audioGuide.getImages().get(0) + ImageSizeType.SMALL.getSuffix())
+        .tags(toTagsStringList(audioGuide.getTags(), guideLanguageContent.getLanguage()))
+        .build();
+  }
+
+    private List<String> toTagsStringList(Set<AudioGuideTag> tags, Language language) {
     List<String> list = new ArrayList<>();
 
     for (AudioGuideTag audioGuideTag : tags) {
       Tag tag = audioGuideTag.getTag();
 
-      if (language.equals(tag.getLanguage().getVersion())) {
+      if (language.equals(tag.getLanguage())) {
         list.add(tag.getName());
       }
     }
@@ -171,27 +184,27 @@ public class AudioGuideService {
     List<ResAudioGuideItemDto> guideList = new ArrayList();
     String languageCategory = null;
 
-    if (category.equals(AudioGuideCategory.ART.getQueryName())) {
+    if (category.equals(AudioGuideMainCategory.ART.getQueryName())) {
       Long[] mainHistoryGuideIds = {4L, 20L, 18L, 9L};
       guideList = getAudioGuideItemList(mainHistoryGuideIds, language);
 
       if (language.equals(Language.KOREAN.getVersion())) {
 
-        languageCategory = AudioGuideCategory.ART.getDatabaseKoreanName();
+        languageCategory = AudioGuideMainCategory.ART.getDatabaseKoreanName();
       }
       if (language.equals(Language.ENGLISH.getVersion())) {
-        languageCategory = AudioGuideCategory.ART.getDatabaseEnglishName();
+        languageCategory = AudioGuideMainCategory.ART.getDatabaseEnglishName();
       }
     }
-    if (category.equals(AudioGuideCategory.EXCURSION.getQueryName())) {
+    if (category.equals(AudioGuideMainCategory.EXCURSION.getQueryName())) {
       Long[] mainExcursionGuideIds = {10L, 6L, 8L};
       guideList = getAudioGuideItemList(mainExcursionGuideIds, language);
 
       if (language.equals(Language.KOREAN.getVersion())) {
-        languageCategory = AudioGuideCategory.EXCURSION.getDatabaseKoreanName();
+        languageCategory = AudioGuideMainCategory.EXCURSION.getDatabaseKoreanName();
       }
       if (language.equals(Language.ENGLISH.getVersion())) {
-        languageCategory = AudioGuideCategory.EXCURSION.getDatabaseEnglishName();
+        languageCategory = AudioGuideMainCategory.EXCURSION.getDatabaseEnglishName();
       }
     }
 
@@ -262,7 +275,7 @@ public class AudioGuideService {
           .title(languageContent.getTitle())
           .audioGuideId(guide.getId())
           .thumbnailImageUrl(guide.getImages().get(0) + ImageSizeType.SMALL.getSuffix())
-          .tags(toTagsStringList(guide.getTags(), language))
+          .tags(toTagsStringList(guide.getTags(), languageContent.getLanguage()))
           .build());
     }
 
@@ -310,7 +323,7 @@ public class AudioGuideService {
             .collect(Collectors.toList()))
         .title(correspondingContent.getTitle())
         .overviewDescription(correspondingContent.getOverviewDescription())
-        .tags(toTagsStringList(guide.getTags(), language))
+        .tags(toTagsStringList(guide.getTags(), correspondingContent.getLanguage()))
         .tracksList(tracks)
         .recommendedAudioGuidesList(recommendedGuides)
         .coursesList(courses)
@@ -392,5 +405,50 @@ public class AudioGuideService {
         .guideLocation(guide.getLocation())
         .guideImageUrl(guide.getImages().get(0) + ImageSizeType.MIDDLE.getSuffix())
         .build();
+  }
+
+  //TODO : 사용자가 관심있는 대카테고리에 속한 랜덤 2개의 소카테고리 리스트를 제공
+  public List<ResAudioGuideCategoryListDto> getAudioGuideCategoryListV2(String language) {
+    AudioGuideSubCategory[] allSubCategories = AudioGuideSubCategory.values();
+    Set<Integer> randomIndexes = new HashSet<>();
+    Random random = new Random();
+    List<ResAudioGuideCategoryListDto> resultList = new ArrayList<>();
+
+    while(randomIndexes.size()<2){
+      randomIndexes.add(random.nextInt(allSubCategories.length));
+    }
+
+    for(Integer index : randomIndexes){
+      AudioGuideSubCategory pickedSubCategory = allSubCategories[index];
+
+      List<AudioGuideLanguageContent> guideLanguageContents;
+      if(language.equals(Language.KOREAN.getVersion())) {
+        guideLanguageContents = audioGuideLanguageContentRepository.findAllBySubCategory(pickedSubCategory.getKorName());
+
+        List<ResAudioGuideItemDto> guideItemList = guideLanguageContents.stream()
+            .map(guideLanguageContent -> toAudioGuideItem(guideLanguageContent))
+            .collect(Collectors.toList());
+
+        resultList.add(ResAudioGuideCategoryListDto.builder()
+            .category(pickedSubCategory.getEmojiUnicode() + " " + pickedSubCategory.getKorName())
+            .language(language)
+            .audioGuideList(guideItemList)
+            .build());
+
+      }else if(language.equals(Language.ENGLISH.getVersion())){
+        guideLanguageContents = audioGuideLanguageContentRepository.findAllBySubCategory(pickedSubCategory.getEngName());
+
+        List<ResAudioGuideItemDto> guideItemList = guideLanguageContents.stream()
+            .map(guideLanguageContent -> toAudioGuideItem(guideLanguageContent))
+            .collect(Collectors.toList());
+
+        resultList.add(ResAudioGuideCategoryListDto.builder()
+            .category(pickedSubCategory.getEmojiUnicode() + " " + pickedSubCategory.getEngName())
+            .language(language)
+            .audioGuideList(guideItemList)
+            .build());
+      }
+    }
+    return resultList;
   }
 }
