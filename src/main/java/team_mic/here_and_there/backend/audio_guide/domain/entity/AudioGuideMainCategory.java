@@ -5,14 +5,14 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum AudioGuideCategory {
+public enum AudioGuideMainCategory {
 
-  HISTORY("history", "History", "역사"),
+  HISTORY("history", "History and Culture", "역사와 문화"),
   MUSIC("music", "Music", "음악"),
-  SHOPPING("shopping", "Shopping", "쇼핑"),
-  ART("art", "Art", "예술"),
+  SHOPPING("shopping", "Fashion and Shopping", "패션과 쇼핑"),
+  ART("art", "Art and Design", "예술과 디자인"),
   NATURE("nature", "Nature", "자연"),
-  EXCURSION("excursion", "Excursion", "일상");
+  EXCURSION("excursion", "Healing in Everyday Life", "일상 속 힐링");
 
   private final String queryName;
   private final String databaseEnglishName;

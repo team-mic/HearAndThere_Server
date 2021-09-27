@@ -24,7 +24,9 @@ public class AudioGuideLanguageContent extends BaseTimeEntity {
 
     private String title;
 
-    private String category;
+    private String mainCategory;
+
+    private String subCategory;
 
     @Lob
     private String overviewDescription;
@@ -46,15 +48,21 @@ public class AudioGuideLanguageContent extends BaseTimeEntity {
     }
 
     @Builder
-    private AudioGuideLanguageContent(Language language, String title, String category,
-                                      String overviewDescription, AudioGuide audioGuide,
-                                      String viewCount, String playingCount){
+    private AudioGuideLanguageContent(Language language, String title,
+        String mainCategory, String subCategory,
+        String overviewDescription, AudioGuide audioGuide,
+        String viewCount, String playingCount){
         this.language = language;
         this.title = title;
-        this.category = category;
+        this.mainCategory = mainCategory;
+        this.subCategory = subCategory;
         this.overviewDescription = overviewDescription;
         this.audioGuide = audioGuide;
         this.viewCount = viewCount;
         this.playingCount = playingCount;
+    }
+
+    public void updateSubCategory(String subCategory){
+        this.subCategory = subCategory;
     }
 }
