@@ -378,4 +378,12 @@ public class AudioGuideDataController {
 
     return ResponseEntity.status(HttpStatus.OK).build();
   }
+
+  @ApiIgnore
+  @PutMapping("/data/audio-guides/sub-categories")
+  public ResponseEntity<Void> addSubCategoryToGuides(){
+    audioGuideDataService.addSubCategoryToGuides();
+
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
 }
