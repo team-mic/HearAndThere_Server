@@ -16,6 +16,7 @@ import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideCat
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideDirectionsDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideLocationListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideOrderingListDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideSubCategoryItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResPatchedSingleAudioGuideDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResSingleAudioGuideDetailDto;
 import team_mic.here_and_there.backend.audio_guide.exception.NoParameterException;
@@ -171,7 +172,7 @@ public class AudioGuideController {
     return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideCategoryList(category, language));
   }
 
-  @ApiOperation(value = "[v2] 메인 화면의 사용자 관심 랜덤 카테고리 오디오 가이드 리스트",
+  @ApiOperation(value = "[v2] 메인 화면의 사용자 관심 랜덤 추천 카테고리 오디오 가이드 리스트",
       notes = "메인화면에는 사용자가 관심있는 2개의 랜덤 소카테고리에 해당하는 가이드 리스트가 내려옵니다.\n" +
           "[lag param 종류]\n" +
           "kor : 한국어 버전\n" +
@@ -182,7 +183,7 @@ public class AudioGuideController {
       @ApiResponse(code = 400, message = "No Parameter Error"),
       @ApiResponse(code = 404, message = "No corresponding Audio guide Data in DB")
   })
-  @GetMapping("/v2/audio-guides/main")
+  @GetMapping("/v2/audio-guides/categories/recommended")
   public ResponseEntity<List<ResAudioGuideCategoryListDto>> getAudioGuideCategoryListV2(
       @ApiParam(value = "언어버전", required = true, example = "kor")
       @RequestParam(value = "lan") String language) {
@@ -208,8 +209,22 @@ public class AudioGuideController {
         .body(audioGuideService.getAudioGuideDirections(audioGuideId));
   }
 
+  @ApiOperation(value = "오디오 가이드 카테고리 테마 리스트",
+      notes = "* 오디오 가이드의 소카테고리 리스트(카테고리 테마 이름, 배너 배경색, 배너 아이콘 이미지 svg, 지역, 가이드 개수)를 제공합니다.\n "
+          + "* 검색 탭 메인화면의 상단 추천 테마에 사용됩니다.\n")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK"),
+      @ApiResponse(code = 500, message = "Internal Server Error"),
+      @ApiResponse(code = 404, message = "No corresponding Audio guide Data in DB")
+  })
+  @GetMapping("/v1/audio-guides/categories/sub")
+  public ResponseEntity<List<ResAudioGuideSubCategoryItemDto>> getAudioGuideSubCategoryList(
+      @ApiParam(value = "언어버전", required = true, example = "kor")
+      @RequestParam(value = "lan") String language){
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(audioGuideService.getAudioGuideSubCategoryList(language));
+  }
   /*
-
   @ApiOperation(value = "사용자 위치(위도,경도) 기반 반경 내 오디오 트랙의 정보",
       notes = "사용자의 위도,경도를 기준으로 반경 50m 이내에 존재하는 트랙의 정보를 제공합니다.\n "
           + "path-variable 에 오디오 가이드의 id를 넣어주세요.\n"
