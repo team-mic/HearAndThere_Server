@@ -21,6 +21,7 @@ import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideCat
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideLocationItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideLocationListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideOrderingListDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideSubCategoryItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResDirectionDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResPatchedSingleAudioGuideDto;
@@ -46,6 +47,7 @@ public class AudioGuideService {
   private final AudioCourseService audioCourseService;
 
   private final static Integer RANDOM_AUDIO_GUIDES_COUNT = 5;
+  private final static String AWS_CLOUD_FRONT_URL_PREFIX = "http://d2gqdan1weqbf0.cloudfront.net";
 
   /*
   public ResAudioGuideListDto getAudioGuideList(String category) {
@@ -423,7 +425,7 @@ public class AudioGuideService {
 
       List<AudioGuideLanguageContent> guideLanguageContents;
       if(language.equals(Language.KOREAN.getVersion())) {
-        guideLanguageContents = audioGuideLanguageContentRepository.findAllBySubCategory(pickedSubCategory.getKorName());
+        guideLanguageContents = getGuidesOfSubCategory(pickedSubCategory, Language.KOREAN);
 
         List<ResAudioGuideItemDto> guideItemList = guideLanguageContents.stream()
             .map(guideLanguageContent -> toAudioGuideItem(guideLanguageContent))
@@ -436,7 +438,7 @@ public class AudioGuideService {
             .build());
 
       }else if(language.equals(Language.ENGLISH.getVersion())){
-        guideLanguageContents = audioGuideLanguageContentRepository.findAllBySubCategory(pickedSubCategory.getEngName());
+        guideLanguageContents = getGuidesOfSubCategory(pickedSubCategory, Language.ENGLISH);
 
         List<ResAudioGuideItemDto> guideItemList = guideLanguageContents.stream()
             .map(guideLanguageContent -> toAudioGuideItem(guideLanguageContent))
@@ -449,6 +451,56 @@ public class AudioGuideService {
             .build());
       }
     }
+    return resultList;
+  }
+
+  public List<ResAudioGuideSubCategoryItemDto> getAudioGuideSubCategoryList(String language) {
+
+    List<ResAudioGuideSubCategoryItemDto> resultList = new ArrayList<>();
+
+    if(language.equals(Language.ENGLISH.getVersion())){
+      resultList.addAll(
+          Stream.of(AudioGuideSubCategory.values())
+          .map(subCategory ->
+            ResAudioGuideSubCategoryItemDto.builder()
+                .categoryId(subCategory.name().toLowerCase())
+                .categoryName(subCategory.getEngName())
+                .categoryArea("Seoul") //TODO : 카테고리에 속하는 가이드의 도시
+                .guideCount(getGuidesOfSubCategory(subCategory, Language.ENGLISH).size())
+                .bannerIconImage(AWS_CLOUD_FRONT_URL_PREFIX + subCategory.getBannerIconImage())
+                .bannerBackgroundColorHex(subCategory.getBannerBackgroundColor())
+                .build())
+          .collect(Collectors.toList()));
+
+    }else if(language.equals(Language.KOREAN.getVersion())){
+
+      resultList.addAll(
+          Stream.of(AudioGuideSubCategory.values())
+              .map(subCategory ->
+                  ResAudioGuideSubCategoryItemDto.builder()
+                      .categoryId(subCategory.name().toLowerCase())
+                      .categoryName(subCategory.getKorName())
+                      .categoryArea("서울") //TODO : 카테고리에 속하는 가이드의 도시
+                      .guideCount(getGuidesOfSubCategory(subCategory, Language.KOREAN).size())
+                      .bannerIconImage(AWS_CLOUD_FRONT_URL_PREFIX + subCategory.getBannerIconImage())
+                      .bannerBackgroundColorHex(subCategory.getBannerBackgroundColor())
+                      .build())
+              .collect(Collectors.toList()));
+    }
+
+    return resultList;
+  }
+
+  private List<AudioGuideLanguageContent> getGuidesOfSubCategory(AudioGuideSubCategory subCategory, Language language) {
+
+    List<AudioGuideLanguageContent> resultList = new ArrayList<>();
+
+    if(language.equals(Language.ENGLISH)){
+      resultList.addAll(audioGuideLanguageContentRepository.findAllBySubCategory(subCategory.getEngName()));
+    }else if(language.equals(Language.KOREAN)){
+      resultList.addAll(audioGuideLanguageContentRepository.findAllBySubCategory(subCategory.getKorName()));
+    }
+
     return resultList;
   }
 }
