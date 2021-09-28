@@ -22,6 +22,7 @@ import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideLoc
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideLocationListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideOrderingListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideSubCategoryItemDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideSubCategoryListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioTrackInfoItemDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResDirectionDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResPatchedSingleAudioGuideDto;
@@ -454,7 +455,7 @@ public class AudioGuideService {
     return resultList;
   }
 
-  public List<ResAudioGuideSubCategoryItemDto> getAudioGuideSubCategoryList(String language) {
+  public ResAudioGuideSubCategoryListDto getAudioGuideSubCategoryList(String language) {
 
     List<ResAudioGuideSubCategoryItemDto> resultList = new ArrayList<>();
 
@@ -488,7 +489,10 @@ public class AudioGuideService {
               .collect(Collectors.toList()));
     }
 
-    return resultList;
+    return ResAudioGuideSubCategoryListDto.builder()
+        .language(language)
+        .categoryGuideList(resultList)
+        .build();
   }
 
   private List<AudioGuideLanguageContent> getGuidesOfSubCategory(AudioGuideSubCategory subCategory, Language language) {

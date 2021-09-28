@@ -17,6 +17,7 @@ import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideDir
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideLocationListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideOrderingListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideSubCategoryItemDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideSubCategoryListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResPatchedSingleAudioGuideDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResSingleAudioGuideDetailDto;
 import team_mic.here_and_there.backend.audio_guide.exception.NoParameterException;
@@ -218,7 +219,7 @@ public class AudioGuideController {
       @ApiResponse(code = 404, message = "No corresponding Audio guide Data in DB")
   })
   @GetMapping("/v1/audio-guides/categories/sub")
-  public ResponseEntity<List<ResAudioGuideSubCategoryItemDto>> getAudioGuideSubCategoryList(
+  public ResponseEntity<ResAudioGuideSubCategoryListDto> getAudioGuideSubCategoryList(
       @ApiParam(value = "언어버전", required = true, example = "kor")
       @RequestParam(value = "lan") String language){
     return ResponseEntity.status(HttpStatus.OK)
