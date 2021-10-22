@@ -11,5 +11,4 @@ import team_mic.here_and_there.backend.common.domain.Language;
 public interface AudioGuideLanguageContentRepository extends JpaRepository<AudioGuideLanguageContent, Long> {
   List<AudioGuideLanguageContent> findAllByLanguageOrderByViewCountDesc(Language language);
   List<AudioGuideLanguageContent> findAllByLanguageOrderByPlayingCountDesc(Language language);
-  List<AudioGuideLanguageContent> findAllBySubCategory(String subCategory);
 }
