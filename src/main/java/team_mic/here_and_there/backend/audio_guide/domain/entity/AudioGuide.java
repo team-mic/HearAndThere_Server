@@ -31,6 +31,14 @@ public class AudioGuide extends BaseTimeEntity {
 
   private String distance;
 
+  @ManyToOne
+  @JoinColumn(name = "main_category_id")
+  private MainCategory mainCategory;
+
+  @ManyToOne
+  @JoinColumn(name = "sub_category_id")
+  private SubCategory subCategory;
+
   @ElementCollection(fetch = FetchType.LAZY)
   @CollectionTable(name = "audio_guide_images", joinColumns = {
       @JoinColumn(name = "audio_guide_id")})
@@ -62,11 +70,19 @@ public class AudioGuide extends BaseTimeEntity {
 
   @Builder
   private AudioGuide(String location, String estimatedTravelTime, String distance,
-                     List<String> images, List<Long> recommendedAudioGuideIds) {
+                     List<String> images, List<Long> recommendedAudioGuideIds,
+                      MainCategory mainCategory, SubCategory subCategory) {
     this.location = location;
     this.estimatedTravelTime = estimatedTravelTime;
     this.distance = distance;
     this.images = images;
     this.recommendedAudioGuideIds = recommendedAudioGuideIds;
+    this.mainCategory = mainCategory;
+    this.subCategory = subCategory;
+  }
+
+  public void updateCategory(MainCategory mainCategory, SubCategory subCategory){
+    this.mainCategory = mainCategory;
+    this.subCategory = subCategory;
   }
 }
