@@ -36,7 +36,7 @@ public class TripTip extends BaseTimeEntity {
 
   private String thumbnailImage;
 
-  private String viewCount;
+  private String viewCount; //TODO to long
 
   public void updateViewCount(){
     this.viewCount =  String.valueOf(Long.parseLong(viewCount) + 1L);

@@ -6,13 +6,17 @@ spring:
 
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
-  h2.console.enabled: true
+    #url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    url: jdbc:mariadb://localhost:3306/here_and_there_testdb
+    username: root
+    password: soo930
+    driver-class-name: org.mariadb.jdbc.Driver
+  #h2.console.enabled: true
   jpa:
-    database-platform: H2
+    #database-platform: H2
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     open-in-view: false
     properties:
       hibernate:

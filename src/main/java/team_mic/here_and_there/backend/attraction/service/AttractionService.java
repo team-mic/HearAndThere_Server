@@ -192,7 +192,13 @@ public class AttractionService {
     });
 
     List<ResAudioGuideItemDto> relatedGuidesList = guides.stream()
-        .map(guide -> audioGuideService.toAudioGuideItem(guide, language))
+        .map(guide -> {
+          Language lan = null;
+          if(language.equals(Language.KOREAN.getVersion())) lan = Language.KOREAN;
+          if(language.equals(Language.ENGLISH.getVersion())) lan = Language.ENGLISH;
+          return audioGuideService.toAudioGuideItem(guide, lan);
+        })
+        .filter(resAudioGuideItemDto -> resAudioGuideItemDto != null)
         .collect(Collectors.toList());
 
     return ResAttractionsDetailDto.builder()
