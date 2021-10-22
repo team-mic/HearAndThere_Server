@@ -12,7 +12,7 @@ import lombok.Getter;
 public class ResAudioGuideSubCategoryItemDto {
 
   @ApiModelProperty(notes = "카테고리 테마 id")
-  private String categoryId;
+  private Integer categoryId;
   @ApiModelProperty(notes = "카테고리 테마 이름")
   private String categoryName;
   @ApiModelProperty(notes = "카테고리 테마에 속한 가이드의 지역")

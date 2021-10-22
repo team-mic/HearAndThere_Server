@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
-import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideMainCategory;
-import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideCategoryListDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideSubCategoryDetailDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideDirectionsDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideLocationListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideOrderingListDto;
-import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideSubCategoryItemDto;
+import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideSubCategoryListDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResPatchedSingleAudioGuideDto;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResSingleAudioGuideDetailDto;
 import team_mic.here_and_there.backend.audio_guide.exception.NoParameterException;
@@ -154,7 +153,7 @@ public class AudioGuideController {
       @ApiResponse(code = 404, message = "No corresponding Audio guide Data in DB")
   })
   @GetMapping("/v1/audio-guides/main")
-  public ResponseEntity<ResAudioGuideCategoryListDto> getAudioGuideCategoryList(
+  public ResponseEntity<ResAudioGuideSubCategoryDetailDto> getAudioGuideMainCategoryListV1(
       @ApiParam(value = "메인화면 오디오 가이드의 카테고리", required = true, example = "art")
       @RequestParam(value = "category") String category,
       @ApiParam(value = "언어버전", required = true, example = "kor")
@@ -164,12 +163,11 @@ public class AudioGuideController {
       throw new NoParameterException();
     }
 
-    if(!category.equals(AudioGuideMainCategory.ART.getQueryName()) &&
-        !category.equals(AudioGuideMainCategory.EXCURSION.getQueryName())){
+    if(!category.equals("art") && !category.equals("excursion")){
       throw new WrongCategoryException();
     }
 
-    return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideCategoryList(category, language));
+    return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideMainCategoryListV1(category, language));
   }
 
   @ApiOperation(value = "[v2] 메인 화면의 사용자 관심 랜덤 추천 카테고리 오디오 가이드 리스트",
@@ -184,10 +182,10 @@ public class AudioGuideController {
       @ApiResponse(code = 404, message = "No corresponding Audio guide Data in DB")
   })
   @GetMapping("/v2/audio-guides/categories/recommended")
-  public ResponseEntity<List<ResAudioGuideCategoryListDto>> getAudioGuideCategoryListV2(
+  public ResponseEntity<List<ResAudioGuideSubCategoryDetailDto>> getAudioGuideSubCategoryListV2(
       @ApiParam(value = "언어버전", required = true, example = "kor")
       @RequestParam(value = "lan") String language) {
-    return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideCategoryListV2(language));
+    return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideSubCategoryListV2(language));
   }
 
   @ApiOperation(value = "오디오 가이드의 트랙들에 대한 Point 위경도와 Direction 폴리라인 위경도 정보",
@@ -218,11 +216,28 @@ public class AudioGuideController {
       @ApiResponse(code = 404, message = "No corresponding Audio guide Data in DB")
   })
   @GetMapping("/v1/audio-guides/categories/sub")
-  public ResponseEntity<List<ResAudioGuideSubCategoryItemDto>> getAudioGuideSubCategoryList(
+  public ResponseEntity<ResAudioGuideSubCategoryListDto> getAudioGuideSubCategoryList(
       @ApiParam(value = "언어버전", required = true, example = "kor")
       @RequestParam(value = "lan") String language){
     return ResponseEntity.status(HttpStatus.OK)
         .body(audioGuideService.getAudioGuideSubCategoryList(language));
+  }
+
+  @ApiOperation(value = "오디오 가이드 카테고리 테마 Detail 리스트",
+      notes = "* 소카테고리 id 에 해당되는 오디오 가이드 리스트를 제공합니다.\n "
+          + "* 검색 탭의 테마 상세페이지에 사용됩니다.\n")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK"),
+      @ApiResponse(code = 500, message = "Internal Server Error"),
+      @ApiResponse(code = 404, message = "Client Request Path Variable Error : No such subcategory id")
+  })
+  @GetMapping("/v1/audio-guides/categories/sub/{sub-category-id}")
+  public ResponseEntity<ResAudioGuideSubCategoryDetailDto> getAudioGuideListOfSubCategoryId(
+      @PathVariable(value = "sub-category-id") Integer subCategoryId,
+      @ApiParam(value = "언어버전", required = true, example = "kor")
+      @RequestParam(value = "lan") String language){
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(audioGuideService.getAudioGuideListOfSubCategoryId(language, subCategoryId));
   }
   /*
   @ApiOperation(value = "사용자 위치(위도,경도) 기반 반경 내 오디오 트랙의 정보",
