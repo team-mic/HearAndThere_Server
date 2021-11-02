@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
-import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideLanguageContent;
-import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideLanguageContentRepository;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideRepository;
 import team_mic.here_and_there.backend.common.domain.Language;
 import team_mic.here_and_there.backend.search.domain.entity.SearchAttraction;
@@ -45,16 +43,9 @@ public class SearchKeywordTest {
   @Autowired
   private AudioGuideRepository audioGuideRepository;
 
-  @Autowired
-  private AudioGuideLanguageContentRepository audioGuideLanguageContentRepository;
-
   @Test
   public void SearchKeyword_상속_관계_저장(){
     AudioGuide audioGuide = audioGuideRepository.save(AudioGuide.builder()
-        .build());
-    AudioGuideLanguageContent guideLanguageContent = audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
-        .audioGuide(audioGuide)
-        .title("test guide")
         .build());
     TripTip tripTip = tripTipRepository.save(TripTip.builder()
         .title("test trip tip")
@@ -63,7 +54,7 @@ public class SearchKeywordTest {
 
     SearchAudioGuide searchAudioGuide = searchAudioGuideRepository.save(SearchAudioGuide.builder()
         .language(Language.ENGLISH)
-        .guideLanguageContent(guideLanguageContent)
+        .audioGuide(audioGuide)
         .build());
 
     SearchTripTip searchTripTip = searchTripTipRepository.save(SearchTripTip.builder()
@@ -80,8 +71,8 @@ public class SearchKeywordTest {
     SearchAudioGuide firstSearchGuide = searchAudioGuideRepository.findById(1L).get();
     List<SearchKeyword> keywords = searchKeywordRepository.findAll();
 
-    assertThat(searchAudioGuide.getAudioGuideLanguageContent().getTitle())
-        .isEqualTo(firstSearchGuide.getAudioGuideLanguageContent().getTitle());
+    assertThat(searchAudioGuide.getAudioGuide().getId())
+        .isEqualTo(firstSearchGuide.getAudioGuide().getId());
 
     assertThat(firstSearchGuide.getSearchHitCounts()).isEqualTo(0);
     assertThat(keywords.size()).isEqualTo(3);
@@ -91,10 +82,6 @@ public class SearchKeywordTest {
   public void SearchKeyword_검색어_순위(){
     AudioGuide audioGuide = audioGuideRepository.save(AudioGuide.builder()
         .build());
-    AudioGuideLanguageContent guideLanguageContent = audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
-        .audioGuide(audioGuide)
-        .title("test guide")
-        .build());
     TripTip tripTip = tripTipRepository.save(TripTip.builder()
         .title("test trip tip")
         .build());
@@ -102,7 +89,7 @@ public class SearchKeywordTest {
 
     SearchAudioGuide searchAudioGuide = searchAudioGuideRepository.save(SearchAudioGuide.builder()
         .language(Language.ENGLISH)
-        .guideLanguageContent(guideLanguageContent)
+        .audioGuide(audioGuide)
         .build());
 
     SearchTripTip searchTripTip = searchTripTipRepository.save(SearchTripTip.builder()
@@ -133,17 +120,13 @@ public class SearchKeywordTest {
   public void SearchKeyword_검색어_순위_한영버전(){
     AudioGuide audioGuide = audioGuideRepository.save(AudioGuide.builder()
         .build());
-    AudioGuideLanguageContent guideLanguageContent = audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
-        .audioGuide(audioGuide)
-        .title("test guide")
-        .build());
     TripTip tripTip = tripTipRepository.save(TripTip.builder()
         .title("test trip tip")
         .build());
 
     SearchAudioGuide searchAudioGuide = searchAudioGuideRepository.save(SearchAudioGuide.builder()
         .language(Language.KOREAN)
-        .guideLanguageContent(guideLanguageContent)
+        .audioGuide(audioGuide)
         .build());
 
     SearchTripTip searchTripTip = searchTripTipRepository.save(SearchTripTip.builder()
@@ -168,5 +151,19 @@ public class SearchKeywordTest {
     assertThat(keywords.get(0).getClass()).isEqualTo(SearchAudioGuide.class);
     assertThat(keywords.get(0).getSearchHitCounts()).isEqualTo(1);
     assertThat(keywords.get(1).getSearchHitCounts()).isEqualTo(0);
+  }
+
+  @Test
+  public void findByDiscriminatorColumn_테스트(){
+    AudioGuide audioGuide = audioGuideRepository.save(AudioGuide.builder()
+        .build());
+
+    searchAudioGuideRepository.save(SearchAudioGuide.builder()
+        .language(Language.KOREAN)
+        .audioGuide(audioGuide)
+        .build());
+
+    assertThat(searchAudioGuideRepository.findAllByType("audio-guide").get(0).getId())
+        .isEqualTo(1L);
   }
 }

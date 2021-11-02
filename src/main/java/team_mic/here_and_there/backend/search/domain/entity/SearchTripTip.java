@@ -14,7 +14,7 @@ import team_mic.here_and_there.backend.trips_tip.domain.entity.TripTip;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-@DiscriminatorValue("trip_tip")
+@DiscriminatorValue("trip-tip")
 public class SearchTripTip extends SearchKeyword{
   @ManyToOne
   @JoinColumn(name = "trip_tip_id")

@@ -331,4 +331,20 @@ public class AttractionService {
     }
     return touristArea;
   }
+
+  public Integer getCountsOfAttraction(Integer contentTypeId, Long contentId, Language language)
+      throws UnsupportedEncodingException {
+
+    UriComponents components = createBaseUriBuilder(language.getVersion(), "/detailCommon")
+        .queryParam("contentId", contentId)
+        .queryParam("contentTypeId", contentTypeId)
+        .build(false);
+
+    HttpEntity<?> httpEntity = createHttpEntityHeader();
+    TourApiBaseResModelDto<?> modelDto =
+        restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
+            new ParameterizedTypeReference<TourApiBaseResModelDto<?>>() {}).getBody();
+
+    return modelDto.getResponse().getBody().getAreaAttractionsCount();
+  }
 }
