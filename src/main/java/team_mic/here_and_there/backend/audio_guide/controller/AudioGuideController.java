@@ -233,6 +233,7 @@ public class AudioGuideController {
   })
   @GetMapping("/v1/audio-guides/categories/sub/{sub-category-id}")
   public ResponseEntity<ResAudioGuideSubCategoryDetailDto> getAudioGuideListOfSubCategoryId(
+      @ApiParam(value = "소카테고리 id", required = true, example = "1")
       @PathVariable(value = "sub-category-id") Integer subCategoryId,
       @ApiParam(value = "언어버전", required = true, example = "kor")
       @RequestParam(value = "lan") String language){
