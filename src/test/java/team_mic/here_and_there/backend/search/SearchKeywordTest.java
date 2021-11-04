@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideRepository;
@@ -165,5 +167,140 @@ public class SearchKeywordTest {
 
     assertThat(searchAudioGuideRepository.findAllByType("audio-guide").get(0).getId())
         .isEqualTo(1L);
+  }
+
+  @Test
+  public void 검색어랭킹_PageRequest_테스트(){
+    SearchAttraction searchAttraction1 = searchAttractionRepository.save(SearchAttraction.builder()
+        .language(Language.ENGLISH)
+        .contentId(1L)
+        .contentTypeId(1)
+        .build());
+
+    SearchAttraction searchAttraction2 = searchAttractionRepository.save(SearchAttraction.builder()
+        .language(Language.ENGLISH)
+        .contentId(2L)
+        .contentTypeId(2)
+        .build());
+
+    SearchAttraction searchAttraction3 = searchAttractionRepository.save(SearchAttraction.builder()
+        .language(Language.ENGLISH)
+        .contentId(3L)
+        .contentTypeId(3)
+        .build());
+
+    searchAttraction1.updateSearchHitCount();
+    searchAttraction2.updateSearchHitCount();
+    searchAttraction2.updateSearchHitCount();
+
+    PageRequest pageRequest = PageRequest.of(0, 3, Sort.by("searchHitCounts").descending());
+
+    List<SearchKeyword> searchKeywords = searchKeywordRepository.findAllByLanguage(Language.ENGLISH, pageRequest);
+
+    assertThat(searchKeywords.size()).isEqualTo(3);
+    assertThat(searchKeywords.get(0).getSearchHitCounts()).isEqualTo(2L);
+    assertThat(searchKeywords.get(2).getId()).isEqualTo(3L);
+  }
+
+  @Test
+  public void 검색어랭킹_PageRequest_다른Entity_다른언어버전_테스트(){
+    AudioGuide audioGuide = audioGuideRepository.save(AudioGuide.builder()
+        .build());
+    TripTip tripTip = tripTipRepository.save(TripTip.builder()
+        .title("test trip tip")
+        .build());
+
+    SearchAudioGuide searchAudioGuide = searchAudioGuideRepository.save(SearchAudioGuide.builder()
+        .language(Language.ENGLISH)
+        .audioGuide(audioGuide)
+        .build());
+
+    SearchAttraction searchAttraction = searchAttractionRepository.save(SearchAttraction.builder()
+        .language(Language.ENGLISH)
+        .contentId(1L)
+        .contentTypeId(1)
+        .build());
+
+    SearchTripTip searchTripTip = searchTripTipRepository.save(SearchTripTip.builder()
+        .language(Language.KOREAN)
+        .tripTip(tripTip)
+        .build());
+
+    searchAudioGuide.updateSearchHitCount();
+    searchAttraction.updateSearchHitCount();
+    searchAttraction.updateSearchHitCount();
+
+    PageRequest pageRequest = PageRequest.of(0, 3, Sort.by("searchHitCounts").descending());
+
+    List<SearchKeyword> searchKeywords = searchKeywordRepository.findAllByLanguage(Language.ENGLISH, pageRequest);
+
+    assertThat(searchKeywords.size()).isEqualTo(2);
+    assertThat(searchKeywords.get(0).getDiscriminatorValue()).isEqualTo("attraction");
+    assertThat(searchKeywords.get(1).getId()).isEqualTo(1L);
+    assertThat(searchKeywords.get(1).getDiscriminatorValue()).isEqualTo("audio-guide");
+  }
+
+  @Test
+  public void searchKeyword_total_entity_개수_테스트(){
+    AudioGuide audioGuide = audioGuideRepository.save(AudioGuide.builder()
+        .build());
+    TripTip tripTip = tripTipRepository.save(TripTip.builder()
+        .title("test trip tip")
+        .build());
+
+    searchAttractionRepository.save(SearchAttraction.builder()
+        .language(Language.ENGLISH)
+        .contentId(1L)
+        .contentTypeId(1)
+        .build());
+
+    searchAudioGuideRepository.save(SearchAudioGuide.builder()
+        .language(Language.ENGLISH)
+        .audioGuide(audioGuide)
+        .build());
+
+    searchTripTipRepository.save(SearchTripTip.builder()
+        .language(Language.KOREAN)
+        .tripTip(tripTip)
+        .build());
+
+    assertThat(searchKeywordRepository.getTotalCounts()).isEqualTo(3L);
+  }
+
+  @Test
+  public void 검색어랭킹_같다면_Id순정렬_테스트(){
+    AudioGuide audioGuide = audioGuideRepository.save(AudioGuide.builder()
+        .build());
+    TripTip tripTip = tripTipRepository.save(TripTip.builder()
+        .title("test trip tip")
+        .build());
+
+    SearchAudioGuide searchAudioGuide = searchAudioGuideRepository.save(SearchAudioGuide.builder()
+        .language(Language.ENGLISH)
+        .audioGuide(audioGuide)
+        .build());
+
+    SearchAttraction searchAttraction = searchAttractionRepository.save(SearchAttraction.builder()
+        .language(Language.ENGLISH)
+        .contentId(1L)
+        .contentTypeId(1)
+        .build());
+
+    SearchTripTip searchTripTip = searchTripTipRepository.save(SearchTripTip.builder()
+        .language(Language.ENGLISH)
+        .tripTip(tripTip)
+        .build());
+
+    searchAudioGuide.updateSearchHitCount();
+    searchAttraction.updateSearchHitCount();
+    searchTripTip.updateSearchHitCount();
+
+    PageRequest pageRequest = PageRequest.of(0, 3, Sort.by("searchHitCounts").descending().and(Sort.by("id")));
+
+    List<SearchKeyword> searchKeywords = searchKeywordRepository.findAllByLanguage(Language.ENGLISH, pageRequest);
+
+    assertThat(searchKeywords.get(0).getDiscriminatorValue()).isEqualTo("audio-guide");
+    assertThat(searchKeywords.get(1).getDiscriminatorValue()).isEqualTo("attraction");
+    assertThat(searchKeywords.get(2).getDiscriminatorValue()).isEqualTo("trip-tip");
   }
 }

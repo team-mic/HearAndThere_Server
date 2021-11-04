@@ -8,5 +8,5 @@ import team_mic.here_and_there.backend.search.domain.entity.SearchKeyword;
 
 @Repository
 public interface SearchAttractionRepository extends SearchKeywordRepository<SearchAttraction> {
-  Optional<SearchKeyword> findByContentTypeIdAndContentIdAndLanguage(Integer contentTypeId, Long contentId, Language language);
+  Optional<SearchAttraction> findByContentTypeIdAndContentIdAndLanguage(Integer contentTypeId, Long contentId, Language language);
 }

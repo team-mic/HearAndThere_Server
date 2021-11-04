@@ -12,4 +12,5 @@ import java.util.List;
 public interface TripTipRepository extends JpaRepository<TripTip, Long> {
   Optional<TripTip> findByIdAndLanguage(Long id, Language language);
   List<TripTip> findAllByLanguageOrderByViewCountDesc(Language language);
+  List<TripTip> findAllByLanguage(Language language);
 }

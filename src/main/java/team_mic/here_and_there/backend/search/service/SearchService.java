@@ -5,9 +5,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import team_mic.here_and_there.backend.attraction.exception.InvalidAttractionIdException;
 import team_mic.here_and_there.backend.attraction.service.AttractionService;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
@@ -24,6 +30,9 @@ import team_mic.here_and_there.backend.search.domain.repository.SearchAudioGuide
 import team_mic.here_and_there.backend.search.domain.repository.SearchKeywordRepository;
 import team_mic.here_and_there.backend.search.domain.repository.SearchTripTipRepository;
 import team_mic.here_and_there.backend.search.dto.response.ResPatchedSearchKeywordDto;
+import team_mic.here_and_there.backend.search.dto.response.ResSearchKeywordItemDto;
+import team_mic.here_and_there.backend.search.dto.response.ResSearchKeywordRankListDto;
+import team_mic.here_and_there.backend.search.exception.NoSearchKeywordException;
 import team_mic.here_and_there.backend.trips_tip.domain.entity.TripTip;
 import team_mic.here_and_there.backend.trips_tip.domain.repository.TripTipRepository;
 import team_mic.here_and_there.backend.trips_tip.exception.NoTripTipsException;
@@ -73,24 +82,23 @@ public class SearchService {
         .build();
   }
 
-  private SearchKeyword findOrSaveSearchAttraction(Long[] targetIds, Language lan,
+  @Transactional
+  public SearchKeyword findOrSaveSearchAttraction(Long[] targetIds, Language lan,
       List<Long> updatedIds) throws UnsupportedEncodingException {
     Integer contentTypeId = Math.toIntExact(targetIds[0]);
     Long contentId = targetIds[1];
 
-    Integer countsOfAttraction = attractionService.getCountsOfAttraction(contentTypeId, contentId, lan);
-    if(countsOfAttraction == 0){
-      throw new InvalidAttractionIdException();
-    }
+    String attractionTitle = attractionService.getDetailCommon(contentId, contentTypeId, lan.getVersion()).getTitle();
 
     updatedIds.addAll(Arrays.asList(targetIds));
 
     return searchAttractionRepository.findByContentTypeIdAndContentIdAndLanguage(contentTypeId, contentId, lan)
-        .orElseGet(()->searchAttractionRepository.save(SearchAttraction.builder()
-            .contentTypeId(contentTypeId)
-            .contentId(contentId)
-            .language(lan)
-            .build()));
+      .orElseGet(() -> searchAttractionRepository.save(SearchAttraction.builder()
+        .title(attractionTitle)
+        .contentTypeId(contentTypeId)
+        .contentId(contentId)
+        .language(lan)
+        .build()));
   }
 
   private SearchKeyword findOrSaveSearchTripTip(Long[] targetIds, Language lan,
@@ -118,5 +126,88 @@ public class SearchService {
             .language(lan)
             .audioGuide(guide)
             .build()));
+  }
+
+  @Transactional
+  public ResSearchKeywordRankListDto getPopularSearchKeywordsRankings(String language, Integer count) {
+    Language lan = null;
+    if(language.equals(Language.ENGLISH.getVersion())){
+      lan = Language.ENGLISH;
+    }
+    if(language.equals(Language.KOREAN.getVersion())){
+      lan = Language.KOREAN;
+    }
+
+    Long totalSearchKeywordsCount = searchKeywordRepository.getTotalCountsByLanguage(lan);
+    if(totalSearchKeywordsCount == 0){
+      throw new NoSearchKeywordException();
+    }
+    if(count > totalSearchKeywordsCount){
+      count = Math.toIntExact(totalSearchKeywordsCount);
+    }
+
+    PageRequest pageRequest = PageRequest.of(0, count, Sort.by("searchHitCounts").descending().and(Sort.by("id").ascending()));
+
+    List<SearchKeyword> searchKeywords = searchKeywordRepository.findAllByLanguage(lan, pageRequest);
+
+    List<ResSearchKeywordItemDto> searchKeywordItemList = searchKeywords.stream()
+        .map(searchKeyword -> {
+          try {
+            return toSearchKeywordItem(searchKeyword);
+          } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR);
+          }
+        })
+        .collect(Collectors.toList());
+
+    return ResSearchKeywordRankListDto.builder()
+        .count(count)
+        .language(lan.getVersion())
+        .keywordRankList(searchKeywordItemList)
+        .build();
+  }
+
+  private ResSearchKeywordItemDto toSearchKeywordItem(SearchKeyword searchKeyword)
+      throws UnsupportedEncodingException {
+    Language language = searchKeyword.getLanguage();
+    String keywordTitle = null;
+    List<Long> targetIds = new ArrayList<>();
+    String tripTipContentsUrl = null;
+
+    if(searchKeyword.getDiscriminatorValue().equals("audio-guide")){
+      AudioGuide guide = ((SearchAudioGuide)searchKeyword).getAudioGuide();
+      AudioGuideLanguageContent guideLanguageContent = audioGuideLanguageContentRepository.findByAudioGuide_IdAndLanguage(guide.getId(), language)
+          .orElseThrow(NoSuchElementException::new);
+
+      keywordTitle = guideLanguageContent.getTitle();
+      targetIds.add(guide.getId());
+
+    }else if(searchKeyword.getDiscriminatorValue().equals("trip-tip")){
+      TripTip tripTip = ((SearchTripTip)searchKeyword).getTripTip();
+
+      keywordTitle = tripTip.getTitle();
+      targetIds.add(tripTip.getId());
+      tripTipContentsUrl = tripTip.getContentsUrl();
+    }else if(searchKeyword.getDiscriminatorValue().equals("attraction")){
+      SearchAttraction searchAttraction = (SearchAttraction)searchKeyword;
+
+      if(searchAttraction.getTitle() == null || searchAttraction.getTitle().equals("")){
+        String attractionTitle = attractionService.getDetailCommon(searchAttraction.getContentId(), searchAttraction.getContentTypeId(), language.getVersion()).getTitle();
+        searchAttraction.updateTitle(attractionTitle);
+      }
+      keywordTitle = searchAttraction.getTitle();
+
+      targetIds.add(Long.valueOf(searchAttraction.getContentTypeId()));
+      targetIds.add(searchAttraction.getContentId());
+    }
+
+    return ResSearchKeywordItemDto.builder()
+        .keywordType(searchKeyword.getDiscriminatorValue())
+        .keywordTitle(keywordTitle)
+        .searchHitCounts(searchKeyword.getSearchHitCounts())
+        .keywordTargetIds(targetIds)
+        .tripTipContentsUrl(tripTipContentsUrl)
+        .build();
   }
 }

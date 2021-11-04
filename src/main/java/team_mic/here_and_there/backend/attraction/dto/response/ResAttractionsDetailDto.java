@@ -7,12 +7,16 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.LinkedHashMap;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideItemDto;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"language", "contentId", "contentTypeId",
     "detailCommonInfo", "imagesList",

@@ -1,5 +1,6 @@
 package team_mic.here_and_there.backend.attraction.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import team_mic.here_and_there.backend.attraction.dto.response.ResAreaAttraction
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import team_mic.here_and_there.backend.attraction.exception.InvalidAttractionIdException;
 import team_mic.here_and_there.backend.audio_course.domain.entity.AudioCourseElement;
 import team_mic.here_and_there.backend.audio_course.service.AudioCourseService;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
@@ -269,7 +271,7 @@ public class AttractionService {
     return detailIntroMap;
   }
 
-  private ResAttractionDetailCommonDto getDetailCommon(Long contentId, Integer contentTypeId,
+  public ResAttractionDetailCommonDto getDetailCommon(Long contentId, Integer contentTypeId,
       String language) throws UnsupportedEncodingException {
 
     UriComponents components = createBaseUriBuilder(language, "/detailCommon")
@@ -283,12 +285,19 @@ public class AttractionService {
         .build(false);
 
     HttpEntity<?> httpEntity = createHttpEntityHeader();
-    TourApiBaseResModelDto<ResAttractionsDetailDto> modelDto =
+    TourApiBaseResModelDto<?> modelDto =
         restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
-            new ParameterizedTypeReference<TourApiBaseResModelDto<ResAttractionsDetailDto>>() {
+            new ParameterizedTypeReference<TourApiBaseResModelDto<?>>() { //ResAttractionsDetailDto
             }).getBody();
 
-    ResAttractionDetailCommonDto detailCommonDto = modelDto.getResponse().getBody().getItems().getDetailCommonInfo();
+    if(modelDto.getResponse().getBody().getItems().equals("")){
+      throw new InvalidAttractionIdException();
+    }
+
+    ObjectMapper mapper = new ObjectMapper();
+    TourApiBaseResModelDto<ResAttractionsDetailDto> parsedModelDto = mapper.convertValue(modelDto,  new TypeReference<TourApiBaseResModelDto<ResAttractionsDetailDto>>(){});
+
+    ResAttractionDetailCommonDto detailCommonDto = parsedModelDto.getResponse().getBody().getItems().getDetailCommonInfo();
 
     if(detailCommonDto.getHomepage() != null){
       detailCommonDto.setHomepage(parseHtmlToPlainText(detailCommonDto.getHomepage()));

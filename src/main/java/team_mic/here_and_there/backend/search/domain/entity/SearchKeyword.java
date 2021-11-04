@@ -3,6 +3,7 @@ package team_mic.here_and_there.backend.search.domain.entity;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +38,12 @@ public abstract class SearchKeyword extends BaseTimeEntity {
 
   public void updateSearchHitCount(){
     this.searchHitCounts = this.searchHitCounts + 1;
+  }
+
+  public String getDiscriminatorValue(){
+    DiscriminatorValue val = this.getClass().getAnnotation(DiscriminatorValue.class);
+
+    return val == null ? null : val.value();
   }
 
   protected SearchKeyword(Language language){

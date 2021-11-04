@@ -13,12 +13,18 @@ import team_mic.here_and_there.backend.common.domain.Language;
 @Entity
 @DiscriminatorValue("attraction")
 public class SearchAttraction extends SearchKeyword{
+  private String title;
   private Long contentId;
   private Integer contentTypeId;
 
+  public void updateTitle(String title){
+    this.title = title;
+  }
+
   @Builder
-  private SearchAttraction(Language language, Long contentId, Integer contentTypeId){
+  private SearchAttraction(Language language, String title, Long contentId, Integer contentTypeId){
     super(language);
+    this.title = title;
     this.contentId = contentId;
     this.contentTypeId = contentTypeId;
   }

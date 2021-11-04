@@ -13,4 +13,5 @@ public interface AudioGuideLanguageContentRepository extends JpaRepository<Audio
   List<AudioGuideLanguageContent> findAllByLanguageOrderByViewCountDesc(Language language);
   List<AudioGuideLanguageContent> findAllByLanguageOrderByPlayingCountDesc(Language language);
   Optional<AudioGuideLanguageContent> findByAudioGuide_IdAndLanguage(Long audioGuideId, Language language);
+  List<AudioGuideLanguageContent> findAllByLanguage(Language language);
 }
