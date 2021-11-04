@@ -13,7 +13,7 @@ public class NoTripTipsException extends BaseException {
   private NoTripTipsException(HttpStatus status) {
     super(ErrorModel.builder()
         .httpStatus(status)
-        .message("존재하는 여행 팁이 없습니다.")
+        .message("요청한 id 에 해당하는 글 콘텐츠가 존재하지 않습니다.")
         .build());
   }
 }

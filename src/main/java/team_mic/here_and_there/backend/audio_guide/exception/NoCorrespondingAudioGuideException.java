@@ -13,7 +13,7 @@ public class NoCorrespondingAudioGuideException extends BaseException {
   private NoCorrespondingAudioGuideException(HttpStatus status) {
     super(ErrorModel.builder()
         .httpStatus(status)
-        .message("해당하는 오디오 가이드가 없습니다.")
+        .message("요청한 id 에 해당하는 오디오 가이드가 존재하지 않습니다.")
         .build());
   }
 }
