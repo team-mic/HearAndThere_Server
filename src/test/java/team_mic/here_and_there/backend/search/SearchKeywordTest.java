@@ -264,7 +264,7 @@ public class SearchKeywordTest {
         .tripTip(tripTip)
         .build());
 
-    assertThat(searchKeywordRepository.getTotalCounts()).isEqualTo(3L);
+    assertThat(searchKeywordRepository.getTotalCountsByLanguage(Language.ENGLISH)).isEqualTo(3L);
   }
 
   @Test
