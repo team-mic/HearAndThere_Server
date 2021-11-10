@@ -34,7 +34,13 @@ public class TourApiBaseResModelDto<T> {
       private T items;
 
       @JsonProperty("totalCount")
-      private Integer areaAttractionsCount;
+      private Integer totalAttractionsCount;
+
+      @JsonProperty("numOfRows")
+      private Integer pageSize;
+
+      @JsonProperty("pageNo")
+      private Integer pageNumber;
     }
   }
 }

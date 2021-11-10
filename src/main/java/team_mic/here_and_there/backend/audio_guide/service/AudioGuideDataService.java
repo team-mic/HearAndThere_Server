@@ -42,9 +42,9 @@ public class AudioGuideDataService {
                 .language(Language.KOREAN)
                 //.mainCategory(AudioGuideMainCategory.MUSIC.getDatabaseKoreanName())
                 .overviewDescription("방탄소년단의 RM 팬이라면 RM이 공릉을 방문하여 사진을 찍어 트위터에 올린 사진들을 보셨을 거예요. 공릉은 사람들에게 많이 알려진 유명한 지역은 아니지만, 사람들 사이에서 입소문을 타고 점점 뜨고 있는 지역이에요. 공릉에 대한 소개와 RM이 다녀갔던 장소, 사진찍은 장소까지 다 알려드릴게요. 중간중간 RM에 관한 TMI도 많으니 놓치지 마세요!")
-                .playingCount("0")
+                .playingCount(0L)
                 .title("RM이 사랑하는 아름다운 동네")
-                .viewCount("0")
+                .viewCount(0L)
                 .build());
 
         audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -52,9 +52,9 @@ public class AudioGuideDataService {
                 .language(Language.ENGLISH)
                 //.mainCategory(AudioGuideMainCategory.MUSIC.getDatabaseEnglishName())
                 .overviewDescription("If you're a fan of RM of BTS, you've probably seen the photos RM posted on his Twitter after visiting Gongneung. Gongneung is not a well-known and popular area, but it's getting popular among people. I'll give you an introduction to Gongneung, and tell you the places where RM went and took pictures. Also, there are some interesting information and facts about RM in between, so don't miss them!")
-                .playingCount("0")
+                .playingCount(0L)
                 .title("The Neighborhood RM Loves")
-                .viewCount("0")
+                .viewCount(0L)
                 .build());
     }
 
@@ -314,9 +314,9 @@ public class AudioGuideDataService {
                 .language(Language.KOREAN)
                 //.mainCategory(AudioGuideMainCategory.SHOPPING.getDatabaseKoreanName())
                 .overviewDescription("서울하면 남산타워 다들 들어보셨죠? 남산타워는 k-드라마에서도 많이 나왔던 유명한 촬영지인데요. 이번 코스는 서울의 랜드마크인 남산입니다. 남산은 서울 중심에 있어 어디서든 방문하기 좋은 지역입니다. 주변에 명동도 있어 쇼핑하기 참 좋아요. 이번 코스에서는 남산은 어떤 지역인지, 명동에서 쇼핑하기 좋은 브랜드 등 다양한 설명과 꿀팁을 제공할 예정이니 놓치지 마세요!")
-                .playingCount("0")
+                .playingCount(0L)
                 .title("서울의 랜드마크")
-                .viewCount("0")
+                .viewCount(0L)
                 .build());
 
         audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -324,9 +324,9 @@ public class AudioGuideDataService {
                 .language(Language.ENGLISH)
                 //.mainCategory(AudioGuideMainCategory.SHOPPING.getDatabaseEnglishName())
                 .overviewDescription("When you think about attractions in Seoul, what pops into your mind? I'm sure one of them is the Namsan Tower. It is a famous K-drama filming spot. This course is Namsan, a landmark of Seoul. Namsan is located in the center of Seoul, so you can visit anywhere. And also Myeong-dong is nearby, it's great to go shopping. Don't miss this course! I will provide a lot of tips and explanations on Namsan, and recommend nice brands to shop in Myeong-dong!")
-                .playingCount("0")
+                .playingCount(0L)
                 .title("A Landmark of Seoul")
-                .viewCount("0")
+                .viewCount(0L)
                 .build());
     }
 
@@ -550,9 +550,9 @@ public class AudioGuideDataService {
                 .language(Language.KOREAN)
                 //.mainCategory(AudioGuideMainCategory.EXCURSION.getDatabaseKoreanName())
                 .overviewDescription("한국에서 노량진은 수산시장과 고시촌으로 유명한 곳입니다. 하지만 한강 근처에 있고 곳곳에 공원이 많아 한강과 함께 서울을 여유롭게 구경할 수 있는 곳이 많습니다. 수산시장에서 수산물을 쇼핑하는 팁부터 숨겨진 명소까지! 한국사람들도 잘 모르는 노량진에 대한 모든 것을 알려드릴게요!")
-                .playingCount("0")
+                .playingCount(0L)
                 .title("서울을 한눈에 볼 수 있는 숨겨진 명소")
-                .viewCount("0")
+                .viewCount(0L)
                 .build());
 
         audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -560,9 +560,9 @@ public class AudioGuideDataService {
                 .language(Language.ENGLISH)
                 //.mainCategory(AudioGuideMainCategory.EXCURSION.getDatabaseEnglishName())
                 .overviewDescription("Noryangjin is famous for its fish market and gosichon, a town full of cram school for the exam. However, there are many places where you can enjoy the view of Seoul because it is near the Han River and there are many parks. From tips on buying seafood at the fish market to hidden attractions! I'll tell you everything about Noryangjin that even Koreans don't know!")
-                .playingCount("0")
+                .playingCount(0L)
                 .title("A Hidden Attractive Area Where You Can See in One Glance the Whole Area of Seoul")
-                .viewCount("0")
+                .viewCount(0L)
                 .build());
     }
 
@@ -758,9 +758,9 @@ public class AudioGuideDataService {
                 .language(Language.KOREAN)
                 //.mainCategory(AudioGuideMainCategory.ART.getDatabaseKoreanName())
                 .overviewDescription("연극의 중심, 한국의 브로드웨이 대학로에 오신 걸 환영합니다! 대학로라는 명칭은 예전에 여기에 서울대학교 인문사회대학, 자연과학대학, 법학대학이 있었기 때문인데요. 여기 있던 서울대학교 건물들이 1975년에 지금의 서울대학교 자리로 다 이동하고 서울대 의과대학과 대학병원만 남아 있습니다. 서울대학교 이전 후 빈 땅이 생겼고 이곳에 아르코 예술극장이 생기면서 파랑새극장, 동숭아트센터, 연우소극장 등 극장들이 많이 문을 열게 되었습니다. ")
-                .playingCount("0")
+                .playingCount(0L)
                 .title("연극의 중심")
-                .viewCount("0")
+                .viewCount(0L)
                 .build());
 
         audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -768,9 +768,9 @@ public class AudioGuideDataService {
                 .language(Language.ENGLISH)
                 //.mainCategory(AudioGuideMainCategory.ART.getDatabaseEnglishName())
                 .overviewDescription("Welcome to Korean Broadway, Daehak-Ro, the center for theatrical performances! The place was named Daehak-Ro because there used to be Seoul National University's main campus(College of Humanities and Sciences and College of Law) in this area. Since most colleges of the university relocated to the new Gwanak Campus in 1975, only College of Medicine and Seoul national university hospital have remained there. The relocation made empty lot, and it was developed to be a place for theatrical performances with the new buildings such as the Arko Arts Theater , Blue Bird Theater, Dongsung Art Center, and Yeonwoo Theater.")
-                .playingCount("0")
+                .playingCount(0L)
                 .title("The Center for Theatrical Performances")
-                .viewCount("0")
+                .viewCount(0L)
                 .build());
     }
 
@@ -953,9 +953,9 @@ public class AudioGuideDataService {
                 .language(Language.KOREAN)
                 //.mainCategory(AudioGuideMainCategory.HISTORY.getDatabaseKoreanName())
                 .overviewDescription("동대문은 한국의 보물 1호로, 조선시대 때 성곽의 동쪽에 있던 문입니다. 조선시대때는 한양도성의 동서남북에 4개의 문이 있었는데 동대문만 유일하게 조선시대때 지어진 그대로 남아있습니다. 동대문 바깥쪽에 반달모양으로 쌓은 성이 있는데, 이것을 '옹성'이라고 하며 군사방어용으로 만든 것입니다.")
-                .playingCount("0")
+                .playingCount(0L)
                 .title("조선의 성곽을 따라 산책하기")
-                .viewCount("0")
+                .viewCount(0L)
                 .build());
 
         audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -963,9 +963,9 @@ public class AudioGuideDataService {
                 .language(Language.ENGLISH)
                 //.mainCategory(AudioGuideMainCategory.HISTORY.getDatabaseEnglishName())
                 .overviewDescription("Dongdaemun is Korea's No. 1 treasure, and it was located on the east side of Seoul fortress wall during the Joseon Dynasty. There are four large gates in the east, west, north, and south of the fortress, and Dongdaemun is the only gate that remained the same without damage since it was built in Joseon Dynasty. There is a half-moon-shaped fortress outside Dongdaemun, which is called 'Ongseong' and was built for military defense. ")
-                .playingCount("0")
+                .playingCount(0L)
                 .title("Walk along the Joseon Castle")
-                .viewCount("0")
+                .viewCount(0L)
                 .build());
     }
 
@@ -1148,9 +1148,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.EXCURSION.getDatabaseKoreanName())
         .overviewDescription("홍대와 합정의 옆동네인 망원은 홍대와는 사뭇 다른 분위기를 풍기며 사람들의 입소문을 타고 유명해진 동네입니다. 먹거리, 볼거리가 많은 망원시장과 아기자기한 소품샵과 맛집들이 골목골목 숨어있어 느긋하게 탐험하는 재미가 있어요. 이 오디오 가이드는 망원역부터 시작해서 망원정, 망리단길, 망원시장, 망원한강공원까지 둘러볼 수 있는 코스입니다.  망원에 대한 소개부터 망원시장과 망원한강공원의 꿀팁까지 알찬 정보를 얻을 수 있을 거예요!")
-        .playingCount("0")
+        .playingCount(0L)
         .title("여유로운 동네")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -1158,9 +1158,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.EXCURSION.getDatabaseEnglishName())
         .overviewDescription("Mangwon, next to Hongdae and Hapjeong, has become famous through social media. There are many things to explore such as Mangwon Market, which has a lot of food and things to see, and cute prop shops and restaurants hidden in alleys. The audio guide offers a course including Mangwon Station, Mangwonjeong, Mangnidan-gil, Mangwon Market and Mangwon Hangang Park. From the introduction of Mangwon to the great tips of Mangwon Market and Mangwon Han River Park, you will get helpful information.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("Relaxing town")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 
@@ -1351,9 +1351,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.HISTORY.getDatabaseKoreanName())
         .overviewDescription("한옥의 정취를 느낄 수 있는 마을, 북촌에 오신 걸 환영합니다!  '북촌'은 청계천과 종로의 윗동네라는 뜻에서 '북촌(North Village)'이라고 불리어졌습니다. 북촌은 과거 조선시대 양반층의 주거지로서 아직까지도 아름다운 골목길과 한옥들을 그대로 보존하고 있어 간접적으로나마 조선시대의 분위기를 느낄 수 있는 곳이며, 현재까지도 많은 사람들에게 사랑을 받고 있는 관광지 입니다. 모두 함께 아름다운 북촌 한옥마을을 구경하러 떠나볼까요?")
-        .playingCount("0")
+        .playingCount(0L)
         .title("한옥의 정취를 느낄 수 있는 마을")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -1361,9 +1361,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.HISTORY.getDatabaseEnglishName())
         .overviewDescription("Welcome to Bukchon, a village where you can enjoy the peaceful ambience of hanok! 'Bukchon' ,which means 'North Village', was named this way because it lies north of  Cheonggyecheon Stream and Jongno area. Bukchon used to be a residential area for Yangban the ruling class of the Joseon Dynasty. Beautiful alleys and hanoks are still well preseved so you can feel the atmosphere of the Joseon Dynasty here. Because of these, It is still loved by many people. Let's go to see the beautiful Bukchon Hanok Village.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("A Village Where You Can Enjoy the Peaceful Ambience of Hanok")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 
@@ -1637,9 +1637,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.EXCURSION.getDatabaseKoreanName())
         .overviewDescription("잠실에 오신 것을 환영합니다. 잠실에는 휴식과 즐거움을 위한 장소 , 그리고식사를 하고 오락을 즐길 수 있는 번화가가 있어 사람들이 많이 찾는 곳입니다. 잠실은 원래 한강으로 둘러싸여 있던 섬이었습니다. 석촌호수가 강의 일부였죠. 땅을 매립하면서 호수로 남게 되었고 그 위에는 롯데월드가 세워졌어요. 옛날에는 ‘잠실섬’에서 뽕나무를 심고 누에를 길러 실을 만들었어요. 그래서 한자로 ‘누에 잠’에 ‘집 실’을 써서 잠실이라는 이름이 붙여진 것이라고 합니다.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("산책하기 좋은 동네")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -1647,9 +1647,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.EXCURSION.getDatabaseEnglishName())
         .overviewDescription("Welcome to Jamsil. Jamsil is a popular place for a lot of people because it has lots of places for relaxation and pleasure and downtowns where you can eat and enjoy entertainment. Jamsil was originally an island surrounded by Han-river. Seokchon Lake was actually the part of the river. However, when land was reclaimed, it remained as a lake and Lotte World was built on top of it. In the past, people in ‘Jamsil Island’ planted mulberry trees and raised silkworms to make yarn. The name ‘Jamsil’ was made after the meaning of Chinese character ‘house of silkworms.‘ The word ‘Jam’ means silkworms and ‘sil’ means house in here.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("A Good Neighborhood for a Walk")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 
@@ -1895,9 +1895,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.SHOPPING.getDatabaseKoreanName())
         .overviewDescription("잠실에 오신 것을 환영합니다. 잠실에는 휴식과 즐거움을 위한 장소 , 그리고식사를 하고 오락을 즐길 수 있는 번화가가 있어 사람들이 많이 찾는 곳입니다. 잠실은 원래 한강으로 둘러싸여 있던 섬이었습니다. 석촌호수가 강의 일부였죠. 땅을 매립하면서 호수로 남게 되었고 그 위에는 롯데월드가 세워졌어요. 옛날에는 ‘잠실섬’에서 뽕나무를 심고 누에를 길러 실을 만들었어요. 그래서 한자로 ‘누에 잠’에 ‘집 실’을 써서 잠실이라는 이름이 붙여진 것이라고 합니다.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("서울 대표 관광특구")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -1905,9 +1905,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.SHOPPING.getDatabaseEnglishName())
         .overviewDescription("Welcome to Jamsil. Jamsil is a popular place for a lot of people because it has lots of places for relaxation and pleasure and downtowns where you can eat and enjoy entertainment. Jamsil was originally an island surrounded by Han-river. Seokchon Lake was actually the part of the river. However, when land was reclaimed, it remained as a lake and Lotte World was built on top of it. In the past, people in ‘Jamsil Island’ planted mulberry trees and raised silkworms to make yarn. The name ‘Jamsil’ was made after the meaning of Chinese character ‘house of silkworms.‘ The word ‘Jam’ means silkworms and ‘sil’ means house in here.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("Seoul Special Tourist Zone")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 
@@ -2037,9 +2037,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.EXCURSION.getDatabaseKoreanName())
         .overviewDescription("용산구는 서울의 중심부에 위치해 경제와 교통 문화의 중심지입니다. 고속철도와 중앙역사의 기능을 하고 있습니다. 뿐만 아니라 효창공원, 국립중앙박물관, 전쟁기념관, 한강시민공원 등 도심공원이 많아 주민들이 참 살기 좋은 곳입니다.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("서울의 중심")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -2047,9 +2047,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.EXCURSION.getDatabaseEnglishName())
         .overviewDescription("Welcome to Yongsan, the center of Seoul. Yongsan-gu is the major economic and transportation hub located in the heart of Seoul. It is also a central station, which has a high-speed railroad. In addition, there are lots of nice places such as the National Museum of Korea, The War Memorial of Korea, and many urban parks such as Hyochang Park and Hangang Park, so it is really an amazing place to live in.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("The Center of Seoul")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 
@@ -2357,9 +2357,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.EXCURSION.getDatabaseKoreanName())
         .overviewDescription("용산구는 서울의 중심부에 위치해 경제와 교통 문화의 중심지입니다. 고속철도와 중앙역사의 기능을 하고 있습니다. 뿐만 아니라 효창공원, 국립중앙박물관, 전쟁기념관, 한강시민공원 등 도심공원이 많아 주민들이 참 살기 좋은 곳입니다.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("역사와 문화가 가득한 동네")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -2367,9 +2367,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.EXCURSION.getDatabaseEnglishName())
         .overviewDescription("Welcome to Yongsan, the center of Seoul. Yongsan-gu is the major economic and transportation hub located in the heart of Seoul. It is also a central station, which has a high-speed railroad. In addition, there are lots of nice places such as the National Museum of Korea, The War Memorial of Korea, and many urban parks such as Hyochang Park and Hangang Park, so it is really an amazing place to live in.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("A Village Full of History and Culture")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 
@@ -2529,9 +2529,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.NATURE.getDatabaseKoreanName())
         .overviewDescription("올림픽공원은 서울에서 가장 큰 공원입니다. 그래서 공원 내부에는 다양한 동식물부터 미술관, 박물관, 전시관 등의 문화시설까지 즐길거리가 참 많은 곳입니다. 또한 공원 곳곳에 조각 작품들이 많아 세계 5대 조각공원으로 꼽히기도 했습니다. 올림픽공원의 핫플부터 곳곳에 숨겨진 명소까지 자세히 알려드릴게요. 가볍게 공원을 둘러보면서 오디오를 들어보세요. ")
-        .playingCount("0")
+        .playingCount(0L)
         .title("세계 5대 조각공원")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -2539,9 +2539,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.NATURE.getDatabaseEnglishName())
         .overviewDescription("Olympic Park is the largest park in Seoul. Therefore, there are many things to enjoy and look around inside the park, from various animals and plants living in the park, to cultural facilities such as art museums, museums and exhibition halls. Also, it was chosen to be one of the top five sculpture parks in the world because of various sculptures throughout the park. I'll tell you more about tourist spots and the hidden attractions in Olympic Park. Take a look around the park while listening to our audio guide!")
-        .playingCount("0")
+        .playingCount(0L)
         .title("one of the world's 5 best sculpture parks")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 
@@ -2814,9 +2814,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.SHOPPING.getDatabaseKoreanName())
         .overviewDescription("인사동은 한국적인 분위기를 느낄 수 있어 외국인 관광객들이 자주 방문하는 장소 중 하나입니다. 전통음식은 물론 전통차, 공예품, 미술품까지 다양하게 구경하실 수 있습니다. 이번코스는 종각역에서 시작해서 인사동, 운현궁, 익선동까지 둘러볼 예정입니다. 익선동은 아기자기한 카페들과 음식점들이 모여 있어 구경하면서 돌아다니기 좋을 거예요. 곳곳에 숨은 서울 이야기부터 다양한 정보까지 다 알려드릴게요!")
-        .playingCount("0")
+        .playingCount(0L)
         .title("한국의 문화를 느낄 수 있는 동네")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -2824,9 +2824,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.SHOPPING.getDatabaseEnglishName())
         .overviewDescription("Insa-dong is one of the most popular places for foreign tourists. You can feel the traditional vibe in Korea. You can also enjoy various kinds of traditional foods, tea, crafts, and art. In this course, you will start with Jonggak Station, and look around Insadong, Unhyeongung, and Ikseon-dong. Ikseon-dong is a great place to look around having small cafes and restaurants. I'll tell you everything from the hidden stories of Seoul to the exciting information!")
-        .playingCount("0")
+        .playingCount(0L)
         .title("A Neighbourhood Full of Authentic and Traditional Korean Culture ")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 
@@ -3119,9 +3119,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.HISTORY.getDatabaseKoreanName())
         .overviewDescription("한국의 역사에 대해 관심이 있으시다면 흥선대원군과 고종에 대해 들어보셨을 거예요. 이번 오디오에서는 흥선대원군과 고종이 주로 머물렀던 공간들에 대해 소개해드릴게요. 조선시대에서 마지막으로 지어진 덕수궁은 전통적인 건축물과 근대적인 건축물이 함께 공존하고 있습니다. 덕수궁 내부에 있는 다양한 건물들을 소개해드리고 덕수궁 밖의 산책하기 좋은 산책로까지 알찬 정보를 담아봤습니다.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("도심 속에 있는 조선의 마지막 궁궐")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -3129,9 +3129,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.HISTORY.getDatabaseEnglishName())
         .overviewDescription("If you're interested in Korean history, you might've heard about Regent Heungseon Daewongun and Emperor Gojong. In this content, I will introduce you the places where Heungseon Daewongun and Gojong stayed. Deoksugung Palace, which was the last building to be built during the Joseon Dynasty, consists of both traditional and modern architecture. We are going to introduce various buildings inside Deoksugung Palace and give you some information  about walking trails with beautiful views outside Deoksugung Palace.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("The Last Palace of Joseon in the Heart of the City")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 
@@ -3499,9 +3499,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.HISTORY.getDatabaseKoreanName())
         .overviewDescription("경복궁은 조선의 법궁입니다. 그래서 건물의 건축물과 배치, 심지어 이름까지 조선의 종교인 유교가 많이 관여를 했습니다. 조선의 과학기술을 엿볼 수 있는 곳도 곳곳에 숨겨져 있습니다. 경복궁을 세세하게 소개해드릴게요.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("서울의 법궁")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -3509,9 +3509,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.HISTORY.getDatabaseEnglishName())
         .overviewDescription("Gyeongbokgung is a Joseon's palace where king stays. Therefore, confucianism, a religion of Joseon, has deeply involved in architecture, layout, and even name of the building. There are also some hidden places where you can get a glimpse of Joseon's technology. Let me introduce Gyeongbokgung in detail.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("A Principal Royal Palace")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 
@@ -3886,9 +3886,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.HISTORY.getDatabaseKoreanName())
         .overviewDescription("창덕궁은 경복궁의 뒤를 이어 두번째로 세워진 궁궐인데요, 그럼에도 불구하고 많은 왕들의 사랑을 받아 왕들이 창덕궁에 머물며 나라를 다스리면서 자연스럽게 조선 왕조의 중심지가 되었습니다.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("조선의 두번째 궁궐")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -3896,9 +3896,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.HISTORY.getDatabaseEnglishName())
         .overviewDescription("Changdeokgung Palace was the second palace to be built after Gyeongbokgung Palace. Nevertheless, it was favored by many kings that they stayed at Changdeokgung Palace and ruled the country, naturally making it the center of the Joseon Dynasty.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("The Second Royal Palace of Joseon")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 
@@ -4159,9 +4159,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.EXCURSION.getDatabaseKoreanName())
         .overviewDescription("한국의 맨해튼이라고 불리는 여의도에 오신 걸 환영합니다! 뉴욕의 맨해튼 하면 고층건물들이 빼곡히 있는 모습이 떠오르시죠? 여의도에도 많은 고층건물들이 있습니다. 많은 금융계 회사들뿐만 아니라 국회의사당, 금융감독원 등의 국가의 핵심 기관이 모여있어 여의도를 정치와 금융의 중심이라고 볼 수 있는데요. 요즘에는 쇼핑몰까지 들어오게 되면서 상업지구로도 발달하고 있습니다.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("한국의 맨해튼")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -4169,9 +4169,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.EXCURSION.getDatabaseEnglishName())
         .overviewDescription("Welcome to Yeouido, the Manhattan of Korea! You remember the Manhattan city of New York, where there are skyscrapers? Yeouido has a lot of skyscrapers too just like Manhattan. In addition to many financial companies, key institutions such as the National Assembly and the Financial Supervisory Service are gathered, so Yeouido became another name for the center of politics and finance. Nowadays, as the appearance of shopping malls, it is developing into commercial districts.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("Korea’s Manhattan")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 
@@ -4391,9 +4391,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.SHOPPING.getDatabaseKoreanName())
         .overviewDescription("한국의 타임스 스퀘어, 영등포에 오신 것을 환영합니다. 영등포는 서울 철도의 분기점인 지역이라 우리나라 경제발전을 주도하고 교통의 중심지로서 문화를 선도했습니다. 현재는 국제금융과 문화 관광 중심지로 자리 잡은 곳입니다.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("한국의 타임스퀘어")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -4401,9 +4401,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.SHOPPING.getDatabaseEnglishName())
         .overviewDescription("Yeongdeungpo was a branch of Seoul Railway between Gyeongbu Line and Gyeongin Line, leading Korea's economic development and culture as a transportation hub. It is now a center of international finance, culture and tourism.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("The Times Square of Korea")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 
@@ -4595,9 +4595,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.ART.getDatabaseKoreanName())
         .overviewDescription("홍대하면 떠오르는 이미지가 어떤가요? 아마도 젊음, 예술 이런 것들이 떠오를텐데요. 이번 코스에서는 홍대의 다른 매력을 보여드리고자 합니다. 홍대 메인거리에서 벗어나 골목 골목 숨겨진 서점에 대해 설명해드릴게요.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("홍대 서점 탐방")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -4605,9 +4605,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.ART.getDatabaseEnglishName())
         .overviewDescription("What's the image that comes into your mind when you think of Hongdae? Probably things like youth and art, but today, I'd like to show you a different kind of charm of Hongdae in this course. Away from the main street, let me explain some hidden bookstores in the alley away from the main street of Hongdae.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("Hongdae Bookstore Tour")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 
@@ -4828,9 +4828,9 @@ public class AudioGuideDataService {
         .language(Language.KOREAN)
         //.mainCategory(AudioGuideMainCategory.ART.getDatabaseKoreanName())
         .overviewDescription("부암동은 옛모습을 그대로 가지고 있어 정겨운 느낌을 가지고 있는 동네입니다. 청와대와 가까운 탓에 군사보호구역, 개발제한구역으로 지정되어 있어 높은 건물과 신축건물이 많이 때문인데요. 덕분에 옛날 분위기와 자연을 느낄 수 있어 각광 받는 관광지입니다. 소규모 카페와 미술관 등이 많아 한적한 나들이를 원하는 분들에게 이번 코스를 추천합니다.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("사색하기 좋은 동네")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
 
     audioGuideLanguageContentRepository.save(AudioGuideLanguageContent.builder()
@@ -4838,9 +4838,9 @@ public class AudioGuideDataService {
         .language(Language.ENGLISH)
         //.mainCategory(AudioGuideMainCategory.ART.getDatabaseEnglishName())
         .overviewDescription("Buam-dong is a neighborhood that has a friendly atmosphere because it has a remained the feature of the old days. As it’s close to Cheong Wa Dae, Buam-dong is designated as a military protection zone and a restricted development zone, having many tall buildings and new buildings. Due to following reasons, it has been a popular tourist attraction with old atmosphere and nature. I recommend this course to those who want a quiet outing because there are many small cafes and art galleries.")
-        .playingCount("0")
+        .playingCount(0L)
         .title("A Suitable Place to Be in Contemplation")
-        .viewCount("0")
+        .viewCount(0L)
         .build());
   }
 

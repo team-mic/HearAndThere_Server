@@ -127,6 +127,7 @@ public class AudioGuideService {
         .title(guideLanguageContent.getTitle())
         .thumbnailImageUrl(audioGuide.getImages().get(0) + ImageSizeType.SMALL.getSuffix())
         .tags(toTagsStringList(audioGuide.getTags(), guideLanguageContent.getLanguage()))
+        .viewCount(Long.valueOf(guideLanguageContent.getViewCount()))
         .build();
   }
 
@@ -354,17 +355,25 @@ public class AudioGuideService {
         .audioGuideId(guide.getId())
         .language(language)
         .updatedField(updateField)
-        .guidePlayCount(correspondingContent.getPlayingCount())
-        .guideViewCount(correspondingContent.getViewCount())
+        .guidePlayCount(String.valueOf(correspondingContent.getPlayingCount()))
+        .guideViewCount(String.valueOf(correspondingContent.getViewCount()))
         .build();
   }
 
   public ResAudioGuideLocationListDto getAudioGuideLocationMap(String language) {
     List<AudioGuide> guideList = audioGuideRepository.findAll();
+    Language lan = null;
+    if(language.equals(Language.ENGLISH.getVersion())){
+      lan = Language.ENGLISH;
+    }
+    if(language.equals(Language.KOREAN.getVersion())){
+      lan = Language.KOREAN;
+    }
 
+    Language finalLan = lan;
     List<ResAudioGuideLocationItemDto> locationItemList =
         guideList.stream()
-            .map(guide -> toLocationItem(guide, language))
+            .map(guide -> toLocationItem(guide, finalLan))
             .collect(Collectors.toList());
 
     return ResAudioGuideLocationListDto.builder()
@@ -373,18 +382,10 @@ public class AudioGuideService {
         .build();
   }
 
-  private ResAudioGuideLocationItemDto toLocationItem(AudioGuide guide, String language) {
+  private ResAudioGuideLocationItemDto toLocationItem(AudioGuide guide, Language language) {
     AudioTrack firstTrack = guide.getTracks().iterator().next().getAudioTrack();
 
-    Optional<AudioGuideLanguageContent> languageContent = Optional.empty();
-    for(AudioGuideLanguageContent content : guide.getLanguageContents()){
-      if(content.getLanguage().getVersion().equals(language)){
-        languageContent = Optional.of(content);
-      }
-    }
-
-    AudioGuideLanguageContent correspondingContent = languageContent.orElseThrow(
-        NoSuchElementException::new); //TODO : custom exception
+    AudioGuideLanguageContent correspondingContent = findAudioGuideLanguageContentByLanguage(guide, language);
 
     return ResAudioGuideLocationItemDto.builder()
         .audioGuideId(guide.getId())
@@ -528,5 +529,19 @@ public class AudioGuideService {
     }
 
     return "";
+  }
+
+  public AudioGuideLanguageContent findAudioGuideLanguageContentByLanguage(AudioGuide audioGuide, Language language){
+
+    Optional<AudioGuideLanguageContent> languageContent = Optional.empty();
+    for(AudioGuideLanguageContent content : audioGuide.getLanguageContents()){
+      if(content.getLanguage().equals(language)){
+        languageContent = Optional.of(content);
+      }
+    }
+
+    AudioGuideLanguageContent correspondingContent = languageContent.orElseThrow(NoSuchElementException::new);
+
+    return correspondingContent;
   }
 }

@@ -3,6 +3,7 @@ package team_mic.here_and_there.backend.attraction.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -24,6 +25,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import team_mic.here_and_there.backend.attraction.domain.entity.TouristArea;
 import team_mic.here_and_there.backend.attraction.domain.repository.TouristAreaRepository;
+import team_mic.here_and_there.backend.attraction.dto.response.ResAreaAttractionItemDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAttractionDetailCommonDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAttractionDetailImageListDto;
 import team_mic.here_and_there.backend.attraction.dto.response.ResAttractionsDetailDto;
@@ -40,6 +42,7 @@ import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideIte
 import team_mic.here_and_there.backend.audio_guide.service.AudioGuideService;
 import team_mic.here_and_there.backend.common.domain.ImageSizeType;
 import team_mic.here_and_there.backend.common.domain.Language;
+import team_mic.here_and_there.backend.search.dto.SearchResultAttractionListDto;
 
 @Service
 public class AttractionService {
@@ -165,7 +168,7 @@ public class AttractionService {
             new ParameterizedTypeReference<TourApiBaseResModelDto<?>>() {
             }).getBody();
 
-    return modelDto.getResponse().getBody().getAreaAttractionsCount();
+    return modelDto.getResponse().getBody().getTotalAttractionsCount();
   }
 
   public ResAttractionsDetailDto getAttractionDetail(Long contentId, Integer contentTypeId, String language)
@@ -294,7 +297,6 @@ public class AttractionService {
       throw new InvalidAttractionIdException();
     }
 
-    ObjectMapper mapper = new ObjectMapper();
     TourApiBaseResModelDto<ResAttractionsDetailDto> parsedModelDto = mapper.convertValue(modelDto,  new TypeReference<TourApiBaseResModelDto<ResAttractionsDetailDto>>(){});
 
     ResAttractionDetailCommonDto detailCommonDto = parsedModelDto.getResponse().getBody().getItems().getDetailCommonInfo();
@@ -341,19 +343,41 @@ public class AttractionService {
     return touristArea;
   }
 
-  public Integer getCountsOfAttraction(Integer contentTypeId, Long contentId, Language language)
-      throws UnsupportedEncodingException {
-
-    UriComponents components = createBaseUriBuilder(language.getVersion(), "/detailCommon")
-        .queryParam("contentId", contentId)
-        .queryParam("contentTypeId", contentTypeId)
+  public SearchResultAttractionListDto searchAttractionKeyword(String keyword, Language language, Integer pageNumber, Integer pageSize) throws UnsupportedEncodingException {
+    UriComponents components = createBaseUriBuilder(language.getVersion(), "/searchKeyword")
+        .queryParam("pageNo", pageNumber)
+        .queryParam("numOfRows", pageSize)
+        .queryParam("arrange", "B") //인기순
+        .queryParam("keyword", keyword)
         .build(false);
 
     HttpEntity<?> httpEntity = createHttpEntityHeader();
+
     TourApiBaseResModelDto<?> modelDto =
         restTemplate.exchange(components.toUriString(), HttpMethod.GET, httpEntity,
             new ParameterizedTypeReference<TourApiBaseResModelDto<?>>() {}).getBody();
 
-    return modelDto.getResponse().getBody().getAreaAttractionsCount();
+    if(modelDto.getResponse().getBody().getItems().equals("")){ //for no result
+      return SearchResultAttractionListDto.builder()
+          .attractionsList(new ArrayList<>())
+          .totalAttractionCount(modelDto.getResponse().getBody().getTotalAttractionsCount())
+          .build();
+    }else{
+      TourApiBaseResModelDto<LinkedHashMap> parsedModelDto = mapper.convertValue(modelDto,  new TypeReference<TourApiBaseResModelDto<LinkedHashMap>>(){});
+
+      if(parsedModelDto.getResponse().getBody().getItems().get("item") instanceof List){ //for array response
+        SearchResultAttractionListDto attractionListDto = mapper.convertValue(modelDto.getResponse().getBody().getItems(), SearchResultAttractionListDto.class);
+        attractionListDto.setTotalAttractionCount(modelDto.getResponse().getBody().getTotalAttractionsCount());
+        return attractionListDto;
+      }else{ //for single one object response
+        ResAreaAttractionItemDto singleAttractionDto = mapper.convertValue(parsedModelDto.getResponse().getBody().getItems().get("item"), ResAreaAttractionItemDto.class);
+        SearchResultAttractionListDto attractionListDto = SearchResultAttractionListDto.builder()
+            .totalAttractionCount(modelDto.getResponse().getBody().getTotalAttractionsCount())
+            .attractionsList(new ArrayList<ResAreaAttractionItemDto>(){{add(singleAttractionDto);}})
+            .build();
+
+        return attractionListDto;
+      }
+    }
   }
 }
