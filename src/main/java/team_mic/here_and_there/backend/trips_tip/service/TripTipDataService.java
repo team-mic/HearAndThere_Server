@@ -19,7 +19,7 @@ public class TripTipDataService {
   public void insertTripTips() {
     tripTipRepository.save(TripTip.builder()
         .language(Language.ENGLISH)
-        .viewCount("0")
+        .viewCount(0L)
         .title("Transportation in Seoul")
         .contentsUrl(
             "https://www.notion.so/Transportation-in-Seoul-496362eeeadc4cea9cf047412dc72576")
@@ -31,7 +31,7 @@ public class TripTipDataService {
 
     tripTipRepository.save(TripTip.builder()
         .language(Language.ENGLISH)
-        .viewCount("0")
+        .viewCount(0L)
         .title("Pre-Travel Checklist")
         .contentsUrl(
             "https://www.notion.so/Pre-Travel-Checklist-735934fd77e147938a3e152b55760108")
@@ -43,7 +43,7 @@ public class TripTipDataService {
 
     tripTipRepository.save(TripTip.builder()
         .language(Language.ENGLISH)
-        .viewCount("0")
+        .viewCount(0L)
         .title("Basic Korean Expressions")
         .contentsUrl(
             "https://www.notion.so/Basic-Korean-Expressions-1c3efbfa9aed404392502908b974f4df")
@@ -55,7 +55,7 @@ public class TripTipDataService {
 
     tripTipRepository.save(TripTip.builder()
         .language(Language.ENGLISH)
-        .viewCount("0")
+        .viewCount(0L)
         .title("Seasons Guide On What To Wear")
         .contentsUrl(
             "https://www.notion.so/Seasons-Guide-On-What-To-Wear-fc7a58a340714f9c8238c1ef0b0f624d")
@@ -67,7 +67,7 @@ public class TripTipDataService {
 
     tripTipRepository.save(TripTip.builder()
         .language(Language.ENGLISH)
-        .viewCount("0")
+        .viewCount(0L)
         .title("About Corona virus")
         .contentsUrl(
             "https://www.notion.so/About-Corona-virus-11d4031a759340fcb5395dbc35cdd5d4")
@@ -79,7 +79,7 @@ public class TripTipDataService {
 
     tripTipRepository.save(TripTip.builder()
         .language(Language.KOREAN)
-        .viewCount("0")
+        .viewCount(0L)
         .title("여행 갈때 듣기 좋은 신나고 청명한 노래")
         .contentsUrl(
             "https://www.notion.so/3898127fd2324e519c5ec78a6e9362e3")
@@ -91,7 +91,7 @@ public class TripTipDataService {
 
     tripTipRepository.save(TripTip.builder()
         .language(Language.KOREAN)
-        .viewCount("0")
+        .viewCount(0L)
         .title("망원 맛집 추천 : 소금집 델리")
         .contentsUrl(
             "https://www.notion.so/189228cc56e94f6a8e19de65669bc22f")
@@ -103,7 +103,7 @@ public class TripTipDataService {
 
     tripTipRepository.save(TripTip.builder()
         .language(Language.KOREAN)
-        .viewCount("0")
+        .viewCount(0L)
         .title("서울의 교통수단")
         .contentsUrl(
             "https://www.notion.so/0a87b020c62b43069430b6f101ce72d5")
@@ -115,7 +115,7 @@ public class TripTipDataService {
 
     tripTipRepository.save(TripTip.builder()
         .language(Language.KOREAN)
-        .viewCount("0")
+        .viewCount(0L)
         .title("여행 전 체크리스트")
         .contentsUrl(
             "https://www.notion.so/c62ab752002a4444af2cc4185f61eab9")
@@ -127,7 +127,7 @@ public class TripTipDataService {
 
     tripTipRepository.save(TripTip.builder()
         .language(Language.KOREAN)
-        .viewCount("0")
+        .viewCount(0L)
         .title("날씨별 옷차림")
         .contentsUrl(
             "https://www.notion.so/3c3c3c93877346c08b645f0e7b6b4ebf")
@@ -139,7 +139,7 @@ public class TripTipDataService {
 
     tripTipRepository.save(TripTip.builder()
         .language(Language.KOREAN)
-        .viewCount("0")
+        .viewCount(0L)
         .title("코로나 대비하며 안전한 여행하기")
         .contentsUrl(
             "https://www.notion.so/2ff29eddce87499383bfe8da2b89eeeb")
