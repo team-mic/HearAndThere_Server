@@ -134,9 +134,9 @@ public class SearchController {
       @RequestParam(value = "type") String type,
       @ApiParam(value = "검색키워드", required = true, example = "남산")
       @RequestParam(value = "keyword") String keyword,
-      @ApiParam(value = "페이지 번호", example = "1")
+      @ApiParam(value = "페이지 번호", example = "1", defaultValue = "1")
       @RequestParam(value = "page-number", defaultValue = "1", required = false) Integer pageNumber,
-      @ApiParam(value = "한 페이지 당 데이터 개수", example = "30")
+      @ApiParam(value = "한 페이지 당 데이터 개수", example = "30", defaultValue = "30")
       @RequestParam(value = "page-size", defaultValue = "30", required = false) Integer pageSize)
       throws UnsupportedEncodingException {
 
