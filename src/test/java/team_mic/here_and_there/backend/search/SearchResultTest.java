@@ -106,29 +106,4 @@ public class SearchResultTest {
     assertThat(result.get(2).getId()).isEqualTo(4L);
     assertThat(result.get(2).getTag().getId()).isEqualTo(1L);
   }
-
-  @Test
-  public void 문자열대소비교_테스트(){
-    AudioGuideLanguageContent languageContent1 = AudioGuideLanguageContent.builder()
-        .viewCount("11")
-        .build();
-    AudioGuideLanguageContent languageContent2 = AudioGuideLanguageContent.builder()
-        .viewCount("11")
-        .build();
-
-    List<AudioGuideLanguageContent> list = new ArrayList<>();
-    list.add(languageContent1);
-    list.add(languageContent2);
-
-    list = list.stream()
-        .sorted((a1, a2)-> {
-          long al1 = Long.parseLong(a1.getViewCount());
-          long al2 = Long.parseLong(a2.getViewCount());
-
-          return Long.compare(al2, al1);
-        })
-        .collect(Collectors.toList());
-
-    assertThat(list.get(1).getViewCount()).isEqualTo("11");
-  }
 }
