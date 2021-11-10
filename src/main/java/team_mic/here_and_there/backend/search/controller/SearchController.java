@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.io.UnsupportedEncodingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +15,11 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
+import team_mic.here_and_there.backend.common.domain.Language;
+import team_mic.here_and_there.backend.common.domain.ResourceType;
 import team_mic.here_and_there.backend.search.dto.response.ResPatchedSearchKeywordDto;
 import team_mic.here_and_there.backend.search.dto.response.ResSearchKeywordRankListDto;
+import team_mic.here_and_there.backend.search.dto.response.ResSearchResultListDto;
 import team_mic.here_and_there.backend.search.service.SearchDataService;
 import team_mic.here_and_there.backend.search.service.SearchService;
 
@@ -51,15 +55,18 @@ public class SearchController {
       @ApiParam(value = "type 별 검색 대상의 id", required = true, example = "1")
       @RequestParam(value = "id") Long[] targetIds) throws UnsupportedEncodingException {
 
-    if (!keywordType.equals("audio-guide") && !keywordType.equals("trip-tip") && !keywordType.equals("attraction")) {
+    if (!keywordType.equals(ResourceType.AUDIO_GUIDE.getName())
+        && !keywordType.equals(ResourceType.ATTRACTION.getName())
+        && !keywordType.equals(ResourceType.TRIP_TIP.getName())) {
       throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
     }
 
-    if (!language.equals("kor") && !language.equals("eng")) {
+    if (!language.equals(Language.KOREAN.getVersion()) && !language.equals(Language.ENGLISH.getVersion())) {
       throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
     }
 
-    if((!keywordType.equals("attraction") && targetIds.length != 1) || (keywordType.equals("attraction") && targetIds.length != 2)){
+    if((!keywordType.equals(ResourceType.ATTRACTION.getName()) && targetIds.length != 1)
+        || (keywordType.equals(ResourceType.ATTRACTION.getName()) && targetIds.length != 2)){
       throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
     }
 
@@ -92,7 +99,7 @@ public class SearchController {
       @ApiParam(value = "더미데이터 요청", example = "true")
       @RequestParam(value = "dummy", required = false) Boolean withDummyData
       ) {
-    if (!language.equals("kor") && !language.equals("eng")) {
+    if (!language.equals(Language.KOREAN.getVersion()) && !language.equals(Language.ENGLISH.getVersion())) {
       throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
     }
 
@@ -103,5 +110,35 @@ public class SearchController {
 
     return ResponseEntity.status(HttpStatus.OK)
         .body(searchService.getPopularSearchKeywordsRankings(language, count));
+  }
+
+  @GetMapping("/v1/search")
+  public ResponseEntity<ResSearchResultListDto> getSearchResult(
+      @ApiParam(value = "언어버전", required = true, example = "kor")
+      @RequestParam(value = "lan") String language,
+      @ApiParam(value = "응답 데이터 타입", required = true, example = "audio-guide")
+      @RequestParam(value = "type") String type,
+      @ApiParam(value = "검색키워드", required = true, example = "남산")
+      @RequestParam(value = "keyword") String keyword,
+      @ApiParam(value = "페이지 번호", example = "1")
+      @RequestParam(value = "page-number", defaultValue = "1", required = false) Integer pageNumber,
+      @ApiParam(value = "한 페이지 당 관광지 개수", example = "30")
+      @RequestParam(value = "page-size", defaultValue = "30", required = false) Integer pageSize)
+      throws UnsupportedEncodingException {
+
+    if (!language.equals(Language.KOREAN.getVersion()) && !language.equals(Language.ENGLISH.getVersion())) {
+      throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+    }
+
+    if (!type.equals(ResourceType.AUDIO_GUIDE.getName()) && !type.equals(ResourceType.TRIP_TIP.getName()) && !type.equals(ResourceType.ATTRACTION.getName())) {
+      throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+    }
+
+    if(keyword.equals("")){
+      throw new HttpClientErrorException(HttpStatus.BAD_REQUEST); // TODO : 2글자 이상 warning exception
+    }
+
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(searchService.getSearchResult(language, type, keyword, pageNumber, pageSize));
   }
 }

@@ -1,7 +1,9 @@
 package team_mic.here_and_there.backend.audio_guide.domain.entity;
 
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team_mic.here_and_there.backend.common.domain.BaseTimeEntity;
@@ -31,22 +33,22 @@ public class AudioGuideLanguageContent extends BaseTimeEntity {
     @JoinColumn(name = "audio_guide_id")
     private AudioGuide audioGuide;
 
-    private String viewCount;
+    private Long viewCount;
 
-    private String playingCount;
+    private Long playingCount;
 
     public void updateViewCount(){
-        this.viewCount =  String.valueOf(Long.parseLong(viewCount) + 1L);
+        this.viewCount =  viewCount + 1L;
     }
 
     public void updatePlayingCount(){
-        this.playingCount =  String.valueOf(Long.parseLong(playingCount) + 1L);
+        this.playingCount =  playingCount + 1L;
     }
 
     @Builder
     private AudioGuideLanguageContent(Language language, String title,
         String overviewDescription, AudioGuide audioGuide,
-        String viewCount, String playingCount){
+        Long viewCount, Long playingCount){
         this.language = language;
         this.title = title;
         this.overviewDescription = overviewDescription;
@@ -54,4 +56,18 @@ public class AudioGuideLanguageContent extends BaseTimeEntity {
         this.viewCount = viewCount;
         this.playingCount = playingCount;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AudioGuideLanguageContent)) return false;
+        AudioGuideLanguageContent guideLanguageContent = (AudioGuideLanguageContent) o;
+        return Objects.equals(this.id, guideLanguageContent.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
+    }
+
 }

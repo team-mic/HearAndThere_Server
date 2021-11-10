@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team_mic.here_and_there.backend.common.domain.ImageSizeType;
 import team_mic.here_and_there.backend.common.domain.Language;
+import team_mic.here_and_there.backend.search.domain.repository.SearchTripTipRepository;
 import team_mic.here_and_there.backend.trips_tip.domain.entity.TripTip;
 import team_mic.here_and_there.backend.trips_tip.domain.repository.TripTipRepository;
 import team_mic.here_and_there.backend.trips_tip.dto.response.ResPatchedSingleTripTipDto;
@@ -46,13 +47,14 @@ public class TripTipsService {
         .build();
   }
 
-  private ResTripTipItemDto toTripTipItemDto(TripTip tip) {
+  public ResTripTipItemDto toTripTipItemDto(TripTip tip) {
     return ResTripTipItemDto.builder()
         .tripTipId(tip.getId())
         .title(tip.getTitle())
         .thumbnailImageUrl(tip.getThumbnailImage() + ImageSizeType.MIDDLE.getSuffix())
         .contentsUrl(tip.getContentsUrl())
         .thumbnailDescription(tip.getThumbnailDescription())
+        .viewCount(Long.valueOf(tip.getViewCount()))
         .build();
   }
 
@@ -85,7 +87,7 @@ public class TripTipsService {
     tip.updateViewCount();
     return ResPatchedSingleTripTipDto.builder()
         .tripTipsId(tip.getId())
-        .updatedViewCount(tip.getViewCount())
+        .updatedViewCount(String.valueOf(tip.getViewCount()))
         .build();
   }
 /*

@@ -36,15 +36,15 @@ public class TripTip extends BaseTimeEntity {
 
   private String thumbnailImage;
 
-  private String viewCount; //TODO to long
+  private Long viewCount;
 
   public void updateViewCount(){
-    this.viewCount =  String.valueOf(Long.parseLong(viewCount) + 1L);
+    this.viewCount =  viewCount + 1L;
   }
 
   @Builder
   private TripTip(Language language, String title, String thumbnailDescription,
-                  String contentsUrl, String thumbnailImage, String viewCount) {
+                  String contentsUrl, String thumbnailImage, Long viewCount) {
     this.language = language;
     this.title = title;
     this.thumbnailDescription = thumbnailDescription;

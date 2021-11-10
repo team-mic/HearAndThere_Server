@@ -7,8 +7,9 @@ import lombok.Getter;
 
 import java.util.List;
 
+@Builder
 @Getter
-@JsonPropertyOrder({"audioGuideId", "title", "thumbnailImageUrl", "tags"})
+@JsonPropertyOrder({"audioGuideId", "title", "thumbnailImageUrl", "tags", "viewCount"})
 public class ResAudioGuideItemDto {
 
   @ApiModelProperty(notes = "오디오 가이드 id")
@@ -23,11 +24,6 @@ public class ResAudioGuideItemDto {
   @ApiModelProperty(notes = "오디오 가이드의 태그들")
   private List<String> tags;
 
-  @Builder
-  private ResAudioGuideItemDto(Long audioGuideId, String thumbnailImageUrl, String title, List<String> tags) {
-    this.audioGuideId = audioGuideId;
-    this.thumbnailImageUrl = thumbnailImageUrl;
-    this.title = title;
-    this.tags = tags;
-  }
+  @ApiModelProperty(notes = "오디오 가이드 조회수")
+  private Long viewCount;
 }

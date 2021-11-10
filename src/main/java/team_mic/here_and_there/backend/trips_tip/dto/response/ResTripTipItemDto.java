@@ -6,8 +6,9 @@ import io.swagger.annotations.ApiResponse;
 import lombok.Builder;
 import lombok.Getter;
 
+@Builder
 @Getter
-@JsonPropertyOrder({"tripTipId", "title", "thumbnailImageUrl", "thumbnailDescription", "contentsUrl"})
+@JsonPropertyOrder({"tripTipId", "title", "thumbnailImageUrl", "thumbnailDescription", "contentsUrl", "viewCount"})
 public class ResTripTipItemDto {
 
   @ApiModelProperty(notes = "글 콘텐츠 id")
@@ -25,13 +26,6 @@ public class ResTripTipItemDto {
   @ApiModelProperty(notes = "글 콘텐츠 노션 url")
   private String contentsUrl;
 
-  @Builder
-  private ResTripTipItemDto(Long tripTipId, String thumbnailImageUrl, String title,
-      String thumbnailDescription, String contentsUrl) {
-    this.tripTipId = tripTipId;
-    this.thumbnailImageUrl = thumbnailImageUrl;
-    this.title = title;
-    this.thumbnailDescription = thumbnailDescription;
-    this.contentsUrl = contentsUrl;
-  }
+  @ApiModelProperty(notes = "오디오 가이드 조회수")
+  private Long viewCount;
 }
