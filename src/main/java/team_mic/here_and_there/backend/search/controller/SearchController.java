@@ -112,17 +112,31 @@ public class SearchController {
         .body(searchService.getPopularSearchKeywordsRankings(language, count));
   }
 
+  @ApiOperation(value = "키워드 검색",
+      notes = "* type(audio-guide, trip-tip, attraction) 에 따른 키워드 검색 결과를 제공합니다.\n"
+          + "* type param 의 종류 : audio-guide, trip-tip, attraction\n"
+          + "* lan param 의 종류 : eng, kor\n"
+          + "* 페이지네이션 메타정보가 제공됩니다.\n"
+          + "* type 에 따라 결과 List 의 element 데이터 타입이 다릅니다.\n"
+          + "* type 에 따라 결과 List 의 element 데이터 타입이 다릅니다.\n"
+          + "* attraction 의 경우 인기순, audio-guide,trip-tip 의 경우 조회수 순 정렬됩니다.\n")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "OK"),
+      @ApiResponse(code = 400, message = "Invalid parameter Error"),
+      @ApiResponse(code = 404, message = "No data in DB"),
+      @ApiResponse(code = 500, message = "Internal Server Error")
+  })
   @GetMapping("/v1/search")
   public ResponseEntity<ResSearchResultListDto> getSearchResult(
       @ApiParam(value = "언어버전", required = true, example = "kor")
       @RequestParam(value = "lan") String language,
-      @ApiParam(value = "응답 데이터 타입", required = true, example = "audio-guide")
+      @ApiParam(value = "응답받을 데이터 타입", required = true, example = "audio-guide")
       @RequestParam(value = "type") String type,
       @ApiParam(value = "검색키워드", required = true, example = "남산")
       @RequestParam(value = "keyword") String keyword,
       @ApiParam(value = "페이지 번호", example = "1")
       @RequestParam(value = "page-number", defaultValue = "1", required = false) Integer pageNumber,
-      @ApiParam(value = "한 페이지 당 관광지 개수", example = "30")
+      @ApiParam(value = "한 페이지 당 데이터 개수", example = "30")
       @RequestParam(value = "page-size", defaultValue = "30", required = false) Integer pageSize)
       throws UnsupportedEncodingException {
 
@@ -135,7 +149,7 @@ public class SearchController {
     }
 
     if(keyword.equals("")){
-      throw new HttpClientErrorException(HttpStatus.BAD_REQUEST); // TODO : 2글자 이상 warning exception
+      throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
     }
 
     return ResponseEntity.status(HttpStatus.OK)
