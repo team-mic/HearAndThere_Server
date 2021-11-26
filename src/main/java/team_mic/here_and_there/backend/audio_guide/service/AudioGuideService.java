@@ -504,10 +504,10 @@ public class AudioGuideService {
 
     String mainGreeting = ""; //TODO 추후 카테고리마다 변경
     if(lan.equals(Language.ENGLISH)){
-      mainGreeting = "Listen to the region’s hidden stories\\nthrough the audio guide chosen by Hear Story!";
+      mainGreeting = "Listen to the region’s hidden stories\nthrough the audio guide chosen by Hear Story!";
     }
     if(lan.equals(Language.KOREAN)){
-      mainGreeting = "히어스토리가 선정한 오디오 가이드를 통해\\n해당 지역의 숨겨진 이야기를 들어보세요!";
+      mainGreeting = "히어스토리가 선정한 오디오 가이드를 통해\n해당 지역의 숨겨진 이야기를 들어보세요!";
     }
 
     return ResAudioGuideSubCategoryDetailDto.builder()
