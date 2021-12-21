@@ -13,7 +13,6 @@ import team_mic.here_and_there.backend.audio_course.service.AudioCourseDataServi
 public class AudioCourseDataController {
 
   private final AudioCourseDataService audioCourseDataService;
-
   @ApiIgnore
   @PostMapping("/data/audio-courses/gongneung")
   public ResponseEntity<Void> insertGongneungCourses(){

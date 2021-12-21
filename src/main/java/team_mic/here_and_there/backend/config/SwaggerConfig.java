@@ -29,8 +29,8 @@ public class SwaggerConfig {
 
   private ApiInfo apiInfo() {
     return new ApiInfoBuilder()
-        .title("Here & There")
-        .description("히어앤데어 서비스 API 문서")
+        .title("Here Story")
+        .description("히어스토리 서비스 API 문서")
         .contact(new Contact("here.and.there", "https://github.com/team-mic/HearAndThere_Server",
             "kwonsye56@gmail.com"))
         .license("Apache License Version 2.0")
