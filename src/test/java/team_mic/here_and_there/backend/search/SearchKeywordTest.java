@@ -1,15 +1,15 @@
 package team_mic.here_and_there.backend.search;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideRepository;
 import team_mic.here_and_there.backend.common.domain.Language;
@@ -24,7 +24,9 @@ import team_mic.here_and_there.backend.search.domain.repository.SearchTripTipRep
 import team_mic.here_and_there.backend.trips_tip.domain.entity.TripTip;
 import team_mic.here_and_there.backend.trips_tip.domain.repository.TripTipRepository;
 
-@RunWith(SpringRunner.class)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@ExtendWith(SpringExtension.class)
 @DataJpaTest
 public class SearchKeywordTest {
   @Autowired
@@ -73,11 +75,10 @@ public class SearchKeywordTest {
     SearchAudioGuide firstSearchGuide = searchAudioGuideRepository.findById(1L).get();
     List<SearchKeyword> keywords = searchKeywordRepository.findAll();
 
-    assertThat(searchAudioGuide.getAudioGuide().getId())
-        .isEqualTo(firstSearchGuide.getAudioGuide().getId());
+    assertEquals(searchAudioGuide.getAudioGuide().getId(), firstSearchGuide.getAudioGuide().getId());
 
-    assertThat(firstSearchGuide.getSearchHitCounts()).isEqualTo(0);
-    assertThat(keywords.size()).isEqualTo(3);
+    assertEquals(firstSearchGuide.getSearchHitCounts(), 0);
+    assertEquals(keywords.size(),3);
   }
 
   @Test
@@ -112,10 +113,10 @@ public class SearchKeywordTest {
 
     List<SearchKeyword> keywords = searchKeywordRepository.findAllByLanguageOrderBySearchHitCountsDesc(Language.ENGLISH);
 
-    assertThat(keywords.get(0).getClass()).isEqualTo(SearchAttraction.class);
-    assertThat(keywords.get(0).getSearchHitCounts()).isEqualTo(2);
-    assertThat(keywords.get(1).getSearchHitCounts()).isEqualTo(1);
-    assertThat(keywords.get(2).getSearchHitCounts()).isEqualTo(0);
+    assertEquals(keywords.get(0).getClass(), SearchAttraction.class);
+    assertEquals(keywords.get(0).getSearchHitCounts(),2);
+    assertEquals(keywords.get(1).getSearchHitCounts(), 1);
+    assertEquals(keywords.get(2).getSearchHitCounts(),0);
   }
 
   @Test
@@ -149,10 +150,10 @@ public class SearchKeywordTest {
 
     List<SearchKeyword> keywords = searchKeywordRepository.findAllByLanguageOrderBySearchHitCountsDesc(Language.KOREAN);
 
-    assertThat(keywords.size()).isEqualTo(2);
-    assertThat(keywords.get(0).getClass()).isEqualTo(SearchAudioGuide.class);
-    assertThat(keywords.get(0).getSearchHitCounts()).isEqualTo(1);
-    assertThat(keywords.get(1).getSearchHitCounts()).isEqualTo(0);
+    assertEquals(keywords.size(),2);
+    assertEquals(keywords.get(0).getClass(), SearchAudioGuide.class);
+    assertEquals(keywords.get(0).getSearchHitCounts(), 1);
+    assertEquals(keywords.get(1).getSearchHitCounts(), 0);
   }
 
   @Test
@@ -165,8 +166,7 @@ public class SearchKeywordTest {
         .audioGuide(audioGuide)
         .build());
 
-    assertThat(searchAudioGuideRepository.findAllByType("audio-guide").get(0).getId())
-        .isEqualTo(1L);
+    assertEquals(searchAudioGuideRepository.findAllByType("audio-guide").get(0).getId(), 1L);
   }
 
   @Test
@@ -197,9 +197,9 @@ public class SearchKeywordTest {
 
     List<SearchKeyword> searchKeywords = searchKeywordRepository.findAllByLanguage(Language.ENGLISH, pageRequest);
 
-    assertThat(searchKeywords.size()).isEqualTo(3);
-    assertThat(searchKeywords.get(0).getSearchHitCounts()).isEqualTo(2L);
-    assertThat(searchKeywords.get(2).getId()).isEqualTo(3L);
+    assertEquals(searchKeywords.size(), 3);
+    assertEquals(searchKeywords.get(0).getSearchHitCounts(), 2L);
+    assertEquals(searchKeywords.get(2).getId(), 3L);
   }
 
   @Test
@@ -234,10 +234,10 @@ public class SearchKeywordTest {
 
     List<SearchKeyword> searchKeywords = searchKeywordRepository.findAllByLanguage(Language.ENGLISH, pageRequest);
 
-    assertThat(searchKeywords.size()).isEqualTo(2);
-    assertThat(searchKeywords.get(0).getDiscriminatorValue()).isEqualTo("attraction");
-    assertThat(searchKeywords.get(1).getId()).isEqualTo(1L);
-    assertThat(searchKeywords.get(1).getDiscriminatorValue()).isEqualTo("audio-guide");
+    assertEquals(searchKeywords.size(), 2);
+    assertEquals(searchKeywords.get(0).getDiscriminatorValue(), "attraction");
+    assertEquals(searchKeywords.get(1).getId(), 1L);
+    assertEquals(searchKeywords.get(1).getDiscriminatorValue(), "audio-guide");
   }
 
   @Test
@@ -264,7 +264,7 @@ public class SearchKeywordTest {
         .tripTip(tripTip)
         .build());
 
-    assertThat(searchKeywordRepository.getTotalCountsByLanguage(Language.ENGLISH)).isEqualTo(3L);
+    assertEquals(searchKeywordRepository.getTotalCountsByLanguage(Language.ENGLISH), 3L);
   }
 
   @Test
@@ -299,8 +299,8 @@ public class SearchKeywordTest {
 
     List<SearchKeyword> searchKeywords = searchKeywordRepository.findAllByLanguage(Language.ENGLISH, pageRequest);
 
-    assertThat(searchKeywords.get(0).getDiscriminatorValue()).isEqualTo("audio-guide");
-    assertThat(searchKeywords.get(1).getDiscriminatorValue()).isEqualTo("attraction");
-    assertThat(searchKeywords.get(2).getDiscriminatorValue()).isEqualTo("trip-tip");
+    assertEquals(searchKeywords.get(0).getDiscriminatorValue(), "audio-guide");
+    assertEquals(searchKeywords.get(1).getDiscriminatorValue(), "attraction");
+    assertEquals(searchKeywords.get(2).getDiscriminatorValue(), "trip-tip");
   }
 }

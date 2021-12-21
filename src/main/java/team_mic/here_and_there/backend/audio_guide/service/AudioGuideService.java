@@ -115,6 +115,7 @@ public class AudioGuideService {
             .title(correspondingContent.getTitle())
             .thumbnailImageUrl(audioGuide.getImages().get(0) + ImageSizeType.SMALL.getSuffix())
             .tags(toTagsStringList(audioGuide.getTags(), correspondingContent.getLanguage()))
+            .viewCount(correspondingContent.getViewCount())
             .build())
         .orElse(null); //return null if audio guide has no version of required language.
   }
@@ -261,6 +262,7 @@ public class AudioGuideService {
           .audioGuideId(guide.getId())
           .thumbnailImageUrl(guide.getImages().get(0) + ImageSizeType.SMALL.getSuffix())
           .tags(toTagsStringList(guide.getTags(), languageContent.getLanguage()))
+          .viewCount(languageContent.getViewCount())
           .build());
     }
 

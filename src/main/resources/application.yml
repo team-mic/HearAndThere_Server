@@ -1,12 +1,17 @@
+spring.profiles.active: local-h2
 spring:
   profiles:
-    active: local-mysql
-
+    group:
+      "product" : "product,tourapi,tmapapi,real-db"
+      "local-h2" : "local-h2,tourapi,tmapapi"
+      "local-mysql" : "local-mysql,tourapi,tmapapi"
 ---
 
 spring:
+  config:
+    activate.on-profile: local-h2
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1
   h2.console.enabled: true
   jpa:
     database-platform: H2
@@ -21,18 +26,17 @@ spring:
         format_sql: true
     show-sql: true
   logging.level.root: trace
-  profiles: local-h2
-
-spring.profiles.include: tourapi,tmapapi
 
 ---
 
 spring:
+  config:
+    activate.on-profile: local-mysql
   datasource:
-    url: jdbc:mariadb://localhost:3306/here_and_there_testdb
+    url: jdbc:mysql://localhost:3306/here_story_test_db[localhost]
     username: root
     password: soo930
-    driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     generate-ddl: true
     hibernate:
@@ -45,12 +49,11 @@ spring:
         format_sql: true
     show-sql: true
   logging.level.root: trace
-  profiles: local-mysql
-
-spring.profiles.include: tourapi,tmapapi
 
 ---
 spring:
+  config:
+    activate.on-profile: product
   jpa:
     generate-ddl: false
     hibernate:
@@ -60,5 +63,3 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         enable_lazy_load_no_trans: true
-  profiles: product
-spring.profiles.include: tourapi,real-db,tmapapi

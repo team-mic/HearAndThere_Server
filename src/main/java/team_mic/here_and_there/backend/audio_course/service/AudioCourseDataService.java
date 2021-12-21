@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import team_mic.here_and_there.backend.audio_course.domain.entity.AudioCourseElement;
 import team_mic.here_and_there.backend.audio_course.domain.entity.AudioCourseElementLanguageContent;
@@ -16,6 +17,7 @@ import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuide;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideRepository;
 import team_mic.here_and_there.backend.common.domain.Language;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class AudioCourseDataService {

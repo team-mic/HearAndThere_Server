@@ -1,10 +1,9 @@
 buildscript {
     ext {
-        springBootVersion = '2.1.7.RELEASE'
+        springBootVersion = '2.5.6'
     }
     repositories {
         mavenCentral()
-        jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -18,11 +17,15 @@ apply plugin: 'io.spring.dependency-management'
 group 'team-mic.here-and-there.backend'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.16
 
 repositories {
     mavenCentral()
-    jcenter()
+}
+
+test {
+    useJUnitPlatform()
+    exclude '**/*'
 }
 
 dependencies {
@@ -30,28 +33,28 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 //    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation("javax.validation:validation-api:2.0.1.Final")
-    implementation("org.hibernate:hibernate-core:5.4.6.Final")
-    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.3.Final'
+
+    implementation "io.springfox:springfox-boot-starter:3.0.0"
+    implementation "io.springfox:springfox-swagger-ui:3.0.0"
+
     implementation 'com.google.firebase:firebase-admin:6.8.1'
     implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.228') //aws
     implementation 'com.amazonaws:aws-java-sdk-s3' //aws s3
 
-    compile('org.mariadb.jdbc:mariadb-java-client') //maria-db
+    implementation('org.mariadb.jdbc:mariadb-java-client') //maria-db
 
-    compile 'org.jsoup:jsoup:1.11.2'
+    implementation 'org.jsoup:jsoup:1.11.2'
 
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
 
-test {
-    exclude '**/*'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude module: 'junit'
+    }
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
 }

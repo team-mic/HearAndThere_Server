@@ -2,28 +2,25 @@ package team_mic.here_and_there.backend.search;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import team_mic.here_and_there.backend.audio_guide.domain.entity.AudioGuideLanguageContent;
 import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideLanguageContentRepository;
-import team_mic.here_and_there.backend.audio_guide.domain.repository.AudioGuideRepository;
 import team_mic.here_and_there.backend.common.domain.Language;
 import team_mic.here_and_there.backend.location_tag.domain.entity.AudioGuideTag;
 import team_mic.here_and_there.backend.location_tag.domain.entity.Tag;
 import team_mic.here_and_there.backend.location_tag.domain.repository.AudioGuideTagRepository;
 import team_mic.here_and_there.backend.location_tag.domain.repository.TagRepository;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @DataJpaTest
 public class SearchResultTest {
 
