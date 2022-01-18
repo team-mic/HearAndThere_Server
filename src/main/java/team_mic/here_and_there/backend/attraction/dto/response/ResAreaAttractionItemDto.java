@@ -27,6 +27,9 @@ public class ResAreaAttractionItemDto {
   @JsonProperty("title")
   private String title;
 
+  @ApiModelProperty(notes = "관광명소 위치의 지역명")
+  private String areaName;
+
   @JsonSetter("contenttypeid")
   private void setAttractionContentTypeId(Long attractionContentTypeId) {
     this.attractionContentTypeId = attractionContentTypeId;
@@ -55,5 +58,9 @@ public class ResAreaAttractionItemDto {
   @JsonGetter("attractionContentTypeId")
   public Long getAttractionContentTypeId() {
     return this.attractionContentTypeId;
+  }
+
+  public void setAreaName(String areaName){
+    this.areaName = areaName;
   }
 }
