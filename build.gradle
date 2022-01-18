@@ -23,6 +23,10 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    enabled = false
+}
+
 test {
     useJUnitPlatform()
     exclude '**/*'
