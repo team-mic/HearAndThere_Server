@@ -23,6 +23,10 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    enabled = false
+}
+
 test {
     useJUnitPlatform()
     exclude '**/*'
@@ -45,6 +49,7 @@ dependencies {
     implementation('org.mariadb.jdbc:mariadb-java-client') //maria-db
 
     implementation 'org.jsoup:jsoup:1.11.2'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
