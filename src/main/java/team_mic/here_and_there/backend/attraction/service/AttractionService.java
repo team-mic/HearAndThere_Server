@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,8 +94,9 @@ public class AttractionService {
         List<AreaCodeAndNameItemDto> areaCodeNameList = getAreaCodeNameList(language, null);
 
         areaCodeNameList.stream().forEach(areaCodeAndNameItemDto -> {
-          Triple<Language, Integer, Integer> lanAreaCodeKey = Triple.of(language, areaCodeAndNameItemDto.getCode(), null);
-          String areaName = areaCodeAndNameItemDto.getAreaName();
+          Integer areaCode = areaCodeAndNameItemDto.getCode();
+          Triple<Language, Integer, Integer> lanAreaCodeKey = Triple.of(language, areaCode, null);
+          String areaName = isCustomAreaNameCode(language, areaCode) ? getCustomAreaName(language, areaCode) : areaCodeAndNameItemDto.getAreaName();
 
           areaCodeNameMap.put(lanAreaCodeKey, areaName);
         });
@@ -129,6 +131,25 @@ public class AttractionService {
 
     areaCodeNameMap.putAll(sigunguCodeNameMap);
     log.info("areaCodeNameMap size : " + areaCodeNameMap.size());
+  }
+
+  private String getCustomAreaName(Language language, Integer areaCode) {
+    Map<Pair<Language, Integer>, String> customAreaNameMap = new HashMap<>(){{
+      put(Pair.of(Language.KOREAN, 8), "세종");
+    }};
+
+    return customAreaNameMap.get(Pair.of(language, areaCode));
+  }
+
+  private boolean isCustomAreaNameCode(Language language, Integer areaCode) {
+    Set<Pair<Language, Integer>> customAreaCodeTargets = new HashSet<>(){{
+      add(Pair.of(Language.KOREAN, 8));
+    }};
+
+    if(customAreaCodeTargets.contains(Pair.of(language, areaCode))){
+      return true;
+    }
+    return false;
   }
 
   private HttpEntity<?> createHttpEntityHeader() {
@@ -195,7 +216,7 @@ public class AttractionService {
     }else{
       listDto = mapper.convertValue(modelDto.getResponse().getBody().getItems(), ResAreaAttractionsListDto.class);
 
-      Triple<Language, Integer, Integer> areaCodeNameKey = Triple.of(lan, areaCode, sigunguAreaCode);
+      Triple<Language, Integer, Integer> areaCodeNameKey = Triple.of(lan, areaCode, null);
       String areaName = areaCodeNameMap.get(areaCodeNameKey);
 
       listDto.getAttractionList().stream()
@@ -241,6 +262,10 @@ public class AttractionService {
   public ResAttractionsDetailDto getAttractionDetail(Long contentId, Integer contentTypeId, String language)
       throws UnsupportedEncodingException {
 
+    Language lan = null;
+    if(language.equals(Language.KOREAN.getVersion())) lan = Language.KOREAN;
+    if(language.equals(Language.ENGLISH.getVersion())) lan = Language.ENGLISH;
+
     ResAttractionDetailCommonDto detailCommonDto= getDetailCommon(contentId, contentTypeId, language);
 
     LinkedHashMap<String, Object> detailIntroMap = getDetailIntroMap(contentId, contentTypeId, language);
@@ -263,20 +288,19 @@ public class AttractionService {
       );
     });
 
+    Language finalLan = lan;
     List<ResAudioGuideItemDto> relatedGuidesList = guides.stream()
-        .map(guide -> {
-          Language lan = null;
-          if(language.equals(Language.KOREAN.getVersion())) lan = Language.KOREAN;
-          if(language.equals(Language.ENGLISH.getVersion())) lan = Language.ENGLISH;
-          return audioGuideService.toAudioGuideItem(guide, lan);
-        })
+        .map(guide -> audioGuideService.toAudioGuideItem(guide, finalLan))
         .filter(resAudioGuideItemDto -> resAudioGuideItemDto != null)
         .collect(Collectors.toList());
+
+    String areaName = areaCodeNameMap.get(Triple.of(lan, detailCommonDto.getAreaCode(), null));
 
     return ResAttractionsDetailDto.builder()
         .contentId(contentId)
         .contentTypeId(contentTypeId)
         .language(language)
+        .areaName(areaName)
         .detailCommonInfo(detailCommonDto)
         .detailIntroductionInfo(detailIntroMap)
         .hasRelatedAudioGuides(guides.size()!=0 ? true : false)
@@ -352,6 +376,7 @@ public class AttractionService {
         .queryParam("mapinfoYN", "Y")
         .queryParam("overviewYN", "Y")
         .queryParam("firstImageYN", "Y")
+        .queryParam("areacodeYN", "Y")
         .build(false);
 
     HttpEntity<?> httpEntity = createHttpEntityHeader();
@@ -426,25 +451,39 @@ public class AttractionService {
 
     if(modelDto.getResponse().getBody().getItems().equals("")){ //for no result
       return SearchResultAttractionListDto.builder()
-          .attractionsList(new ArrayList<>())
+          .attractionsList(Collections.emptyList())
           .totalAttractionCount(modelDto.getResponse().getBody().getTotalAttractionsCount())
           .build();
     }else{
       TourApiBaseResModelDto<LinkedHashMap> parsedModelDto = mapper.convertValue(modelDto, new TypeReference<>() {});
+      SearchResultAttractionListDto resultAttractionListDto = null;
 
       if(parsedModelDto.getResponse().getBody().getItems().get("item") instanceof List){ //for array response
         SearchResultAttractionListDto attractionListDto = mapper.convertValue(modelDto.getResponse().getBody().getItems(), SearchResultAttractionListDto.class);
         attractionListDto.setTotalAttractionCount(modelDto.getResponse().getBody().getTotalAttractionsCount());
-        return attractionListDto;
+
+        resultAttractionListDto = attractionListDto;
+
       }else{ //for single one object response
         ResAreaAttractionItemDto singleAttractionDto = mapper.convertValue(parsedModelDto.getResponse().getBody().getItems().get("item"), ResAreaAttractionItemDto.class);
         SearchResultAttractionListDto attractionListDto = SearchResultAttractionListDto.builder()
             .totalAttractionCount(modelDto.getResponse().getBody().getTotalAttractionsCount())
-            .attractionsList(new ArrayList<ResAreaAttractionItemDto>(){{add(singleAttractionDto);}})
+            .attractionsList(new ArrayList<>() {{
+              add(singleAttractionDto);
+            }})
             .build();
 
-        return attractionListDto;
+        resultAttractionListDto = attractionListDto;
       }
+
+      resultAttractionListDto.getAttractionsList().stream()
+          .forEach(resAreaAttractionItemDto -> {
+            Triple<Language, Integer, Integer> areaCodeNameKey = Triple.of(language, resAreaAttractionItemDto.getAreaCode(), null);
+            String areaName = areaCodeNameMap.get(areaCodeNameKey);
+            resAreaAttractionItemDto.setAreaName(areaName);
+          });
+
+      return resultAttractionListDto;
     }
   }
 

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonPropertyOrder({"attractionContentTypeId", "attractionContentId", "title", "imageUrl"})
+@JsonPropertyOrder({"attractionContentTypeId", "attractionContentId", "title", "imageUrl", "areaName", "areacode", "sigungucode"})
 public class ResAreaAttractionItemDto {
 
   @ApiModelProperty(notes = "관광명소 content id")
@@ -29,6 +29,12 @@ public class ResAreaAttractionItemDto {
 
   @ApiModelProperty(notes = "관광명소 위치의 지역명")
   private String areaName;
+
+  @JsonProperty("areacode")
+  private Integer areaCode;
+
+  @JsonProperty("sigungucode")
+  private Integer sigunguCode;
 
   @JsonSetter("contenttypeid")
   private void setAttractionContentTypeId(Long attractionContentTypeId) {

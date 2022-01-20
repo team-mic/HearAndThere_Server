@@ -18,7 +18,7 @@ import team_mic.here_and_there.backend.audio_guide.dto.response.ResAudioGuideIte
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonPropertyOrder({"language", "contentId", "contentTypeId",
+@JsonPropertyOrder({"language", "contentId", "contentTypeId", "areaName",
     "detailCommonInfo", "imagesList",
     "hasRelatedAudioGuides", "relatedAudioGuidesCount", "relatedAudioGuideLists"})
 public class ResAttractionsDetailDto {
@@ -29,6 +29,9 @@ public class ResAttractionsDetailDto {
   private Long contentId;
 
   private Integer contentTypeId;
+
+  @ApiModelProperty(value = "관광지 지역명")
+  private String areaName;
 
   @ApiModelProperty(value = "관광지 상세 공통 정보")
   private ResAttractionDetailCommonDto detailCommonInfo;
