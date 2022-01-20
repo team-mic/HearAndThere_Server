@@ -44,6 +44,9 @@ public class ResAttractionDetailCommonDto {
   @JsonProperty("overview")
   private String overview;
 
+  @JsonProperty("areacode")
+  private Integer areaCode;
+
   @JsonIgnore //not show this field in response
   public String getImage() {
     return this.image;
