@@ -1,6 +1,7 @@
 package team_mic.here_and_there.backend.audio_guide.controller;
 
 import io.swagger.annotations.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -184,7 +185,8 @@ public class AudioGuideController {
   @GetMapping("/v2/audio-guides/categories/recommended")
   public ResponseEntity<List<ResAudioGuideSubCategoryDetailDto>> getAudioGuideSubCategoryListV2(
       @ApiParam(value = "언어버전", required = true, example = "kor")
-      @RequestParam(value = "lan") String language) {
+      @RequestParam(value = "lan") String language)
+      throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
     return ResponseEntity.status(HttpStatus.OK).body(audioGuideService.getAudioGuideSubCategoryListV2(language));
   }
 
