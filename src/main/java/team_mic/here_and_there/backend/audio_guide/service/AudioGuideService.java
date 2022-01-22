@@ -1,5 +1,7 @@
 package team_mic.here_and_there.backend.audio_guide.service;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -402,19 +404,19 @@ public class AudioGuideService {
   }
 
   //TODO : 사용자가 관심있는 대카테고리에 속한 랜덤 2개의 소카테고리 리스트를 제공
-  public List<ResAudioGuideSubCategoryDetailDto> getAudioGuideSubCategoryListV2(String language) {
+  public List<ResAudioGuideSubCategoryDetailDto> getAudioGuideSubCategoryListV2(String language)
+      throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
     List<SubCategory> subCategories = subCategoryRepository.findAll();
-    Set<Integer> randomIndexes = new HashSet<>();
-    Random random = new Random();
     List<ResAudioGuideSubCategoryDetailDto> resultList = new ArrayList<>();
 
     Language lan = null;
     if(language.equals(Language.KOREAN.getVersion())) lan = Language.KOREAN;
     if(language.equals(Language.ENGLISH.getVersion())) lan = Language.ENGLISH;
 
-    while(randomIndexes.size()<2){
-      randomIndexes.add(random.nextInt(subCategories.size()));
-    }
+    Method excludeCondition = this.getClass().getDeclaredMethod("isExcludedSubCategory", new Class[]{Integer.class});
+    excludeCondition.setAccessible(true);
+
+    Set<Integer> randomIndexes = getRandomIndexes(subCategories.size(), 2, excludeCondition);
 
     for(Integer index : randomIndexes){
       SubCategory pickedSubCategory = subCategories.get(index);
@@ -437,6 +439,28 @@ public class AudioGuideService {
     }
 
     return resultList;
+  }
+
+  private Set<Integer> getRandomIndexes(int totalSize, int requiredSize, Method excludeConditionMethod)
+      throws InvocationTargetException, IllegalAccessException {
+    Set<Integer> randomIndexes = new HashSet<>();
+    Random random = new Random();
+
+    while(randomIndexes.size() < requiredSize){
+      int subCategoryRandomIndex = random.nextInt(totalSize);
+      if(!(boolean) excludeConditionMethod.invoke(this, new Object[]{subCategoryRandomIndex})){
+        randomIndexes.add(subCategoryRandomIndex);
+      }
+    }
+    return randomIndexes;
+  }
+
+  private boolean isExcludedSubCategory(Integer subCategoryRandomIndex) {
+    Set<Integer> excludedSubCategoryIndexes = new HashSet<>(){{
+      add(2); // 'K-POP 랜선투어' 카테고리
+    }};
+
+    return excludedSubCategoryIndexes.contains(subCategoryRandomIndex);
   }
 
   public ResAudioGuideSubCategoryListDto getAudioGuideSubCategoryList(String language) {
