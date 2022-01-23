@@ -9,7 +9,7 @@
 ![image](/images/hear&there%20storyboard_frame-Page-2.png)
 
 - Swagger doc
-    - http://ec2-15-164-77-34.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui.html
+    - http://ec2-15-164-77-34.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
 - Spec
     - `Java 1.8.0`
     - `Springboot framework 2.1.7`
@@ -20,13 +20,14 @@
     - `Gradle`
     - `AQuery`
    
-- Modeling
-    - [ERD readonly 링크-수정 중](https://aquerytool.com:443/aquerymain/index/?rurl=1960d678-834c-4fd7-8623-35a505f5b0d5)
-        - 비밀번호 `on8517`
-- 사용 API
+- Table Modeling
+    - [dbdiagram.io](https://dbdiagram.io/d/61bbf6148c901501c0f46fc6)
+    - ![히어스토리](https://user-images.githubusercontent.com/41935764/150687597-40857660-640c-4954-a7d6-31c9ca40b063.png)
+
+- Third-Party API
     - [한국 관광공사 TourAPI 3.0](http://api.visitkorea.or.kr/guide/inforUnite.do)
 
-- Reference
+- Documentation
     - [Git Flow 개발 전략](https://gmlwjd9405.github.io/2018/05/11/types-of-git-branch.html)
     
 - Contributor
