@@ -26,6 +26,8 @@ public class MapZone extends BaseTimeEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
+  private Integer zoneKey;
+
   private String parentArea;
 
   private String zoneName;
@@ -35,7 +37,7 @@ public class MapZone extends BaseTimeEntity {
 
   private String imageUrl;
 
-  private String entryPointLongitude;
+  private Double entryPointLongitude;
 
-  private String entryPointLatitude;
+  private Double entryPointLatitude;
 }
