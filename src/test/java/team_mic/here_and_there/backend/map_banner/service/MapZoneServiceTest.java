@@ -111,7 +111,7 @@ public class MapZoneServiceTest {
   }
 
   @Test
-  public void getMapBannerZonesList_throw_InvalidParentAreaNameException_테스트() throws NoSuchMethodException {
+  public void getMapBannerZonesList_should_throw_InvalidParentAreaNameException_테스트() throws NoSuchMethodException {
     //given
     String givenAreaName = "seoul";
     Language givenLanguage = Language.KOREAN;

@@ -30,8 +30,8 @@ public class MapZoneController {
       @ApiParam(value = "부모 지역명", required = true, defaultValue = "seoul", example = "seoul")
       @PathVariable(value = "area-name") String areaName,
 
-      @ApiParam(value = "언어버전", required = true, example = "kor")
-      @RequestParam(value = "lan") Language language,
+      @ApiParam(value = "언어버전", example = "kor")
+      @RequestParam(value = "lan", required = false, defaultValue = "kor") Language language,
       @ApiParam(value = "제공 데이터 타입", defaultValue = "list", example = "list")
       @RequestParam(value = "data-type", required = false, defaultValue = "list") DisplayDataType zoneDataType){
 
