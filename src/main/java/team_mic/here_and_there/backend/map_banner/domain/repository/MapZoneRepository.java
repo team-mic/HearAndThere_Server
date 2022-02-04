@@ -9,5 +9,5 @@ import team_mic.here_and_there.backend.map_banner.domain.entity.MapZone;
 @Repository
 public interface MapZoneRepository extends JpaRepository<MapZone, Integer> {
   Boolean existsByLanguageAndParentArea(Language language, String parentName);
-  List<MapZone> findAllByLanguageOrderByZoneKeyAsc(Language language);
+  List<MapZone> findAllByParentAreaAndLanguageOrderByZoneKeyAsc(String parentArea, Language language);
 }

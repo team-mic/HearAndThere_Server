@@ -1,4 +1,4 @@
-package team_mic.here_and_there.backend.search;
+package team_mic.here_and_there.backend.search.domain;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 

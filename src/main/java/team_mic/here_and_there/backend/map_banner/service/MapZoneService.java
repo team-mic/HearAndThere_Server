@@ -20,6 +20,9 @@ public class MapZoneService {
 
   private final MapZoneRepository mapZoneRepository;
 
+  private final static String KOR_GUIDE_MESSAGE = "다양한 오디오 가이드를 지도에서 확인해보세요!";
+  private final static String ENG_GUIDE_MESSAGE = "Check Out the Audio Guides on the Map!";
+
   public ResMapBannerZonesListDto getMapBannerZonesList(Language language, String areaName, DisplayDataType zoneDataType) {
     if(!isValidAreaName(language, areaName)){
       throw new InvalidParentAreaNameException();
@@ -28,12 +31,12 @@ public class MapZoneService {
     String guideMessage = "";
 
     if(language.equals(Language.KOREAN)){
-      guideMessage = "다양한 오디오 가이드를 지도에서 확인해보세요!";
+      guideMessage = KOR_GUIDE_MESSAGE;
     }else if(language.equals(Language.ENGLISH)){
-      guideMessage = "Check Out the Audio Guides on the Map!";
+      guideMessage = ENG_GUIDE_MESSAGE;
     }
 
-    List<MapZone> mapZoneList = mapZoneRepository.findAllByLanguageOrderByZoneKeyAsc(language);
+    List<MapZone> mapZoneList = mapZoneRepository.findAllByParentAreaAndLanguageOrderByZoneKeyAsc(areaName, language);
 
     if(zoneDataType.equals(DisplayDataType.LIST)){
       List<ResMapZoneItemDto> zoneItemDtoList = mapZoneList.stream().map(mapZone -> toMapZoneItemDto(mapZone))
