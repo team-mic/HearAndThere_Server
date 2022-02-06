@@ -68,7 +68,7 @@ public class MapZoneService {
         .entryPointLongitude(mapZone.getEntryPointLongitude())
         .zoneImageUrl(mapZone.getImageUrl())
         .zoneName(mapZone.getZoneName())
-        .hashEntryPoint(mapZone.getEntryPointLatitude() == null ? false : true)
+        .hasEntryPoint(mapZone.getEntryPointLatitude() == null ? false : true)
         .build();
   }
 
