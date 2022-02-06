@@ -1,4 +1,4 @@
-package team_mic.here_and_there.backend.common.repository;
+package team_mic.here_and_there.backend.common.domain.repository;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

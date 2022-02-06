@@ -5,7 +5,7 @@ import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team_mic.here_and_there.backend.common.domain.entity.ServiceCommonInfo;
-import team_mic.here_and_there.backend.common.repository.ServiceCommonInfoRepository;
+import team_mic.here_and_there.backend.common.domain.repository.ServiceCommonInfoRepository;
 
 @RequiredArgsConstructor
 @Service
