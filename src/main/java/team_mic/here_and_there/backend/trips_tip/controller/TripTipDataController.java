@@ -15,10 +15,19 @@ public class TripTipDataController{
   private final TripTipDataService tripTipDataService;
 
   @ApiIgnore
-  @PostMapping("/data/trip-tips")
-  public ResponseEntity<Void> insertTripTips() {
+  @PostMapping("/data/v1/trip-tips")
+  public ResponseEntity<Void> insertTripTipsVersion1() {
 
     tripTipDataService.insertTripTips();
+
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
+
+  @ApiIgnore
+  @PostMapping("/data/v2/trip-tips")
+  public ResponseEntity<Void> insertTripTipsVersion2() {
+
+    tripTipDataService.insertTripTipsVersion2();
 
     return ResponseEntity.status(HttpStatus.OK).build();
   }
