@@ -1,5 +1,8 @@
 package team_mic.here_and_there.backend.trips_tip.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team_mic.here_and_there.backend.common.domain.Language;
@@ -148,5 +151,126 @@ public class TripTipDataService {
         .thumbnailImage(AWS_CLOUD_FRONT_URL_PREFIX
             + "/trip_tips/thumbnail_images/kor/%EC%BD%94%EB%A1%9C%EB%82%98+%EB%8C%80%EB%B9%84%ED%95%98%EB%A9%B0+%EC%95%88%EC%A0%84%ED%95%9C+%EC%97%AC%ED%96%89%ED%95%98%EA%B8%B0.png")
         .build());
+  }
+
+  @Transactional
+  public void insertTripTipsVersion2() {
+    List<TripTip> dataList = new ArrayList<>();
+
+    dataList.add(TripTip.builder()
+            .language(Language.ENGLISH)
+            .viewCount(0L)
+            .title("Special Food of Traditional Market")
+            .contentsUrl("https://www.notion.so/Special-Food-of-Traditional-Market-96ba5ff2e28145498654de6bacd2e555")
+            .thumbnailDescription("There are many different traditional markets in Korea. Unlike a uniform mart, traditional markets have different products and atmospheres depending on the region. Due to the unique foods of traditional markets, more and more people are visiting the traditional markets recently. Today, let me introduce various markets in Seoul!")
+            .thumbnailImage(AWS_CLOUD_FRONT_URL_PREFIX
+            + "/trip_tips/thumbnail_images/eng/special_food_of_traditional_market.jpg")
+        .build());
+
+    dataList.add(TripTip.builder()
+        .language(Language.ENGLISH)
+        .viewCount(0L)
+        .title("How to Use Seoul Public Bike, 'Ttareungi'")
+        .contentsUrl("https://www.notion.so/How-to-Use-Seoul-Public-Bike-Ttareungi-6ca0394d47ba4f9ba1e9c6d3591a2301")
+        .thumbnailDescription("Want to rent a bike in Seoul? If so, try using 'Ttareungi'. Ttareungi is a system through which you can rent a bike in Seoul. Since there are Ttareungi rental stations at the subway entrance, bus stop, school, and other places used by many people, anyone, regardless of age or gender, can easily rent it if they have the 'Seoul Public Bike' application.")
+        .thumbnailImage(AWS_CLOUD_FRONT_URL_PREFIX
+            + "/trip_tips/thumbnail_images/eng/how_to_use_seoul_public_bike.png")
+        .build());
+
+    dataList.add(TripTip.builder()
+        .language(Language.ENGLISH)
+        .viewCount(0L)
+        .title("How to Get to Seoul from the Airport")
+        .contentsUrl("https://www.notion.so/How-to-Get-to-Seoul-from-the-Airport-290c23fcd36c43c8afc6069e11392ed5")
+        .thumbnailDescription("Since Incheon International Airport is a bit far from Seoul, you have no choice but to use means of transportation if you do not use a rental car to get to downtown Seoul. There are several ways to get to Seoul by means of transportation, and today I would like to introduce them.")
+        .thumbnailImage(AWS_CLOUD_FRONT_URL_PREFIX
+            + "/trip_tips/thumbnail_images/eng/how_to_get_to_seoul_from_the_airport.png")
+        .build());
+
+    dataList.add(TripTip.builder()
+        .language(Language.ENGLISH)
+        .viewCount(0L)
+        .title("How to Purchase and Charge a Transportation Card")
+        .contentsUrl("https://www.notion.so/How-to-Purchase-and-Charge-a-Transportation-Card-abacf2585e4540339b3dbdebc78da9c9")
+        .thumbnailDescription("You must have a 'transportation card' to ride subways and buses in Korea. Let me tell you where and how to buy a transportation card in Korea.")
+        .thumbnailImage(AWS_CLOUD_FRONT_URL_PREFIX
+            + "/trip_tips/thumbnail_images/eng/how_to_purchase_and_charge_a_transportation_card.png")
+        .build());
+
+    dataList.add(TripTip.builder()
+        .language(Language.ENGLISH)
+        .viewCount(0L)
+        .title("Gyeongbokgung Palace Opening at Night")
+        .contentsUrl("https://www.notion.so/Gyeongbokgung-Palace-Opening-at-Night-ded0fdaffc224f56aa1ae0e42c25c396")
+        .thumbnailDescription("In Korea, there is a special event where you can visit ancient palaces such as Gyeongbokgung Palace, Changgyeonggung Palace, and Suwon Hwaseong Temporary Palace at night for a certain period of time. Among them, today, I would like to introduce the Gyeongbokgung Palace opening at night.")
+        .thumbnailImage(AWS_CLOUD_FRONT_URL_PREFIX
+            + "/trip_tips/thumbnail_images/eng/gyeongbokgung_palace_opening_at_night+.jpg")
+        .build());
+
+    dataList.add(TripTip.builder()
+        .language(Language.ENGLISH)
+        .viewCount(0L)
+        .title("Great Places to Play Indoors")
+        .contentsUrl("https://www.notion.so/Great-Places-to-Play-Indoors-f28dd357eac74ac2ab362d3679b55c1d")
+        .thumbnailDescription("There are times when you have to play indoors because of hot or cold weather or unexpected natural disasters such as typhoons. In Seoul, there are many facilities where you can see and eat indoors. Among them, I would like to introduce the so-called 'Hot Place', which many people visit these days.")
+        .thumbnailImage(AWS_CLOUD_FRONT_URL_PREFIX
+            + "/trip_tips/thumbnail_images/eng/great_places_to_play_indoors.jpg")
+        .build());
+
+    dataList.add(TripTip.builder()
+        .language(Language.ENGLISH)
+        .viewCount(0L)
+        .title("Good Places to Hike")
+        .contentsUrl("https://www.notion.so/Good-Places-to-Hike-0425d10b894f4867a7ac4b4c158f89f6")
+        .thumbnailDescription("If you take the subway on a weekend morning, the subway is full of hikers in hiking clothes. Why? Since about 70% of Korea is made up of mountains, you can see many mountains even in downtown Seoul. Therefore, people can climb various mountains without going far from Seoul, and in fact, many people go climbing. So, I would like to introduce some famous mountains that you can climb in Seoul!")
+        .thumbnailImage(AWS_CLOUD_FRONT_URL_PREFIX
+            + "/trip_tips/thumbnail_images/eng/good_places_to_hike.png")
+        .build());
+
+    dataList.add(TripTip.builder()
+        .language(Language.KOREAN)
+        .viewCount(0L)
+        .title("시장별 특색 음식")
+        .contentsUrl("https://www.notion.so/655ea177be7e4411861dee336b6eebe2")
+        .thumbnailDescription("한국에는 다양하고 많은 전통시장들이 있습니다. 획일적인 마트와는 달리 전통시장은 그 지역에 따라 판매품, 분위기 등이 다른데요, 전통시장만의 특색있는 음식들로 인해 최근 전통시장을 찾는 사람들이 많아지고 있습니다. 오늘은 서울에 있는 다양한 시장들에 대해 소개해드릴게요!")
+        .thumbnailImage(AWS_CLOUD_FRONT_URL_PREFIX
+            + "/trip_tips/thumbnail_images/kor/special_food_of_traditional_market_kor.jpg")
+        .build());
+
+    dataList.add(TripTip.builder()
+        .language(Language.KOREAN)
+        .viewCount(0L)
+        .title("경복궁 야간개장")
+        .contentsUrl("https://www.notion.so/ed38872de39442dd8ea8d674fbdeac9d")
+        .thumbnailDescription("한국에는 일정 기간동안 경복궁, 창경궁, 수원 화성행궁 등 고궁을 일정 기간동안 야간에 관람할 수 있는 특별 관람 행사가 있습니다.  그 중에서 오늘은 경복궁 야간 개장을 소개해드리려고 합니다.")
+        .thumbnailImage(AWS_CLOUD_FRONT_URL_PREFIX
+            + "/trip_tips/thumbnail_images/kor/gyeongbokgung_palace_opening_at_night_kor.jpg")
+        .build());
+
+    dataList.add(TripTip.builder()
+        .language(Language.KOREAN)
+        .viewCount(0L)
+        .title("실내에서 놀기 좋은곳")
+        .contentsUrl("https://www.notion.so/ceb423fbe8844ed18f0510bd97d5c8f0")
+        .thumbnailDescription("덥거나 추운 날씨, 혹은 태풍같이 뜻하지 않은 자연재해 때문에 실내에서 놀아야 할 때가 생깁니다. 서울에서는 실내에서 다양하게 보고, 먹을 수 있는 시설이 많은데요, 그 중에서도 요즘 많이 방문하는 일명 '핫플레이스'를 소개하고자 합니다.")
+        .thumbnailImage(AWS_CLOUD_FRONT_URL_PREFIX
+            + "/trip_tips/thumbnail_images/kor/great_places_to_play_indoors_kor.jpg")
+        .build());
+
+    dataList.add(TripTip.builder()
+        .language(Language.KOREAN)
+        .viewCount(0L)
+        .title("등산하기 좋은 곳")
+        .contentsUrl("https://www.notion.so/7a1e50e3909c4d0fae12a1aacaa5df73")
+        .thumbnailDescription("주말 아침에 지하철을 타면 지하철 안은 등산복을 차려 입은 등산객들로 가득차 있습니다. 왜 그럴까요? 한국은 약 70%가 산으로 이루어져있기에 서울 도심에서도 많은 산을 볼 수 있습니다. 따라서 사람들은 서울에서 멀리 나가지 않고도 다양한 산들로 등산을 갈 수 있고 실제로 많은 사람들이 등산을 갑니다. 따라서 서울에서 갈 수 있는 유명한 산들을 소개해 드리고자 합니다!")
+        .thumbnailImage(AWS_CLOUD_FRONT_URL_PREFIX
+            + "/trip_tips/thumbnail_images/kor/good_places_to_hike_kor.png")
+        .build());
+
+    saveTripTipData(dataList);
+  }
+
+  private void saveTripTipData(List<TripTip> tripTipList) {
+    tripTipRepository.saveAll(tripTipList);
   }
 }
