@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import team_mic.here_and_there.backend.common.domain.BaseTimeEntity;
 import team_mic.here_and_there.backend.common.domain.Language;
 
@@ -24,7 +25,7 @@ public class Tag extends BaseTimeEntity {
 
   private String name;
 
-  @OneToMany(mappedBy = "tag", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "tag")
   private Set<AudioGuideTag> guides = new HashSet<>();
 
   @Enumerated(EnumType.STRING)

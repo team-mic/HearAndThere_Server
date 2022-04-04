@@ -28,7 +28,7 @@ public class AudioTrack extends BaseTimeEntity {
   @Column(name = "image_url")
   private List<String> images = new ArrayList<>();
 
-  @OneToMany(mappedBy = "audioTrack", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "audioTrack")
   private Set<AudioGuideTrackContainer> guides = new HashSet<>();
 
   private Double locationLatitude;

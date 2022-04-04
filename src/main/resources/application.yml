@@ -50,6 +50,8 @@ spring:
     show-sql: true
   logging.level.root: trace
 
+spring.jpa.properties.hibernate.default_batch_fetch_size: 1000
+
 ---
 spring:
   config:
