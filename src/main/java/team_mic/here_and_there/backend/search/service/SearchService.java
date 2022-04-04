@@ -222,23 +222,16 @@ public class SearchService {
         .build();
   }
 
-  public ResSearchResultListDto getSearchResult(String language, String type,
+  public ResSearchResultListDto getSearchResult(Language language, String type,
       String keyword, Integer pageNumber, Integer pageSize) throws UnsupportedEncodingException {
     List resultList = new ArrayList();
-    Language lan = null;
-    if(language.equals(Language.ENGLISH.getVersion())){
-      lan = Language.ENGLISH;
-    }
-    if(language.equals(Language.KOREAN.getVersion())){
-      lan = Language.KOREAN;
-    }
 
     PageRequest pageRequest = PageRequest.of(pageNumber-1, pageSize, Sort.by("viewCount").descending().and(Sort.by("id").ascending()));
     PageMetaDataDto pageMetaDataDto = null;
 
-    if(type.equals(ResourceType.AUDIO_GUIDE.getName())){ // title, tags
+    if(type.equals(ResourceType.AUDIO_GUIDE.getName())){ // title, tags, course title
 
-      Page<AudioGuideLanguageContent> guideContentsContainingKeyword = audioGuideLanguageContentRepository.findDistinctTitleAndTagsByContaining(lan, keyword.toLowerCase(), pageRequest);
+      Page<AudioGuideLanguageContent> guideContentsContainingKeyword = audioGuideLanguageContentRepository.findDistinctTitleAndTagsAndCourseByContaining(language, keyword.toLowerCase(), pageRequest);
       pageMetaDataDto = PageMetaDataDto.builder()
           .currentPageNumber(guideContentsContainingKeyword.getNumber()+1)
           .currentPageSize(guideContentsContainingKeyword.getSize())
@@ -253,7 +246,7 @@ public class SearchService {
       );
     }else if(type.equals(ResourceType.TRIP_TIP.getName())){
 
-      Page<TripTip> tripTipsContainingKeyword = tripTipRepository.findDistinctByTitleAndDescriptionContaining(lan, keyword.toLowerCase(), pageRequest);
+      Page<TripTip> tripTipsContainingKeyword = tripTipRepository.findDistinctByTitleAndDescriptionContaining(language, keyword.toLowerCase(), pageRequest);
       pageMetaDataDto = PageMetaDataDto.builder()
           .currentPageNumber(tripTipsContainingKeyword.getNumber()+1)
           .currentPageSize(tripTipsContainingKeyword.getSize())
@@ -267,7 +260,7 @@ public class SearchService {
               .collect(Collectors.toList())
       );
     }else if(type.equals(ResourceType.ATTRACTION.getName())){
-      SearchResultAttractionListDto attractionListDto = attractionService.searchAttractionKeyword(keyword, lan, pageNumber, pageSize);
+      SearchResultAttractionListDto attractionListDto = attractionService.searchAttractionKeyword(keyword, language, pageNumber, pageSize);
 
       Integer totalPageNumbers = attractionListDto.getTotalAttractionCount() % pageSize == 0 ?
           attractionListDto.getTotalAttractionCount() / pageSize : attractionListDto.getTotalAttractionCount() / pageSize + 1;
@@ -283,7 +276,7 @@ public class SearchService {
     }
 
     return ResSearchResultListDto.builder()
-        .language(lan.getVersion())
+        .language(language.getVersion())
         .searchKeyword(keyword)
         .type(type)
         .resultSize(resultList.size())

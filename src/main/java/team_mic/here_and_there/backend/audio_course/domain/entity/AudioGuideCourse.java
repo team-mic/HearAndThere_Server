@@ -1,6 +1,7 @@
 package team_mic.here_and_there.backend.audio_course.domain.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;

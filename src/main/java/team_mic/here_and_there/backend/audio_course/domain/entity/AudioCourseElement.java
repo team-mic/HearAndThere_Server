@@ -30,7 +30,7 @@ public class AudioCourseElement extends BaseTimeEntity {
   @Column(name = "image_url")
   private List<String> images = new ArrayList<>();
 
-  @OneToMany(mappedBy = "audioCourseElement", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "audioCourseElement", fetch = FetchType.LAZY)
   private Set<AudioGuideCourse> guides = new HashSet<>();
 
   @OneToMany(mappedBy = "audioCourseElement", fetch = FetchType.EAGER)

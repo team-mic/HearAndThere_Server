@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import team_mic.here_and_there.backend.common.domain.Language;
 import team_mic.here_and_there.backend.common.domain.ResourceType;
+import team_mic.here_and_there.backend.common.exception.InvalidLanguageException;
 import team_mic.here_and_there.backend.search.dto.response.ResPatchedSearchKeywordDto;
 import team_mic.here_and_there.backend.search.dto.response.ResSearchKeywordRankListDto;
 import team_mic.here_and_there.backend.search.dto.response.ResSearchResultListDto;
@@ -128,8 +129,8 @@ public class SearchController {
   })
   @GetMapping("/v1/search")
   public ResponseEntity<ResSearchResultListDto> getSearchResult(
-      @ApiParam(value = "언어버전", required = true, example = "kor")
-      @RequestParam(value = "lan") String language,
+      @ApiParam(value = "언어버전", required = true, defaultValue = "kor", example = "kor", allowableValues = "kor,eng")
+      @RequestParam(value = "lan", defaultValue = "kor") Language language,
       @ApiParam(value = "응답받을 데이터 타입", required = true, example = "audio-guide")
       @RequestParam(value = "type") String type,
       @ApiParam(value = "검색키워드", required = true, example = "남산")
@@ -140,8 +141,8 @@ public class SearchController {
       @RequestParam(value = "page-size", defaultValue = "30", required = false) Integer pageSize)
       throws UnsupportedEncodingException {
 
-    if (!language.equals(Language.KOREAN.getVersion()) && !language.equals(Language.ENGLISH.getVersion())) {
-      throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+    if(language == null){
+      throw new InvalidLanguageException();
     }
 
     if (!type.equals(ResourceType.AUDIO_GUIDE.getName()) && !type.equals(ResourceType.TRIP_TIP.getName()) && !type.equals(ResourceType.ATTRACTION.getName())) {

@@ -6,6 +6,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
 import team_mic.here_and_there.backend.audio_course.domain.entity.AudioGuideCourse;
 import team_mic.here_and_there.backend.common.domain.BaseTimeEntity;
 import team_mic.here_and_there.backend.location_tag.domain.entity.AudioGuideTag;
@@ -31,11 +33,11 @@ public class AudioGuide extends BaseTimeEntity {
 
   private String distance;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "main_category_id")
   private MainCategory mainCategory;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "sub_category_id")
   private SubCategory subCategory;
 
@@ -45,14 +47,14 @@ public class AudioGuide extends BaseTimeEntity {
   @Column(name = "image_url")
   private List<String> images = new ArrayList<>();
 
-  @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "audioGuide")
   @OrderBy(value = "orderNumber ASC")
   private Set<AudioGuideTrackContainer> tracks = new HashSet<>();
 
   @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
   private Set<AudioGuideTag> tags = new HashSet<>();
 
-  @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "audioGuide")
   @OrderBy(value = "orderNumber ASC")
   private Set<AudioGuideCourse> course = new HashSet<>();
 
@@ -65,7 +67,7 @@ public class AudioGuide extends BaseTimeEntity {
   @Column(name = "recommended_guide_ids")
   private List<Long> recommendedAudioGuideIds = new ArrayList<>();
 
-  @OneToMany(mappedBy = "audioGuide", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "audioGuide")
   private Set<AudioGuideTripsTipContainer> relatedTripsTips = new HashSet<>();
 
   @Builder

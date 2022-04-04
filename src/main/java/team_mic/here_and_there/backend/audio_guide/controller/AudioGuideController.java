@@ -65,6 +65,7 @@ public class AudioGuideController {
   })
   @GetMapping("/v1/audio-guides/{audio-guide-id:^[0-9]+$}")
   public ResponseEntity<ResSingleAudioGuideDetailDto> getSingleAudioGuideDetail(
+      @ApiParam(value = "오디오 가이드 id", required = true, example = "1")
       @PathVariable(value = "audio-guide-id") Long audioGuideId,
       @ApiParam(value = "언어버전", required = true, example = "kor")
       @RequestParam(value = "lan") String language,

@@ -27,7 +27,7 @@ public class AudioCourseElementLanguageContent extends BaseTimeEntity {
 
     private Integer tourApiAttractionContentTypeId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "audio_course_element_id")
     private AudioCourseElement audioCourseElement;
 

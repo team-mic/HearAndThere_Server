@@ -29,7 +29,7 @@ public class TripTip extends BaseTimeEntity {
   @Lob
   private String thumbnailDescription;
 
-  @OneToMany(mappedBy = "tripTip", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "tripTip")
   private Set<AudioGuideTripsTipContainer> guides = new HashSet<>();
 
   private String contentsUrl;
