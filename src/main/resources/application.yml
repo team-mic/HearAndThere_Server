@@ -65,3 +65,5 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         enable_lazy_load_no_trans: true
+
+spring.jpa.properties.hibernate.default_batch_fetch_size: 1000
