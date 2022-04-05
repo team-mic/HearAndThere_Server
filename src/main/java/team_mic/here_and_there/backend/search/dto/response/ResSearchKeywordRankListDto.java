@@ -14,5 +14,9 @@ public class ResSearchKeywordRankListDto {
   private String language;
   @ApiModelProperty(notes = "순위 결과 개수")
   private Integer count;
+
+  @ApiModelProperty(notes = "더미 데이터 여부")
+  private Boolean isDummyData;
+
   private List<ResSearchKeywordItemDto> keywordRankList;
 }
