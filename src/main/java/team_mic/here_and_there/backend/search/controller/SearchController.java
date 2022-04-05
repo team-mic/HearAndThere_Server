@@ -93,14 +93,14 @@ public class SearchController {
   })
   @GetMapping("/v1/search-keywords/rankings/popular")
   public ResponseEntity<ResSearchKeywordRankListDto> getPopularSearchKeywordsRankings(
-      @ApiParam(value = "언어버전", required = true, example = "kor")
-      @RequestParam(value = "lan") String language,
+      @ApiParam(value = "언어버전", defaultValue = "kor", example = "kor", required = true, allowableValues = "kor,eng")
+      @RequestParam(value = "lan") Language language,
       @ApiParam(value = "순위 개수", defaultValue = "10", example = "10")
       @RequestParam(value = "count", required = false, defaultValue = "10") Integer count,
       @ApiParam(value = "더미데이터 요청", example = "true")
       @RequestParam(value = "dummy", required = false) Boolean withDummyData
       ) {
-    if (!language.equals(Language.KOREAN.getVersion()) && !language.equals(Language.ENGLISH.getVersion())) {
+    if (!language.equals(Language.KOREAN) && !language.equals(Language.ENGLISH)) {
       throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
     }
 

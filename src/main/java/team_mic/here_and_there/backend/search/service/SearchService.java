@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -61,6 +62,7 @@ public class SearchService {
   private final AttractionService attractionService;
   private final AudioGuideService audioGuideService;
   private final TripTipsService tripTipsService;
+  private final SearchDataService searchDataService;
 
   @Transactional
   public ResPatchedSearchKeywordDto updateSearchKeywordsHitCounts(String language, String keywordType, Long[] targetIds)
@@ -140,18 +142,12 @@ public class SearchService {
   }
 
   @Transactional
-  public ResSearchKeywordRankListDto getPopularSearchKeywordsRankings(String language, Integer count) {
-    Language lan = null;
-    if(language.equals(Language.ENGLISH.getVersion())){
-      lan = Language.ENGLISH;
-    }
-    if(language.equals(Language.KOREAN.getVersion())){
-      lan = Language.KOREAN;
-    }
+  public ResSearchKeywordRankListDto getPopularSearchKeywordsRankings(Language language, Integer count) {
 
-    Long totalSearchKeywordsCount = searchKeywordRepository.getTotalCountsByLanguage(lan);
-    if(totalSearchKeywordsCount == 0){
-      throw new NoSearchKeywordException();
+    Long totalSearchKeywordsCount = searchKeywordRepository.getTotalCountsByLanguage(language);
+    if(totalSearchKeywordsCount < count){
+      //get dummy data
+      return  searchDataService.getPopularSearchKeywordsRankingsWithDummyData(language, count);
     }
     if(count > totalSearchKeywordsCount){
       count = Math.toIntExact(totalSearchKeywordsCount);
@@ -159,7 +155,7 @@ public class SearchService {
 
     PageRequest pageRequest = PageRequest.of(0, count, Sort.by("searchHitCounts").descending().and(Sort.by("id").ascending()));
 
-    List<SearchKeyword> searchKeywords = searchKeywordRepository.findAllByLanguage(lan, pageRequest);
+    List<SearchKeyword> searchKeywords = searchKeywordRepository.findAllByLanguage(language, pageRequest);
 
     List<ResSearchKeywordItemDto> searchKeywordItemList = searchKeywords.stream()
         .map(searchKeyword -> {
@@ -174,7 +170,8 @@ public class SearchService {
 
     return ResSearchKeywordRankListDto.builder()
         .count(count)
-        .language(lan.getVersion())
+        .isDummyData(false)
+        .language(language.getVersion())
         .keywordRankList(searchKeywordItemList)
         .build();
   }

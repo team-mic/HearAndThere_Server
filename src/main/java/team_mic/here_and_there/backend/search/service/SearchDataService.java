@@ -20,23 +20,36 @@ public class SearchDataService {
   private final AudioGuideLanguageContentRepository audioGuideLanguageContentRepository;
   private final TripTipRepository tripTipRepository;
 
-  public ResSearchKeywordRankListDto getPopularSearchKeywordsRankingsWithDummyData(String language, Integer count) {
-    Language lan = null;
+  public ResSearchKeywordRankListDto getPopularSearchKeywordsRankingsWithDummyData(Language language, Integer count) {
     List<List<Object>> dummyAttractions = new ArrayList<>();
 
-    if(language.equals(Language.ENGLISH.getVersion())){
-      lan = Language.ENGLISH;
-      dummyAttractions.add(new ArrayList<Object>(){{add("Gyeongbokgung Palace (경복궁)"); add(76); add(264337L);}});
-      dummyAttractions.add(new ArrayList<Object>(){{add("Lotte World (롯데월드)"); add(76); add(264152L);}});
+    if(language.equals(Language.ENGLISH)){
+      dummyAttractions.add(new ArrayList<>() {{
+        add("Gyeongbokgung Palace (경복궁)");
+        add(76);
+        add(264337L);
+      }});
+      dummyAttractions.add(new ArrayList<>() {{
+        add("Lotte World (롯데월드)");
+        add(76);
+        add(264152L);
+      }});
     }
-    if(language.equals(Language.KOREAN.getVersion())){
-      lan = Language.KOREAN;
-      dummyAttractions.add(new ArrayList<Object>(){{add("홍릉수목원"); add(12); add(126500L);}});
-      dummyAttractions.add(new ArrayList<Object>(){{add("청계산"); add(12); add(125452L);}});
+    if(language.equals(Language.KOREAN)){
+      dummyAttractions.add(new ArrayList<>() {{
+        add("홍릉수목원");
+        add(12);
+        add(126500L);
+      }});
+      dummyAttractions.add(new ArrayList<>() {{
+        add("청계산");
+        add(12);
+        add(125452L);
+      }});
     }
 
-    List<AudioGuideLanguageContent> dummyGuideContents = audioGuideLanguageContentRepository.findAllByLanguage(lan).subList(0,4);
-    List<TripTip> dummyTripTips = tripTipRepository.findAllByLanguage(lan).subList(0,4);
+    List<AudioGuideLanguageContent> dummyGuideContents = audioGuideLanguageContentRepository.findAllByLanguage(language).subList(0,4);
+    List<TripTip> dummyTripTips = tripTipRepository.findAllByLanguage(language).subList(0,4);
 
     Integer maxDummySearchKeywordsCount = 10;
 
@@ -49,7 +62,9 @@ public class SearchDataService {
     searchKeywordItemList.addAll(dummyGuideContents.stream()
         .map(guideContent -> ResSearchKeywordItemDto.builder()
             .keywordType("audio-guide")
-            .keywordTargetIds(new ArrayList<Long>(){{add(guideContent.getAudioGuide().getId());}})
+            .keywordTargetIds(new ArrayList<>() {{
+              add(guideContent.getAudioGuide().getId());
+            }})
             .searchHitCounts(30L)
             .keywordTitle(guideContent.getTitle())
         .build())
@@ -60,7 +75,9 @@ public class SearchDataService {
       .map(tripTip -> ResSearchKeywordItemDto.builder()
           .keywordType("trip-tip")
           .keywordTitle(tripTip.getTitle())
-          .keywordTargetIds(new ArrayList<Long>(){{add(tripTip.getId());}})
+          .keywordTargetIds(new ArrayList<>() {{
+            add(tripTip.getId());
+          }})
           .tripTipContentsUrl(tripTip.getContentsUrl())
           .searchHitCounts(20L)
         .build())
@@ -71,14 +88,18 @@ public class SearchDataService {
         .map(attraction -> ResSearchKeywordItemDto.builder()
             .keywordType("attraction")
             .keywordTitle((String) attraction.get(0))
-            .keywordTargetIds(new ArrayList<Long>(){{add(Long.valueOf((Integer)attraction.get(1))); add((Long) attraction.get(2));}})
+            .keywordTargetIds(new ArrayList<>(){{
+              add(Long.valueOf((Integer)attraction.get(1)));
+              add((Long) attraction.get(2));
+            }})
             .searchHitCounts(10L)
             .build())
         .collect(Collectors.toList()));
 
     return ResSearchKeywordRankListDto.builder()
         .count(count)
-        .language(lan.getVersion())
+        .isDummyData(true)
+        .language(language.getVersion())
         .keywordRankList(searchKeywordItemList.subList(0, count))
         .build();
   }
